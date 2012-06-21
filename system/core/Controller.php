@@ -20,9 +20,5 @@ class Controller {
 			return false;
 		return move_uploaded_file($_FILES[$key], $filename);
 	}
-	
-	public function Undefined() {
-		throw Exception("Undefined Controller {".__CLASS__."}");
-	}
 }
 ?>

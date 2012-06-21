@@ -13,6 +13,9 @@ $include_paths = array(
 foreach ($include_paths as $path)
 	set_include_path(get_include_path().PATH_SEPARATOR.__ROOT__.$path);
 
+require_once(__ROOT__."system/core/Model.php");
+require_once(__ROOT__."system/core/Controller.php");
+
 // php magic quotes process
 
 if (get_magic_quotes_gpc ()) {
