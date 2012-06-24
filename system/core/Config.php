@@ -23,13 +23,14 @@ class Config {
 		$config['user']='root';
 		$config['passwd']='';
 		$config['dbname']='mysql';
+		$config['charset']='utf8';
 		$this->configs['database']=$config;
-		// memcache
+		// cache
 		$config=array();
 		$config['type']='memcached';
 		$config['host']='localhost';
 		$config['port']=11211;
-		$this->configs['memcache']=$config;
+		$this->configs['cache']=$config;
 		// read custom config
 		$_CONFIG=$this->configs;
 		require_once(BASEPATH.'application/config.php');
