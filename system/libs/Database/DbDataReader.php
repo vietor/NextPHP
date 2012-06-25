@@ -6,10 +6,15 @@ class DbDataReader {
 		$this->pdoStmt=$pdoStmt;
 	}
 	
-	public function close() {
+	public function __destruct() {
+		close();
+	}
+	
+	private function close() {
 		if(is_null($this->pdoStmt))
 			return false;
 		$this->pdoStmt->closeCursor();
+		$this->pdoStmt=null;
 		$this->pdoStmt=null;
 	}
 	

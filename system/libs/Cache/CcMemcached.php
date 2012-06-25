@@ -25,9 +25,6 @@ class CcMemcached implements Cache {
 		return $this->cache->delete($key);
 	}
 	
-	public function close() {
-	}
-	
 	private static $instance;
 	
 	public static function getInstance($host, $port) {

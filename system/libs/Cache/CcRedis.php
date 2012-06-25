@@ -4,6 +4,13 @@ require_once('Cache.php');
 class CcRedis implements Cache {
 	private $cache;
 	
+	public function __destruct() {
+		if(!is_null($this->cache)) {
+			$this->cache->close();
+			$this->cache=null;
+		}
+	}
+	
 	private function connect($host, $port) {
 		$this->cache=new Redis();
 		return $this->cache->pconnect($host,$port);
@@ -23,10 +30,6 @@ class CcRedis implements Cache {
 	
 	public function delete($key) {
 		return $this->cache->delete($key);
-	}
-	
-	public function close() {
-		return $this->cache->close();
 	}
 	
 	public static function getInstance($host, $port) {

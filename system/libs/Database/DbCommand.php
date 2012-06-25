@@ -26,7 +26,7 @@ class DbCommand {
 			$this->prepare($statement);
 	}
 	
-	public function close() {
+	public function __destruct() {
 		$this->pdo=null;
 		$this->pdoStmt=null;
 	}

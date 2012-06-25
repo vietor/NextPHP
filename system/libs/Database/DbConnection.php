@@ -9,7 +9,7 @@ class DbConnection {
 		$this->pdo->setAttribute(PDO::ATTR_PERSISTENT,true);
 	}
 	
-	public function close() {
+	public function __destruct() {
 		$this->pdo=null;
 	}
 	

@@ -4,6 +4,13 @@ require_once('Cache.php');
 class CcMemcache implements Cache {
 	private $cache;
 	
+	public function __destruct() {
+		if(!is_null($this->cache)) {
+			$this->cache->close();
+			$this->cache=null;
+		}
+	}
+	
 	private function connect($host, $port) {
 		$this->cache=new Memcache();
 		return $this->cache->pconnect($host,$port);
@@ -23,10 +30,6 @@ class CcMemcache implements Cache {
 	
 	public function delete($key) {
 		return $this->cache->delete($key);
-	}
-	
-	public function close() {
-		return $this->cache->close();
 	}
 	
 	public static function getInstance($host, $port) {
