@@ -18,7 +18,7 @@ class CcRedis implements Cache {
 	}
 	
 	public function set($key,$value,$timeout) {
-		return $this->cache->setex($key, $value, $timeout);
+		return $this->cache->setex($key, $timeout, $value);
 	}
 	
 	public function delete($key) {
