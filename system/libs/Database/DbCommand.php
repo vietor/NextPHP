@@ -58,13 +58,19 @@ class DbCommand {
 		return $this;
 	}
 	
+	private function bindValues($variables) {
+		foreach($variables as $name=>$value) {
+			if(is_int($name))
+				$name=$name+1;
+			$this->pdoStmt->bindValue($name,$value,self::getPdoType(gettype($value)));
+		}
+	}
+	
 	public function execute($variables=null) {
 		if(is_null($this->pdoStmt))
 			return false;
-		if(!is_null($dataType)) {
-			foreach($variables as $name=>$value)
-				$this->pdoStmt->bindValue($name,$value,self::getPdoType(gettype($value)));
-		}
+		if(!is_null($variables))
+			$this->bindValues($variables);
 		$this->pdoStmt->execute();
 		return $this->pdoStmt->rowCount();
 	}
@@ -84,10 +90,8 @@ class DbCommand {
 	private function queryInternal($method,$mode,$variables=null) {
 		if(is_null($this->pdoStmt))
 			return false;
-		if(!is_null($dataType)) {
-			foreach($variables as $name=>$value)
-				$this->pdoStmt->bindValue($name,$value,self::getPdoType(gettype($value)));
-		}
+		if(!is_null($variables))
+			$this->bindValues($variables);
 		$this->pdoStmt->execute();
 		if($method==='')
 			$result=new CDbDataReader($this->pdoStmt);

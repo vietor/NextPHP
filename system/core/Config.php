@@ -1,20 +1,21 @@
 <?php
 class Config {
-	private $configs=array();
+	private $configs;
 	
 	public function __construct() {
+		$_CONFIG=array();
 		// router
 		$config=array();
 		$config['type']='GET'; // support = URL GET POST MIXd
 		$config['key_module']='module';
 		$config['key_action']='action';
-		$this->configs['router']=$config;
+		$_CONFIG['router']=$config;
 		// cookie
 		$config=array();
 		$config['domain']=$_SERVER['SERVER_NAME'];
 		$config['path']='/';
 		$config['expire']=14; //day
-		$this->configs['cookie']=$config;
+		$_CONFIG['cookie']=$config;
 		// database
 		$config=array();
 		$config['type']='mysql';
@@ -24,16 +25,16 @@ class Config {
 		$config['passwd']='';
 		$config['dbname']='mysql';
 		$config['charset']='utf8';
-		$this->configs['database']=$config;
+		$_CONFIG['database']=$config;
 		// cache
 		$config=array();
 		$config['type']='memcached';
 		$config['host']='localhost';
 		$config['port']=11211;
-		$this->configs['cache']=$config;
+		$_CONFIG['cache']=$config;
 		// read custom config
-		$_CONFIG=$this->configs;
-		require_once(BASEPATH.'application/config.php');
+		include_once(BASEPATH.'application/config.php');
+		$this->configs=$_CONFIG;
 	}
 	
 	private static $instance=null;
@@ -44,11 +45,7 @@ class Config {
 		self::$instance=new Config();
 		
 		$include_paths = array(
-				"system/core",
-				"system/libs",
-				"application/model",
-				"application/view",
-				"application/controller",
+			"application",
 		);
 		foreach ($include_paths as $path)
 			set_include_path(get_include_path().PATH_SEPARATOR.BASEPATH.$path);
