@@ -9,6 +9,10 @@ class DbConnection {
 		$this->pdo->setAttribute(PDO::ATTR_PERSISTENT,true);
 	}
 	
+	public function close() {
+		$this->pdo=null;
+	}
+	
 	public function beginTransaction() {
 		$this->pdo->beginTransaction();
 	}
@@ -30,6 +34,6 @@ class DbConnection {
 	
 	public function prepare($statement) {
 		return new DbCommand($this->pdo, $statement);
-	}	
+	}
 }
 ?>

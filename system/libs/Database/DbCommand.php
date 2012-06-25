@@ -26,12 +26,21 @@ class DbCommand {
 			$this->prepare($statement);
 	}
 	
+	public function close() {
+		$this->pdo=null;
+		$this->pdoStmt=null;
+	}
+	
 	public function prepare($statement) {
+		if(!is_null($this->pdoStmt))
+			$this->pdoStmt=null;
 		$this->pdoStmt=$this->pdo->prepare($statement);
 		return $this;
 	}
 	
 	public function bindParam ($parameter, &$variable, $dataType=null) {
+		if(is_null($this->pdoStmt))
+			return false;
 		if(is_null($dataType))
 			$this->pdoStmt->bindParam($parameter, $variable, self::getPdoType(gettype($variable)));
 		else
@@ -40,6 +49,8 @@ class DbCommand {
 	}
 	
 	public function bindValue ($parameter, $variable, $dataType=null) {
+		if(is_null($this->pdoStmt))
+			return false;
 		if(is_null($dataType))
 			$this->pdoStmt->bindValue($parameter, $variable, self::getPdoType(gettype($variable)));
 		else
@@ -48,6 +59,8 @@ class DbCommand {
 	}
 	
 	public function execute($variables=null) {
+		if(is_null($this->pdoStmt))
+			return false;
 		if(!is_null($dataType)) {
 			foreach($variables as $name=>$value)
 				$this->pdoStmt->bindValue($name,$value,self::getPdoType(gettype($value)));
@@ -69,6 +82,8 @@ class DbCommand {
 	}
 	
 	private function queryInternal($method,$mode,$variables=null) {
+		if(is_null($this->pdoStmt))
+			return false;
 		if(!is_null($dataType)) {
 			foreach($variables as $name=>$value)
 				$this->pdoStmt->bindValue($name,$value,self::getPdoType(gettype($value)));
@@ -85,6 +100,8 @@ class DbCommand {
 	}
 	
 	public function lastInsertId() {
+		if(is_null($this->pdo))
+			return false;
 		return $this->pdo->lastInsertId();
 	}
 }
