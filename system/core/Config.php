@@ -9,6 +9,8 @@ class Config {
 		$config['type']='GET'; // support = URL GET POST MIXd
 		$config['key_module']='module';
 		$config['key_action']='action';
+		$config['default_module']='Controller';
+		$config['default_action']='undefined';
 		$_CONFIG['router']=$config;
 		// cookie
 		$config=array();

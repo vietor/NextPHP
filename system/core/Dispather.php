@@ -9,10 +9,10 @@ class Dispather {
 		if(!isset($this->controllers[$module])) {
 			$module_file = BASEPATH."application/controller/".$module.".php";
 			if(!file_exists($module_file))
-				throw new Exception("Not found controller {".$module."} file");
+				return false;
 			require_once($module_file);
 			if(!class_exists($module))
-				throw new Exception("Not found controller {".$module."} class");
+				return false;
 			$this->controllers[$module]=new $module();
 		}
 		return self::$this->controllers[$module];
@@ -31,9 +31,24 @@ class Dispather {
 		$method=$router->action;
 		
 		$controller=self::$instance->getController($module);
-		if(!method_exists($controller,$method))
-			throw new Exception("Not found method {".$method."} in controller {".$module."}");
-
+		if($controller===false) {
+			$config=Config::getConfig('router');
+			$default_module=$config['default_module'];
+			if($default_module!='Controller')
+				$controller=self::$instance->getController($default_module);
+			if($controller===false)
+				$controller=new Controller();
+		}
+		if(!method_exists($controller,$method)){
+			if(!isset($config))
+				$config=Config::getConfig('router');
+			$method='undefined';
+			$default_action=$config['default_action'];
+			if($default_action!=$method) {
+				if(method_exists($controller,$default_action))
+					$method=$default_action;
+			}
+		}
 		$controller->$method($router->request,$router->reponse);
 	}
 }
