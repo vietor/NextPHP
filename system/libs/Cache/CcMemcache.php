@@ -1,12 +1,12 @@
 <?php
 require_once('Cache.php');
 
-class Memcached implements Cache {
+class CcMemcache implements Cache {
 	private $cache;
 	
-	public function connect($host, $port) {
-		$this->cache=new Memcache;
-		return $this->cache->connect($host,$port);
+	private function connect($host, $port) {
+		$this->cache=new Memcache();
+		return $this->cache->pconnect($host,$port);
 	}
 	
 	public function get($key) {
@@ -21,12 +21,19 @@ class Memcached implements Cache {
 		return $this->cache->set($key, $value, 0, $timeout);
 	}
 	
-	public function remove($key) {
+	public function delete($key) {
 		return $this->cache->delete($key);
 	}
 	
 	public function close() {
 		return $this->cache->close();
+	}
+	
+	public static function getInstance($host, $port) {
+		$instance=new CcMemcache();
+		if(!$instance->connect($host, $port))
+			throw new Exception('Memcached cannot connect');
+		return $instance;
 	}
 }
 ?>

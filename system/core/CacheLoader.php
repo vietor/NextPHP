@@ -2,13 +2,21 @@
 class CacheLoader {
 	public static function connect(){
 		$config=Config::getConfig('cache');		
-		if($config['type']=='memcached') {
-			if(!class_exists('Memcached'))
-				require_once(BASEPATH.'libs/Cache/Memcached.php');
-			$cache=new Memcached();
-			if(!$cache->connect($config['host'], $config['port']))
-				throw new Exception('Memcached cannot connect');
-			return $cache;
+		
+		if($config['type']=='redis') {
+			if(!class_exists('CcRedis'))
+				require_once(BASEPATH.'libs/Cache/CcRedis.php');
+			return CcRedis::getInstance($config['host'], $config['port']);
+		}
+		else if($config['type']=='memcache') {
+			if(!class_exists('CcMemcache'))
+				require_once(BASEPATH.'libs/Cache/CcMemcache.php');
+			return CcMemcache::getInstance($config['host'], $config['port']);
+		}
+		else {
+			if(!class_exists('CcMemcached'))
+				require_once(BASEPATH.'libs/Cache/CcMemcached.php');
+			return CcMemcached::getInstance($config['host'], $config['port']);
 		}
 	}
 }
