@@ -7,5 +7,25 @@ class Reponse {
 		$domain = is_null($domain) ? $config['domain'] : $domain;
 		setcookie($name, $value, $expire, $path, $domain);
 	}
+	
+	public function output($content, $contentType=null) {
+		if(!is_null($contentType))
+			header('content-type: '.$contentType);
+		echo $content;
+	}
+	
+	public function htmlLocation($url) {
+		echo '
+		<!DOCTYPE html>
+		<html>
+		<head>
+		<title>Launching...</title>
+		</head>
+		<script type="text/javascript">
+		window.location = "'.$url.'";
+		</script>
+		<body style="text-align: center; font-family: Arial, sans-serif;">Launching...</body>
+		</html>';
+	}
 }
 ?>
