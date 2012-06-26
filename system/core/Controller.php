@@ -3,7 +3,8 @@ require_once('Model.php');
 
 class Controller {
 	public function undefined($request,$reponse) {
-		throw new Exception('Undefined module or action');
+		header("HTTP/1.1 404 Not Found");
+		header("Status: 404 Not Found");
 	}
 }
 ?>

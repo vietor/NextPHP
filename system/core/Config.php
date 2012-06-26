@@ -1,5 +1,7 @@
 <?php
 class Config {
+	public static $instance;
+	
 	private $configs;
 	
 	public function __construct() {
@@ -39,26 +41,10 @@ class Config {
 		$this->configs=$_CONFIG;
 	}
 	
-	private static $instance=null;
-	
-	public static function initialize() {
-		if(!is_null(self::$instance))
-			return;
-		self::$instance=new Config();
-		
-		$include_paths = array(
-			"application",
-		);
-		foreach ($include_paths as $path)
-			set_include_path(get_include_path().PATH_SEPARATOR.BASEPATH.$path);
-	}
-	
 	public static function getConfig($key) {
 		if(!isset(self::$instance->configs[$key]))
 			return false;
 		return self::$instance->configs[$key];
 	}
 }
-
-Config::initialize();
 ?>

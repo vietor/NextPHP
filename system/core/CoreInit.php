@@ -1,5 +1,24 @@
 <?php
-class LibLoader {	
+require_once('Config.php');
+require_once('Dispather.php');
+
+class CoreInit {
+	public function __construct() {
+		$include_paths = array(
+				"application",
+		);
+		foreach ($include_paths as $path)
+			set_include_path(get_include_path().PATH_SEPARATOR.BASEPATH.$path);
+		
+		set_exception_handler(array($this, 'handleException'));
+	}
+	
+	public function handleException(Exception $e) {
+		error_log($e->getMessage());
+		header('HTTP/1.1 503 Service Temporarily Unavailable');
+		header('Status: 503 Service Temporarily Unavailable');
+	}
+	
 	public static function loadCache(){
 		$config=Config::getConfig('cache');	
 		$type=$config['type'];
@@ -39,5 +58,17 @@ class LibLoader {
 	
 		return new DbConnection($dsn,$config['user'],$config['passwd']);
 	}
+	
+	private static $instance=null;
+	
+	public static function initialize() {
+		if(!is_null(self::$instance))
+			return;
+		self::$instance=new CoreInit();
+		
+		Config::$instance=new Config();
+		Dispather::$instance=new Dispather();
+	}
 }
+CoreInit::initialize();
 ?>
