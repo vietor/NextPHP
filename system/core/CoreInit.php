@@ -19,10 +19,25 @@ class CoreInit {
 		header('Status: 503 Service Temporarily Unavailable');
 	}
 	
-	public static function loadCache(){
-		$config=Config::getConfig('cache');	
-		$type=$config['type'];
+	private static $instance=null;
+	
+	public static function initialize() {
+		if(!is_null(self::$instance))
+			return;
+		self::$instance=new CoreInit();
 		
+		Config::$instance=new Config();
+		Dispather::$instance=new Dispather();
+	}
+}
+
+CoreInit::initialize();
+
+class LibLoader {
+	public static function loadCache(){
+		$config=Config::getConfig('cache');
+		$type=$config['type'];
+	
 		if($type=='redis') {
 			if(!class_exists('CcRedis'))
 				require_once(BASEPATH.'system/libs/Cache/CcRedis.php');
@@ -58,17 +73,5 @@ class CoreInit {
 	
 		return new DbConnection($dsn,$config['user'],$config['passwd']);
 	}
-	
-	private static $instance=null;
-	
-	public static function initialize() {
-		if(!is_null(self::$instance))
-			return;
-		self::$instance=new CoreInit();
-		
-		Config::$instance=new Config();
-		Dispather::$instance=new Dispather();
-	}
 }
-CoreInit::initialize();
 ?>
