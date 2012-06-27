@@ -4,12 +4,6 @@ require_once('Dispather.php');
 
 class CoreInit {
 	public function __construct() {
-		$include_paths = array(
-				"application",
-		);
-		foreach ($include_paths as $path)
-			set_include_path(get_include_path().PATH_SEPARATOR.BASEPATH.$path);
-		
 		set_exception_handler(array($this, 'handleException'));
 	}
 	
@@ -33,7 +27,7 @@ class CoreInit {
 
 CoreInit::initialize();
 
-class LibLoader {
+class CoreLoader {
 	public static function loadCache(){
 		$config=Config::getConfig('cache');
 		$type=$config['type'];

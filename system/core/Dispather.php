@@ -4,46 +4,52 @@ require_once('Controller.php');
 
 class Dispather {
 	public static $instance;
+	private $default_module;
+	private $default_action;
 	
-	private $controllers=array();
+	public function __construct() {
+		$config=Config::getConfig('router');
+		$this->default_module=$config['default_module'];
+		$this->default_action=$config['default_action'];
+	}
 	
-	private function getController($module) {
-		if(!isset($this->controllers[$module])) {
+	private function getController($module, &$method) {
+		$controller=false;
+		if(!class_exists($module)) {
 			$module_file = BASEPATH."application/controller/".$module.".php";
-			if(!file_exists($module_file))
-				return false;
-			require_once($module_file);
-			if(!class_exists($module))
-				return false;
-			$this->controllers[$module]=new $module();
+			if($this->default_module!='Controller') {
+				if(!file_exists($module_file)) {
+					$module=$this->default_module;
+					$module_file = BASEPATH."application/controller/".$module.".php";
+				}
+			}
+			if(file_exists($module_file)) {
+				require_once($module_file);
+				if(class_exists($module))
+					$controller=new $module();
+			}
 		}
-		return self::$this->controllers[$module];
+		if($controller) {
+			if(!method_exists($controller,$method)){
+				$method='undefined';
+				if($this->default_action!=$method) {
+					if(method_exists($controller,$this->default_action))
+						$method=$this->default_action;
+				}
+			}
+		}
+		else {
+			$controller=new Controller();
+			$method='undefined';
+		}
+		return $controller;
 	}
 	
 	public static function dispath($router) {
-		$module=$router->module;
 		$method=$router->action;
-		
-		$controller=self::$instance->getController($module);
-		if($controller===false) {
-			$config=Config::getConfig('router');
-			$default_module=$config['default_module'];
-			if($default_module!='Controller')
-				$controller=self::$instance->getController($default_module);
-			if($controller===false)
-				$controller=new Controller();
-		}
-		if(!method_exists($controller,$method)){
-			if(!isset($config))
-				$config=Config::getConfig('router');
-			$method='undefined';
-			$default_action=$config['default_action'];
-			if($default_action!=$method) {
-				if(method_exists($controller,$default_action))
-					$method=$default_action;
-			}
-		}
-		$controller->$method($router->request,$router->reponse);
+		$controller=self::$instance->getController($router->module, $method);
+		$controller->initialize($router->request,$router->reponse);
+		$controller->$method();
 	}
 }
 ?>
