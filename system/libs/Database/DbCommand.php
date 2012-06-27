@@ -79,11 +79,11 @@ class DbCommand {
 		return $this->queryInternal('',0,$variables);
 	}
 
-	public function queryRow($fetchAssociative=false,$variables=null) {
+	public function queryRow($variables=null,$fetchAssociative=false) {
 		return $this->queryInternal('fetch',$fetchAssociative ? PDO::FETCH_ASSOC : PDO::FETCH_NUM, $variables);
 	}
 
-	public function queryAll($fetchAssociative=false,$variables=null) {
+	public function queryAll($variables=null,$fetchAssociative=false) {
 		return $this->queryInternal('fetchAll',$fetchAssociative ? PDO::FETCH_ASSOC : PDO::FETCH_NUM, $variables);
 	}
 
