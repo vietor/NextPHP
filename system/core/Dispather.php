@@ -6,13 +6,13 @@ class Dispather {
 	public static $instance;
 	private $default_module;
 	private $default_action;
-	
+
 	public function __construct() {
 		$config=Config::getConfig('router');
 		$this->default_module=$config['default_module'];
 		$this->default_action=$config['default_action'];
 	}
-	
+
 	private function getController($module, &$method) {
 		$controller=false;
 		if(!class_exists($module)) {
@@ -44,7 +44,7 @@ class Dispather {
 		}
 		return $controller;
 	}
-	
+
 	public static function dispath($router) {
 		$method=$router->action;
 		$controller=self::$instance->getController($router->module, $method);

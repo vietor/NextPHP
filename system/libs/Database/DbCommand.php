@@ -6,7 +6,7 @@ class DbCommand {
 	const VAR_STR=PDO::PARAM_STR;
 	const VAR_BOOL=PDO::PARAM_BOOL;
 	const VAR_NULL=PDO::PARAM_NULL;
-	
+
 	public static function getPdoType($type) {
 		static $map=array(
 				'boolean'=>PDO::PARAM_BOOL,
@@ -16,28 +16,28 @@ class DbCommand {
 		);
 		return isset($map[$type]) ? $map[$type] : PDO::PARAM_STR;
 	}
-	
+
 	private $pdo;
 	private $pdoStmt;
-	
+
 	public function __construct($pdo, $statement=null) {
 		$this->pdo=$pdo;
 		if(!is_null($statement))
 			$this->prepare($statement);
 	}
-	
+
 	public function __destruct() {
 		$this->pdo=null;
 		$this->pdoStmt=null;
 	}
-	
+
 	public function prepare($statement) {
 		if(!is_null($this->pdoStmt))
 			$this->pdoStmt=null;
 		$this->pdoStmt=$this->pdo->prepare($statement);
 		return $this;
 	}
-	
+
 	public function bindParam ($parameter, &$variable, $dataType=null) {
 		if(is_null($this->pdoStmt))
 			return false;
@@ -47,7 +47,7 @@ class DbCommand {
 			$this->pdoStmt->bindParam($parameter, $variable, $dataType);
 		return $this;
 	}
-	
+
 	public function bindValue ($parameter, $variable, $dataType=null) {
 		if(is_null($this->pdoStmt))
 			return false;
@@ -57,7 +57,7 @@ class DbCommand {
 			$this->pdoStmt->bindValue($parameter, $variable, $dataType);
 		return $this;
 	}
-	
+
 	private function bindValues($variables) {
 		foreach($variables as $name=>$value) {
 			if(is_int($name))
@@ -65,7 +65,7 @@ class DbCommand {
 			$this->pdoStmt->bindValue($name,$value,self::getPdoType(gettype($value)));
 		}
 	}
-	
+
 	public function execute($variables=null) {
 		if(is_null($this->pdoStmt))
 			return false;
@@ -74,19 +74,19 @@ class DbCommand {
 		$this->pdoStmt->execute();
 		return $this->pdoStmt->rowCount();
 	}
-	
+
 	public function query($variables=null) {
 		return $this->queryInternal('',0,$variables);
 	}
-	
+
 	public function queryRow($fetchAssociative=false,$variables=null) {
 		return $this->queryInternal('fetch',$fetchAssociative ? PDO::FETCH_ASSOC : PDO::FETCH_NUM, $variables);
 	}
-	
+
 	public function queryAll($fetchAssociative=false,$variables=null) {
 		return $this->queryInternal('fetchAll',$fetchAssociative ? PDO::FETCH_ASSOC : PDO::FETCH_NUM, $variables);
 	}
-	
+
 	private function queryInternal($method,$mode,$variables=null) {
 		if(is_null($this->pdoStmt))
 			return false;
@@ -102,7 +102,7 @@ class DbCommand {
 		}
 		return $result;
 	}
-	
+
 	public function lastInsertId() {
 		if(is_null($this->pdo))
 			return false;

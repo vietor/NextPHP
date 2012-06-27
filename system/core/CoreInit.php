@@ -6,20 +6,20 @@ class CoreInit {
 	public function __construct() {
 		set_exception_handler(array($this, 'handleException'));
 	}
-	
+
 	public function handleException(Exception $e) {
 		error_log($e->getMessage());
 		header('HTTP/1.1 503 Service Temporarily Unavailable');
 		header('Status: 503 Service Temporarily Unavailable');
 	}
-	
+
 	private static $instance=null;
-	
+
 	public static function initialize() {
 		if(!is_null(self::$instance))
 			return;
 		self::$instance=new CoreInit();
-		
+
 		Config::$instance=new Config();
 		Dispather::$instance=new Dispather();
 	}
@@ -31,7 +31,7 @@ class CoreLoader {
 	public static function loadCache(){
 		$config=Config::getConfig('cache');
 		$type=$config['type'];
-	
+
 		if($type=='redis') {
 			if(!class_exists('CcRedis'))
 				require_once(BASEPATH.'system/libs/Cache/CcRedis.php');
@@ -50,21 +50,21 @@ class CoreLoader {
 		else
 			throw new Exception('Unsupport cache type {'.$type.'}');
 	}
-	
+
 	public static function loadDatabase(){
 		if(!class_exists('DbConnection'))
 			require_once(BASEPATH.'system/libs/Database/DbConnection.php');
-	
+
 		$config=Config::getConfig('database');
 		$type=$config['type'];
-	
+
 		if($type=='mysql')
 			$dsn='mysql:dbname='.$config['dbname'].';host='.$config['host'].';port='.$config['port'].';charset='.$config['charset'];
 		else if($type=='pgsql')
 			$dsn='pgsql:dbname='.$config['dbname'].';host='.$config['host'].';port='.$config['port'].';charset='.$config['charset'];
 		else
 			throw new Exception('Unsupport database type {'.$config['type'].'}');
-	
+
 		return new DbConnection($dsn,$config['user'],$config['passwd']);
 	}
 }

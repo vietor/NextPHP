@@ -1,9 +1,9 @@
 <?php
 class Config {
 	public static $instance;
-	
+
 	private $configs;
-	
+
 	public function __construct() {
 		$_CONFIG=array();
 		// router
@@ -32,7 +32,7 @@ class Config {
 		$_CONFIG['database']=$config;
 		// cache
 		$config=array();
-		$config['type']='memcached';
+		$config['type']='memcache';
 		$config['host']='localhost';
 		$config['port']=11211;
 		$_CONFIG['cache']=$config;
@@ -40,7 +40,7 @@ class Config {
 		include_once(BASEPATH.'application/config.php');
 		$this->configs=$_CONFIG;
 	}
-	
+
 	public static function getConfig($key) {
 		if(!isset(self::$instance->configs[$key]))
 			return false;

@@ -7,13 +7,13 @@ class Reponse {
 		$domain = is_null($domain) ? $config['domain'] : $domain;
 		setcookie($name, $value, $expire, $path, $domain);
 	}
-	
+
 	public function output($content, $contentType=null) {
 		if(!is_null($contentType))
 			header('content-type: '.$contentType);
 		echo $content;
 	}
-	
+
 	public function htmlLocation($url) {
 		echo '
 		<!DOCTYPE html>

@@ -7,8 +7,8 @@ class Router {
 	public $action;
 	public $request;
 	public $reponse;
-	
-	public function __construct() {		
+
+	public function __construct() {
 		if (get_magic_quotes_gpc ()) {
 			$in = array (&$_GET, &$_POST, &$_COOKIE, &$_FILES );
 			while ( (list ( $k, $v ) = each ( $in )) !== false ) {
@@ -22,12 +22,12 @@ class Router {
 			}
 			unset ( $in );
 		}
-		
+
 		$config=Config::getConfig('router');
 		$type=$config['type'];
 		$key_module=$config['key_module'];
 		$key_action=$config['key_action'];
-		
+
 		if($type=='URL') {
 			$paths=explode('/',array_keys($_GET));
 			$this->module=$paths[0];
@@ -71,7 +71,7 @@ class Router {
 		$this->request=new Request($params);
 		$this->reponse=new Reponse($request);
 	}
-	
+
 	public static function getRouter() {
 		return new Router();
 	}
