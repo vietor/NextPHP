@@ -67,5 +67,15 @@ class CoreLoader {
 
 		return new DbConnection($dsn,$config['user'],$config['passwd']);
 	}
+	
+	public static function loadTool($name){
+		if(!class_exists($name)) {
+			$file=BASEPATH.'system/libs/Tools/'.$name.'.php';
+			if(!file_exists($file))
+				throw new Exception('Unsupport tool type {'.$name.'}');
+			require_once($file);
+		}
+		return new $name;
+	}
 }
 ?>
