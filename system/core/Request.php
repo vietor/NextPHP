@@ -16,13 +16,13 @@ class Request {
 
 	public function getParam($key) {
 		if(!$this->hasParam($key))
-			return false;
+			return null;
 		return $this->params[$key];
 	}
 
 	public function getCooke($key) {
 		if(!isset($_COOKIE[$key]))
-			return false;
+			return null;
 		return $_COOKIE[$key];
 	}
 
