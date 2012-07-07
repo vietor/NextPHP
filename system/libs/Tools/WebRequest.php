@@ -1,7 +1,5 @@
 <?php
 
-namespace ES\Common;
-
 class WebRequest
 {
 	protected $s;
