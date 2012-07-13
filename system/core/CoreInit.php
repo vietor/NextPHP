@@ -28,6 +28,16 @@ class CoreInit {
 CoreInit::initialize();
 
 class CoreLoader {
+	private static $tables=array();
+
+	private static function getObject($key){
+		return self::$tables[$key];
+	}
+
+	private static function setObject($key, $object){
+		self::$tables[$key]=$object;
+	}
+
 	public static function loadCache(){
 		$config=Config::getConfig('cache');
 		$type=$config['type'];
@@ -67,15 +77,32 @@ class CoreLoader {
 
 		return new DbConnection($dsn,$config['user'],$config['passwd']);
 	}
-	
-	public static function loadTool($name){
+
+	private static function requireTool($name){
 		if(!class_exists($name)) {
 			$file=BASEPATH.'system/libs/Tools/'.$name.'.php';
 			if(!file_exists($file))
 				throw new Exception('Unsupport tool type {'.$name.'}');
 			require_once($file);
 		}
-		return new $name;
+	}
+
+	public static function loadUniqueKey() {
+		$name='UniqueKey';
+		$object = getObject($name);
+		if(!$object) {
+			requireTool($name);
+			$config=Config::getConfig('unique');
+			
+			$object=new UniqueKey($config['secret']);
+			self::setObject($name, $object);
+		}
+		return $object;
+	}
+
+	public static function loadWebRequest(){
+		requireTool('WebRequest');
+		return new WebRequest;
 	}
 }
 ?>

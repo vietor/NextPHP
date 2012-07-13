@@ -20,6 +20,11 @@ class Config {
 		$config['path']='/';
 		$config['expire']=14; //day
 		$_CONFIG['cookie']=$config;
+		// unique
+		$config=array();
+		$config['mode']='aes'; // suport = aes, 3des
+		$config['secret']='b5ee4d5b4f59451431081b0246c57c7b'; // length aes=>32, 3des=>16
+		$_CONFIG['unique']=$config;
 		// database
 		$config=array();
 		$config['type']='mysql';
