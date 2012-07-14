@@ -2,7 +2,7 @@
 require_once('Config.php');
 require_once('Dispather.php');
 
-class CoreInit {
+class AutoRun {
 	public function __construct() {
 		set_exception_handler(array($this, 'handleException'));
 	}
@@ -14,20 +14,20 @@ class CoreInit {
 	}
 
 	private static $instance=null;
+	private static $dispather=null;
 
-	public static function initialize() {
-		if(!is_null(self::$instance))
-			return;
-		self::$instance=new CoreInit();
+	public static function execute() {
+		if(is_null(self::$instance)) {
+			self::$instance=new AutoRun();
 
-		Config::$instance=new Config();
-		Dispather::$instance=new Dispather();
+			Config::$instance=new Config();
+			self::$dispather=new Dispather();
+		}
+		self::$dispather->dispath(Router::getRouter());
 	}
 }
 
-CoreInit::initialize();
-
-class CoreLoader {
+class Loader {
 	private static $tables=array();
 
 	private static function getObject($key){
@@ -89,11 +89,11 @@ class CoreLoader {
 
 	public static function loadUniqueKey() {
 		$name='UniqueKey';
-		$object = getObject($name);
+		$object = self::getObject($name);
 		if(!$object) {
-			requireTool($name);
+			self::requireTool($name);
 			$config=Config::getConfig('unique');
-			
+
 			$object=new UniqueKey($config['secret']);
 			self::setObject($name, $object);
 		}
@@ -101,8 +101,10 @@ class CoreLoader {
 	}
 
 	public static function loadWebRequest(){
-		requireTool('WebRequest');
+		self::requireTool('WebRequest');
 		return new WebRequest;
 	}
 }
+
+AutoRun::execute();
 ?>

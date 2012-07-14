@@ -5,13 +5,13 @@ class Model {
 	
 	public function getCache() {
 		if($this->cache===null)
-			$this->cache=CoreLoader::loadCache();
+			$this->cache=Loader::loadCache();
 		return $this->cache;
 	}
 
 	public function getDatabase() {
 		if($this->database===null)
-			$this->database=CoreLoader::loadDatabase();
+			$this->database=Loader::loadDatabase();
 		return $this->database;
 	}
 }

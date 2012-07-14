@@ -3,7 +3,6 @@ require_once('Router.php');
 require_once('Controller.php');
 
 class Dispather {
-	public static $instance;
 	private $default_module;
 	private $default_action;
 
@@ -45,9 +44,9 @@ class Dispather {
 		return $controller;
 	}
 
-	public static function dispath($router) {
+	public function dispath($router) {
 		$method=$router->action;
-		$controller=self::$instance->getController($router->module, $method);
+		$controller=$this->getController($router->module, $method);
 		$controller->initialize($router->request,$router->reponse);
 		$controller->$method();
 	}

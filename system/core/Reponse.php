@@ -14,6 +14,10 @@ class Reponse {
 		echo $content;
 	}
 
+	public function location($url) {
+		header('Location: '.$contentType);
+	}
+
 	public function htmlLocation($url) {
 		echo '
 		<!DOCTYPE html>
