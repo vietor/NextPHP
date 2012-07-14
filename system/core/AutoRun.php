@@ -104,6 +104,12 @@ class Loader {
 		self::requireTool('WebRequest');
 		return new WebRequest;
 	}
+	
+	public static function loadSmarty() {
+		if(!class_exists('Smarty'))
+			require_once(BASEPATH.'system/libs/Smarty/Smarty.class.php');
+		return new Smarty;
+	}
 }
 
 AutoRun::execute();

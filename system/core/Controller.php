@@ -22,9 +22,10 @@ class Controller {
 	}
 
 	public function loadView($name) {
-		if(!class_exists($name))
-			require_once(BASEPATH.'application/view/'.$name.'.php');
-		return new $name();
+		$filename=BASEPATH.'application/view/'.$name.'.tpl';
+		if(!file_exists($filename))
+			return false;
+		return new View($filename);
 	}
 }
 ?>
