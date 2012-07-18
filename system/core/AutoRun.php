@@ -31,6 +31,8 @@ class Loader {
 	private static $tables=array();
 
 	private static function getObject($key){
+		if(!isset(self::$tables[$key]))
+			return false;
 		return self::$tables[$key];
 	}
 
@@ -94,7 +96,7 @@ class Loader {
 			self::requireTool($name);
 			$config=Config::getConfig('unique');
 
-			$object=new UniqueKey($config['secret']);
+			$object=new UniqueKey($config['mode'],$config['secret']);
 			self::setObject($name, $object);
 		}
 		return $object;
@@ -104,7 +106,7 @@ class Loader {
 		self::requireTool('WebRequest');
 		return new WebRequest;
 	}
-	
+
 	public static function loadSmarty() {
 		if(!class_exists('Smarty'))
 			require_once(BASEPATH.'system/libs/Smarty/Smarty.class.php');
