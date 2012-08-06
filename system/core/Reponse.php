@@ -26,7 +26,7 @@ class Reponse {
 		<title>Launching...</title>
 		</head>
 		<script type="text/javascript">
-		window.location = "'.$url.'";
+		window.location.href = "'.$url.'";
 		</script>
 		<body style="text-align: center; font-family: Arial, sans-serif;">Launching...</body>
 		</html>';
