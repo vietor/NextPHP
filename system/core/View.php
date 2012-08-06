@@ -5,6 +5,9 @@ class View {
 
 	public function __construct($template) {
 		$this->smarty=Loader::loadSmarty();
+		$this->smarty->template_dir = BASEPATH."application/view/";
+		$this->smarty->compile_dir = BASEPATH."temporary/smartry/templates_c/";
+		$this->smarty->cache_dir = BASEPATH."temporary/smartry/cache/";
 		$this->template=$template;
 	}
 

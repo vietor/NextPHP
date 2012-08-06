@@ -1,5 +1,6 @@
 <?php
 require_once('Model.php');
+require_once('View.php');
 
 class Controller {
 	protected $request;
@@ -22,10 +23,10 @@ class Controller {
 	}
 
 	public function loadView($name) {
-		$filename=BASEPATH.'application/view/'.$name.'.tpl';
+		$filename=BASEPATH.'application/view/'.$name;
 		if(!file_exists($filename))
 			return false;
-		return new View($filename);
+		return new View($name);
 	}
 }
 ?>

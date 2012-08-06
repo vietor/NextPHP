@@ -10,8 +10,13 @@ class Request {
 		return $_SERVER ['REQUEST_METHOD'];
 	}
 
-	public function hasParam($key) {
-		return isset($this->params[$key]) && !empty($this->params[$key]);
+	public function hasParam($key, $minLen=0) {
+		$result=false;
+		if(isset($this->params[$key]) && !empty($this->params[$key])) {
+			if($minLen<1 || strlen($this->params[$key])>=$minLen)
+				$result=true;
+		}
+		return $result;
 	}
 
 	public function getParam($key) {

@@ -8,7 +8,7 @@ class Config {
 		$_CONFIG=array();
 		// router
 		$config=array();
-		$config['type']='GET'; // support = URL GET POST MIXd
+		$config['type']='PARAM'; // support = URL PARAM
 		$config['key_module']='module';
 		$config['key_action']='action';
 		$config['default_module']='Controller';
@@ -41,9 +41,15 @@ class Config {
 		$config['host']='localhost';
 		$config['port']=11211;
 		$_CONFIG['cache']=$config;
+		// system
+		$config=array();
+		$config['time_zone']='UTC';
+		$_CONFIG['system']=$config;
 		// read custom config
 		include_once(BASEPATH.'application/config.php');
 		$this->configs=$_CONFIG;
+
+		date_default_timezone_set($_CONFIG['system']['time_zone']);
 	}
 
 	public static function getConfig($key) {

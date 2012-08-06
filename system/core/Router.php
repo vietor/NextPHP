@@ -47,20 +47,6 @@ class Router {
 			unset($paths);
 			$params=array_merge($params,$_POST);
 		}
-		else if($type=='GET') {
-			$this->module=$_GET[$key_module];
-			$this->action=$_GET[$key_action];
-			unset($_GET[$key_module]);
-			unset($_GET[$key_action]);
-			$params=array_merge($_GET,$_POST);
-		}
-		else if($type=='POST') {
-			$this->module=$_POST[$key_module];
-			$this->action=$_POST[$key_action];
-			unset($_POST[$key_module]);
-			unset($_POST[$key_action]);
-			$params=array_merge($_GET,$_POST);
-		}
 		else {
 			$params=array_merge($_GET,$_POST);
 			$this->module=$params[$key_module];
