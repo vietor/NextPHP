@@ -2,7 +2,7 @@
 require_once('Config.php');
 require_once('Dispather.php');
 
-class AutoRun {
+class Bootstrap {
 	public function __construct() {
 		set_exception_handler(array($this, 'handleException'));
 	}
