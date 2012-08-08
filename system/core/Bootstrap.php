@@ -2,117 +2,83 @@
 require_once('Config.php');
 require_once('Dispather.php');
 
+class UndefinedException extends Exception {
+	public function __construct($message='', $code=0) {
+		parent::__construct($message, $code);
+	}
+}
+
 class Bootstrap {
-	public function __construct() {
+	private $dispather;
+
+	private function __construct() {
+		$this->dispather=new Dispather();
 		set_exception_handler(array($this, 'handleException'));
 	}
 
 	public function handleException(Exception $e) {
-		error_log($e->getMessage());
-		header('HTTP/1.1 503 Service Temporarily Unavailable');
-		header('Status: 503 Service Temporarily Unavailable');
+		if($e instanceof UndefinedException) {
+			error_log($e->getMessage());
+			header("HTTP/1.1 404 Not Found");
+			header("Status: 404 Not Found");
+		}
+		else{
+			error_log($e->getMessage().' '.$e->getTraceAsString());
+			header('HTTP/1.1 503 Service Temporarily Unavailable');
+			header('Status: 503 Service Temporarily Unavailable');
+		}
+		die();
+	}
+
+	private function handleRequest() {
+		if (get_magic_quotes_gpc ()) {
+			$in = array (&$_GET, &$_POST, &$_COOKIE, &$_FILES );
+			while ( (list ( $k, $v ) = each ( $in )) !== false ) {
+				foreach ( $v as $key => $val ) {
+					if (! is_array ( $val )) {
+						$in [$k] [$key] = stripslashes ( $val );
+						continue;
+					}
+					$in [] = & $in [$k] [$key];
+				}
+			}
+			unset ( $in );
+		}
+
+		if(!isset($_GET['url']) || empty($_GET['url']))
+			throw new UndefinedException('No found parameter: url');
+		$urlArray = array();
+		$urlArray = explode('/',$_GET['url']);
+		unset($_GET['url']);
+		if(count($urlArray)<2)
+			throw new UndefinedException('Bad parameter size: url');
+
+		$module=$urlArray[0];
+		$action=$urlArray[1];
+		$key=null;
+		$params=array();
+		for($i=2;$i<count($urlArray);++$i) {
+			if(empty($urlArray[$i]))
+				continue;
+			if(is_null($key))
+				$key=$urlArray[$i];
+			else {
+				$params[$key]=$urlArray[$i];
+				$key=null;
+			}
+		}
+		unset($urlArray);
+		$this->dispather->dispath($module,$action,array_merge($params,$_POST));
 	}
 
 	private static $instance=null;
-	private static $dispather=null;
 
 	public static function execute() {
-		if(is_null(self::$instance)) {
-			self::$instance=new AutoRun();
-
-			Config::$instance=new Config();
-			self::$dispather=new Dispather();
-		}
-		self::$dispather->dispath(Router::getRouter());
+		if(is_null(self::$instance))
+			self::$instance=new Bootstrap();
+		self::$instance->handleRequest();
 	}
 }
 
-class Loader {
-	private static $tables=array();
-
-	private static function getObject($key){
-		if(!isset(self::$tables[$key]))
-			return false;
-		return self::$tables[$key];
-	}
-
-	private static function setObject($key, $object){
-		self::$tables[$key]=$object;
-	}
-
-	public static function loadCache(){
-		$config=Config::getConfig('cache');
-		$type=$config['type'];
-
-		if($type=='redis') {
-			if(!class_exists('CcRedis'))
-				require_once(BASEPATH.'system/libs/Cache/CcRedis.php');
-			return CcRedis::getInstance($config['host'], $config['port']);
-		}
-		else if($type=='memcache') {
-			if(!class_exists('CcMemcache'))
-				require_once(BASEPATH.'system/libs/Cache/CcMemcache.php');
-			return CcMemcache::getInstance($config['host'], $config['port']);
-		}
-		else if($type=='memcached') {
-			if(!class_exists('CcMemcached'))
-				require_once(BASEPATH.'system/libs/Cache/CcMemcached.php');
-			return CcMemcached::getInstance($config['host'], $config['port']);
-		}
-		else
-			throw new Exception('Unsupport cache type {'.$type.'}');
-	}
-
-	public static function loadDatabase(){
-		if(!class_exists('DbConnection'))
-			require_once(BASEPATH.'system/libs/Database/DbConnection.php');
-
-		$config=Config::getConfig('database');
-		$type=$config['type'];
-
-		if($type=='mysql')
-			$dsn='mysql:dbname='.$config['dbname'].';host='.$config['host'].';port='.$config['port'].';charset='.$config['charset'];
-		else if($type=='pgsql')
-			$dsn='pgsql:dbname='.$config['dbname'].';host='.$config['host'].';port='.$config['port'].';charset='.$config['charset'];
-		else
-			throw new Exception('Unsupport database type {'.$config['type'].'}');
-
-		return new DbConnection($dsn,$config['user'],$config['passwd']);
-	}
-
-	private static function requireTool($name){
-		if(!class_exists($name)) {
-			$file=BASEPATH.'system/libs/Tools/'.$name.'.php';
-			if(!file_exists($file))
-				throw new Exception('Unsupport tool type {'.$name.'}');
-			require_once($file);
-		}
-	}
-
-	public static function loadUniqueKey() {
-		$name='UniqueKey';
-		$object = self::getObject($name);
-		if(!$object) {
-			self::requireTool($name);
-			$config=Config::getConfig('unique');
-
-			$object=new UniqueKey($config['mode'],$config['secret']);
-			self::setObject($name, $object);
-		}
-		return $object;
-	}
-
-	public static function loadWebRequest(){
-		self::requireTool('WebRequest');
-		return new WebRequest;
-	}
-
-	public static function loadSmarty() {
-		if(!class_exists('Smarty'))
-			require_once(BASEPATH.'system/libs/Smarty/Smarty.class.php');
-		return new Smarty;
-	}
-}
-
-AutoRun::execute();
+Bootstrap::execute();
 ?>

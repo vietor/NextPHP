@@ -1,19 +1,9 @@
 <?php
 class Config {
-	public static $instance;
-
 	private $configs;
 
 	public function __construct() {
 		$_CONFIG=array();
-		// router
-		$config=array();
-		$config['type']='PARAM'; // support = URL PARAM
-		$config['key_module']='module';
-		$config['key_action']='action';
-		$config['default_module']='Controller';
-		$config['default_action']='undefined';
-		$_CONFIG['router']=$config;
 		// cookie
 		$config=array();
 		$config['domain']=$_SERVER['SERVER_NAME'];
@@ -46,10 +36,20 @@ class Config {
 		$config['time_zone']='UTC';
 		$_CONFIG['system']=$config;
 		// read custom config
-		include_once(BASEPATH.'application/config.php');
+		$custom_file=BASEPATH.'application/config.php';
+		if(file_exists($custom_file))
+			include_once($custom_file);
 		$this->configs=$_CONFIG;
 
 		date_default_timezone_set($_CONFIG['system']['time_zone']);
+	}
+
+	private static $instance;
+
+	public static function execute() {
+		if(is_null(self::$instance))
+			self::$instance=new Config();
+		require_once('Loader.php');
 	}
 
 	public static function getConfig($key) {
@@ -58,4 +58,6 @@ class Config {
 		return self::$instance->configs[$key];
 	}
 }
+
+Config::execute();
 ?>
