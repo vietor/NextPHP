@@ -71,7 +71,7 @@ class Bootstrap {
 			}
 		}
 		unset($urlArray);
-		$this->dispather->dispath($module,$action,array_merge($params,$_POST));
+		$this->dispather->dispath($module,$action,array_merge($params,$_GET,$_POST));
 	}
 
 	private static $instance=null;
