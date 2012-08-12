@@ -1,0 +1,4 @@
+location / {
+	rewrite ^/$ /public/ last;
+	rewrite ^(.*)$ /public/$1 last;
+}

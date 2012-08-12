@@ -47,11 +47,14 @@ class Bootstrap {
 
 		if(!isset($_GET['url']) || empty($_GET['url']))
 			throw new UndefinedException('No found parameter: url');
+		$url=$_GET['url'];
+		if(substr($url,0,1)=='/')
+			$url=substr($url,1);
 		$urlArray = array();
-		$urlArray = explode('/',$_GET['url']);
-		unset($_GET['url']);
+		$urlArray = explode('/',$url);
 		if(count($urlArray)<2)
 			throw new UndefinedException('Bad parameter size: url');
+		unset($_GET['url']);
 
 		$module=$urlArray[0];
 		$action=$urlArray[1];
