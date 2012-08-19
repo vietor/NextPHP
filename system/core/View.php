@@ -15,6 +15,10 @@ class View {
 		$this->smarty->assign($name,$value);
 	}
 
+	public function fetch() {
+		return $this->smarty->fetch($this->template);
+	}
+
 	public function display() {
 		$this->smarty->display($this->template);
 	}

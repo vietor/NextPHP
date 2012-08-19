@@ -3,45 +3,56 @@ class Config {
 	private $configs;
 
 	public function __construct() {
-		$_CONFIG=array();
+		$_CONFIG=new stdClass;
 		// cookie
-		$config=array();
-		$config['domain']=$_SERVER['SERVER_NAME'];
-		$config['path']='/';
-		$config['expire']=14; //day
-		$_CONFIG['cookie']=$config;
+		$config=new stdClass;
+		$config->domain     = $_SERVER['SERVER_NAME'];
+		$config->path       = '/';
+		$config->expire     = 14; //day
+		$_CONFIG->cookie=$config;
 		// unique
-		$config=array();
-		$config['mode']='aes'; // suport = aes, 3des
-		$config['secret']='b5ee4d5b4f59451431081b0246c57c7b'; // length aes=>32, 3des=>16
-		$_CONFIG['unique']=$config;
+		$config=new stdClass;
+		$config->mode       = 'aes'; // as: aes(32), 3des(16)
+		$config->secret     = 'b5ee4d5b4f59451431081b0246c57c7b';
+		$_CONFIG->unique=$config;
 		// database
-		$config=array();
-		$config['type']='mysql';
-		$config['host']='localhost';
-		$config['port']=3306;
-		$config['user']='root';
-		$config['passwd']='';
-		$config['dbname']='mysql';
-		$config['charset']='utf8';
-		$_CONFIG['database']=$config;
+		$config=new stdClass;
+		$config->type       = 'mysql';
+		$config->host       = 'localhost';
+		$config->port       = 3306;
+		$config->user       = 'root';
+		$config->passwd     = '';
+		$config->dbname     = 'mysql';
+		$config->charset    = 'utf8';
+		$_CONFIG->database=$config;
 		// cache
-		$config=array();
-		$config['type']='memcache';
-		$config['host']='localhost';
-		$config['port']=11211;
-		$_CONFIG['cache']=$config;
+		$config=new stdClass;
+		$config->type       = 'memcache';
+		$config->host       = 'localhost';
+		$config->port       = 11211;
+		$_CONFIG->cache=$config;
+		// mailer
+		$config=new stdClass;
+		$config->SMTPAuth   = true;
+		$config->SMTPSecure = 'ssl';
+		$config->Host       = 'smtp.gmail.com';
+		$config->Port       = 465;
+		$config->Username   = 'yourusername@gmail.com';
+		$config->Password   = 'yourpassword';
+		$config->FromName   = 'First Last';
+		$config->FromAddress = 'name@yourdomain.com';
+		$_CONFIG->mailer=$config;
 		// system
-		$config=array();
-		$config['time_zone']='UTC';
-		$_CONFIG['system']=$config;
+		$config=new stdClass;
+		$config->timeZone   = 'UTC';
+		$_CONFIG->system    = $config;
 		// read custom config
 		$custom_file=BASEPATH.'application/config.php';
 		if(file_exists($custom_file))
 			include_once($custom_file);
 		$this->configs=$_CONFIG;
 
-		date_default_timezone_set($_CONFIG['system']['time_zone']);
+		date_default_timezone_set($_CONFIG->system->timeZone);
 	}
 
 	private static $instance;
@@ -53,9 +64,9 @@ class Config {
 	}
 
 	public static function getConfig($key) {
-		if(!isset(self::$instance->configs[$key]))
-			return false;
-		return self::$instance->configs[$key];
+		if(!property_exists(self::$instance->configs,$key))
+			throw new Exception('Not found config item:'.$key);
+		return self::$instance->configs->$key;
 	}
 }
 
