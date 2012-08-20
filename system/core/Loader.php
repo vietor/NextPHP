@@ -104,5 +104,10 @@ class Loader {
 		}
 		return $mail->Send();
 	}
+	
+	public static function loadEasyCrypto($type){
+		self::requireTool('EasyCrypto');
+		return new EasyCrypto($type);
+	}
 }
 ?>
