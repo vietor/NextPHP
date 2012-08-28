@@ -63,7 +63,7 @@ class Loader {
 		if(!$object) {
 			self::requireTool($name);
 			$config=Config::getConfig('unique');
-			$object=new UniqueKey($config->mode,$config->secret);
+			$object=new UniqueKey($config->mode,$config->secret,$config->expire);
 			self::setObject($name, $object);
 		}
 		return $object;

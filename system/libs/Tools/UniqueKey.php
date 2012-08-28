@@ -4,13 +4,17 @@ require_once('EasyCrypto.php');
 class UniqueKey {
 	private $crypto;
 	private $secret;
+	private $expire;
 
-	public function __construct($mode,$password) {
+	public function __construct($mode,$password,$expire) {
 		$this->crypto=new EasyCrypto($mode);
 		$this->secret=$password;
+		$this->expire=$expire;
 	}
 
 	public function generate($id, $expire=0) {
+		if($expire==0)
+			$expire=$this->expire;
 		$obj = new stdClass;
 		$obj->id = $id;
 		$obj->expire = $expire>0?time()+$expire:0;
