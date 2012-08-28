@@ -3,6 +3,11 @@ require_once('Cache.php');
 
 class CcMemcache implements Cache {
 	private $cache;
+	private $prefix;
+
+	public function __construct($prefix) {
+		$this->prefix=$prefix;
+	}
 
 	public function __destruct() {
 		if(!is_null($this->cache)) {
@@ -17,21 +22,21 @@ class CcMemcache implements Cache {
 	}
 
 	public function get($key) {
-		return $this->cache->get($key);
+		return $this->cache->get($this->prefix.$key);
 	}
 
 	public function set($key,$value,$timeout=0) {
 		if($timeout==0)
-			return $this->cache->set($key, $value);
-		return $this->cache->set($key, $value, 0, $timeout);
+			return $this->cache->set($this->prefix.$key, $value);
+		return $this->cache->set($this->prefix.$key, $value, 0, $timeout);
 	}
 
 	public function delete($key) {
-		return $this->cache->delete($key);
+		return $this->cache->delete($this->prefix.$key);
 	}
 
-	public static function getInstance($host, $port) {
-		$instance=new CcMemcache();
+	public static function getInstance($host, $port, $prefix) {
+		$instance=new CcMemcache($prefix);
 		if(!$instance->connect($host, $port))
 			throw new Exception('Memcached cannot connect');
 		return $instance;

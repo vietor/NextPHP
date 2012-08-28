@@ -30,6 +30,7 @@ class Config {
 		$config->type       = 'memcache';
 		$config->host       = 'localhost';
 		$config->port       = 11211;
+		$config->prefix     = '';
 		$_CONFIG->cache=$config;
 		// mailer
 		$config=new stdClass;
