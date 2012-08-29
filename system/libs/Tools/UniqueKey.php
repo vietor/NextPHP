@@ -19,7 +19,7 @@ class UniqueKey {
 		$obj->id = $id;
 		$obj->expire = $expire>0?time()+$expire:0;
 		$obj->uniqueid = mt_rand(0, 65535).uniqid();
-		$this->crypto->encrypt($this->secret,json_encode($obj));
+		return $this->crypto->encrypt($this->secret,json_encode($obj));
 	}
 
 	public function validate($key) {
