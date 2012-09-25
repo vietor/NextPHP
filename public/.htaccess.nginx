@@ -1,5 +1,0 @@
-location /public/ {
-	if (!-e $request_filename) {
-		rewrite ^/public/(.*)$ /public/index.php?url=$1 last;
-	}
-}
