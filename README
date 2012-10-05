@@ -1,10 +1,21 @@
 NonePHP - A Anthoer PHP Framework
 
-1. rewrite setting demo
+1. install
 
-1.1 apache
+chmod 666 temporary
 
-1.1.1 .conf file
+2. depends
+
+php-pdo
+php-mcrypt
+php-mysql or php-pgsql
+php-pecl-memcache or php-pecl-memcache or php-redis(https://github.com/nicolasff/phpredis)
+
+3. rewrite setting demo
+
+3.1 apache
+
+3.1.1 .conf file
 
 <Directory "/var/www/html">
     Order allow,deny
@@ -25,15 +36,15 @@ NonePHP - A Anthoer PHP Framework
 	RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
 </Directory>
 
-1.1.2 .htaccess file
+3.1.2 .htaccess file
 
-1.1.2.1 directory /
+3.1.2.1 directory /
 
 RewriteEngine on
 RewriteRule ^$      public/    [L]
 RewriteRule (.*)    public/$1  [L]
 
-1.1.2.2 directory /public/
+3.1.2.2 directory /public/
 
 RewriteEngine on
 RewriteBase /public/
@@ -41,7 +52,7 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
 
-1.2 nginx
+3.2 nginx
 
 server {
     listen       80;
@@ -60,3 +71,4 @@ server {
 		}
 	}
 }
+
