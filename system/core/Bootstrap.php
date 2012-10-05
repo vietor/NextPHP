@@ -54,7 +54,7 @@ class Bootstrap {
 		$urlArray = explode('/',$url);
 		if(count($urlArray)<2)
 			throw new UndefinedException('Bad parameter size: url');
-		unset($_GET['url']);
+		unset($url, $_GET['url']);
 
 		$module=$urlArray[0];
 		$action=$urlArray[1];

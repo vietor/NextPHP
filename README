@@ -20,7 +20,7 @@ php-pecl-memcache or php-pecl-memcache or php-redis(https://github.com/nicolasff
 <Directory "/var/www/html">
     Order allow,deny
     Allow from all
-    Options FollowSymLinks    
+    Options FollowSymLinks
     RewriteEngine on
 	RewriteRule ^$      public/    [L]
 	RewriteRule (.*)    public/$1  [L]
@@ -28,7 +28,7 @@ php-pecl-memcache or php-pecl-memcache or php-redis(https://github.com/nicolasff
 <Directory "/var/www/html/public">
     Order allow,deny
     Allow from all
-    Options FollowSymLinks    
+    Options FollowSymLinks
     RewriteEngine on
 	RewriteBase /public/
 	RewriteCond %{REQUEST_FILENAME} !-f
