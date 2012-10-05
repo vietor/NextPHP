@@ -76,5 +76,5 @@ server {
 4. export archive file
 
 zip -r content.zip application public -x public/index.php
-zip -r framework.zip system
+zip -r framework.zip system public/index.php
 
