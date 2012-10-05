@@ -2,7 +2,8 @@ NonePHP - A Anthoer PHP Framework
 
 1. install
 
-chmod 666 temporary
+mkdir -p temporary
+chmod 777 temporary
 
 2. depends
 
@@ -71,4 +72,9 @@ server {
 		}
 	}
 }
+
+4. export archive file
+
+zip -r content.zip application public -x public/index.php
+zip -r framework.zip system
 
