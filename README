@@ -1,0 +1,62 @@
+NonePHP - A Anthoer PHP Framework
+
+1. rewrite setting demo
+
+1.1 apache
+
+1.1.1 .conf file
+
+<Directory "/var/www/html">
+    Order allow,deny
+    Allow from all
+    Options FollowSymLinks    
+    RewriteEngine on
+	RewriteRule ^$      public/    [L]
+	RewriteRule (.*)    public/$1  [L]
+</Directory>
+<Directory "/var/www/html/public">
+    Order allow,deny
+    Allow from all
+    Options FollowSymLinks    
+    RewriteEngine on
+	RewriteBase /public/
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+</Directory>
+
+1.1.2 .htaccess file
+
+1.1.2.1 directory /
+
+RewriteEngine on
+RewriteRule ^$      public/    [L]
+RewriteRule (.*)    public/$1  [L]
+
+1.1.2.2 directory /public/
+
+RewriteEngine on
+RewriteBase /public/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+
+1.2 nginx
+
+server {
+    listen       80;
+    server_name  someone;
+    
+	root   /var/www;
+    index  index.html index.htm index.php;
+
+    location / {
+		rewrite ^/$ /public/ last;
+		rewrite ^(.*)$ /public/$1 last;
+	}
+	location /public/ {
+		if (!-e $request_filename) {
+			rewrite ^/public/(.*)$ /public/index.php?url=$1 last;
+		}
+	}
+}
