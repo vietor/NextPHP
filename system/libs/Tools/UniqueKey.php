@@ -12,11 +12,11 @@ class UniqueKey {
 		$this->expire=$expire;
 	}
 
-	public function generate($id, $bind='', $expire=0) {
+	public function generate($data, $bind='', $expire=0) {
 		if($expire==0)
 			$expire=$this->expire;
 		$obj = new stdClass;
-		$obj->id = $id;
+		$obj->data = $data;
 		$obj->bind = $bind;
 		$obj->expire = $expire>0?time()+$expire:0;
 		$obj->uniqueid = mt_rand(0, 65535).uniqid();
@@ -31,7 +31,7 @@ class UniqueKey {
 			return false;
 		if($obj->expire>0 && time()>$obj->expire)
 			return false;
-		return $obj->id;
+		return $obj->data;
 	}
 }
 ?>
