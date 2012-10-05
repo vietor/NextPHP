@@ -18,7 +18,6 @@ class Bootstrap {
 
 	public function handleException(Exception $e) {
 		if($e instanceof UndefinedException) {
-			error_log($e->getMessage());
 			header("HTTP/1.1 404 Not Found");
 			header("Status: 404 Not Found");
 		}
