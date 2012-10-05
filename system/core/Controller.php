@@ -17,8 +17,8 @@ class Controller {
 	}
 
 	public function loadModel($name) {
-		if(!class_exists($name))
-			require_once(BASEPATH.'application/model/'.$name.'.php');
+		class_exists($name)
+			or require(BASEPATH.'application/model/'.$name.'.php');
 		return new $name();
 	}
 

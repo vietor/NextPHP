@@ -14,36 +14,30 @@ class Loader {
 
 	public static function loadCache(){
 		$config=Config::getConfig('cache');
-		if($config->type=='redis') {
-			if(!class_exists('CcRedis'))
-				require_once(BASEPATH.'system/libs/Cache/CcRedis.php');
-			return CcRedis::getInstance($config->host, $config->port, $config->prefix);
-		}
-		else if($config->type=='memcache') {
-			if(!class_exists('CcMemcache'))
-				require_once(BASEPATH.'system/libs/Cache/CcMemcache.php');
-			return CcMemcache::getInstance($config->host, $config->port, $config->prefix);
-		}
-		else if($config->type=='memcached') {
-			if(!class_exists('CcMemcached'))
-				require_once(BASEPATH.'system/libs/Cache/CcMemcached.php');
-			return CcMemcached::getInstance($config->host, $config->port, $config->prefix);
-		}
+		if($config->type=='redis')
+			$className='CcRedis';
+		else if($config->type=='memcache')
+			$className='CcMemcache';
+		else if($config->type=='memcached')
+			$className='CcMemcached';
 		else
 			throw new Exception('Unsupport cache type {'.$config->type.'}');
+
+		class_exists($className)
+			or require(BASEPATH.'system/libs/Cache/'.$className.'.php');
+		return call_user_func_array(array($className,'getInstance'), array($config->host, $config->port, $config->prefix));
 	}
 
 	public static function loadDatabase(){
-		if(!class_exists('DbConnection'))
-			require_once(BASEPATH.'system/libs/Database/DbConnection.php');
-
+		static $supported=array('mysql','pgsql');
+		
+		class_exists('DbConnection')
+			or require(BASEPATH.'system/libs/Database/DbConnection.php');
+		
 		$config=Config::getConfig('database');
-		if($config->type=='mysql')
-			$dsn='mysql:dbname='.$config->dbname.';host='.$config->host.';port='.$config->port.';charset='.$config->charset;
-		else if($config->type=='pgsql')
-			$dsn='pgsql:dbname='.$config->dbname.';host='.$config->host.';port='.$config->port.';charset='.$config->charset;
-		else
+		if(!in_array($config->type, $supported))
 			throw new Exception('Unsupport database type {'.$config['type'].'}');
+		$dsn=$config->type.':dbname='.$config->dbname.';host='.$config->host.';port='.$config->port.';charset='.$config->charset;
 
 		return new DbConnection($dsn,$config->user,$config->passwd);
 	}
@@ -53,7 +47,7 @@ class Loader {
 			$file=BASEPATH.'system/libs/Tools/'.$name.'.php';
 			if(!file_exists($file))
 				throw new Exception('Unsupport tool type {'.$name.'}');
-			require_once($file);
+			require($file);
 		}
 	}
 
@@ -73,16 +67,21 @@ class Loader {
 		self::requireTool('WebRequest');
 		return new WebRequest;
 	}
+	
+	public static function loadEasyCrypto($type){
+		self::requireTool('EasyCrypto');
+		return new EasyCrypto($type);
+	}
 
 	public static function loadSmarty() {
-		if(!class_exists('Smarty'))
-			require_once(BASEPATH.'system/libs/Smarty/Smarty.class.php');
+		class_exists('Smarty')
+			or require(BASEPATH.'system/libs/Smarty/Smarty.class.php');
 		return new Smarty;
 	}
 
 	public static function Mail($toName, $toAddress, $subject, $body, $html=null) {
-		if(!class_exists('PHPMailer'))
-			require_once(BASEPATH.'system/libs/Mailer/class.phpmailer.php');
+		class_exists('PHPMailer')
+			or require(BASEPATH.'system/libs/Mailer/class.phpmailer.php');
 		$config=Config::getConfig('mailer');
 		$mail=new PHPMailer();
 		$mail->IsSMTP();
@@ -103,11 +102,6 @@ class Loader {
 			$mail->MsgHTML($html);
 		}
 		return $mail->Send();
-	}
-
-	public static function loadEasyCrypto($type){
-		self::requireTool('EasyCrypto');
-		return new EasyCrypto($type);
 	}
 }
 ?>
