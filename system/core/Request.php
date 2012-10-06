@@ -36,5 +36,15 @@ class Request {
 			return false;
 		return move_uploaded_file($_FILES[$key], $filename);
 	}
+
+	public function getClientIp(){
+		if (!empty($_SERVER['HTTP_CLIENT_IP']))
+			$ip=$_SERVER['HTTP_CLIENT_IP'];
+		else if (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
+			$ip=$_SERVER['HTTP_X_FORWARDED_FOR'];
+		else
+			$ip=$_SERVER['REMOTE_ADDR'];
+		return $ip;
+	}
 }
 ?>
