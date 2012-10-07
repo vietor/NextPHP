@@ -10,6 +10,10 @@ class Controller {
 		$this->request=$request;
 		$this->reponse=$reponse;
 	}
+	
+	public function exitProcess() {
+		throw new PeacefulException();
+	}
 
 	public function loadModel($name) {
 		class_exists($name)
