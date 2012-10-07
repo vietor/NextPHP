@@ -11,11 +11,6 @@ class Controller {
 		$this->reponse=$reponse;
 	}
 
-	public function undefined() {
-		header("HTTP/1.1 404 Not Found");
-		header("Status: 404 Not Found");
-	}
-
 	public function loadModel($name) {
 		class_exists($name)
 			or require(BASEPATH.'application/model/'.$name.'.php');
