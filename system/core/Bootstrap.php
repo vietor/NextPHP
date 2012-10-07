@@ -8,6 +8,9 @@ class UndefinedException extends Exception {
 	}
 }
 
+class PeacefulException extends Exception {
+}
+
 class Bootstrap {
 	private $dispather;
 
@@ -17,7 +20,9 @@ class Bootstrap {
 	}
 
 	public function handleException(Exception $e) {
-		if($e instanceof UndefinedException) {
+		if($e instanceof PeacefulException)
+			;
+		else if($e instanceof UndefinedException) {
 			error_log($e->getMessage());
 			header("HTTP/1.1 404 Not Found");
 			header("Status: 404 Not Found");
@@ -27,7 +32,7 @@ class Bootstrap {
 			header('HTTP/1.1 503 Service Temporarily Unavailable');
 			header('Status: 503 Service Temporarily Unavailable');
 		}
-		die();
+		exit();
 	}
 
 	private function handleRequest() {
