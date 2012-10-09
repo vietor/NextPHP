@@ -1,7 +1,7 @@
 <?php
-require_once('Cache.php');
+require_once('NpCache.php');
 
-class CcMemcached implements Cache {
+class NpMemcached implements NpCache {
 	private $cache;
 	private $prefix;
 
@@ -33,7 +33,7 @@ class CcMemcached implements Cache {
 	public static function getInstance($host, $port, $prefix) {
 		if(!is_null(self::$instance))
 			return self::$instance;
-		$instance=new CcMemcached($prefix);
+		$instance=new NpMemcached($prefix);
 		if(!$instance->connect($host, $port))
 			throw new Exception('Memcached cannot connect');
 		else

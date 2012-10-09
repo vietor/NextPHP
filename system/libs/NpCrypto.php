@@ -1,5 +1,5 @@
 <?php
-class EasyCrypto{
+class NpCrypto{
 	private static $cryptoSupport=array(
 			'aes'=>array(
 					'cipher'=>MCRYPT_RIJNDAEL_256,

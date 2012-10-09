@@ -1,8 +1,8 @@
 <?php
 
-class WebRequest
+class NpWebRequest
 {
-	protected $s;
+	private $s;
 	
 	function __construct()
 	{

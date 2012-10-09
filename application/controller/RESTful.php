@@ -1,5 +1,5 @@
 <?php
-class RESTful extends Controller {
+class RESTful extends NpController {
 	private static $errorMessage = array(
 			100001 => 'Some parameter is missing or bad length',
 			100002 => 'Perharps Database or Memcache has wrong',

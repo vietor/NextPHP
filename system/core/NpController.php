@@ -1,8 +1,8 @@
 <?php
-require_once('Model.php');
-require_once('View.php');
+require_once('NpModel.php');
+require_once('NpView.php');
 
-class Controller {
+class NpController {
 	protected $request;
 	protected $reponse;
 
@@ -12,12 +12,12 @@ class Controller {
 	}
 	
 	public function exitProcess() {
-		throw new PeacefulException();
+		throw new NpPeacefulException();
 	}
 
 	public function loadModel($name) {
 		class_exists($name)
-			or require(BASEPATH.'application/model/'.$name.'.php');
+			or require_once(BASEPATH.'application/model/'.$name.'.php');
 		return new $name();
 	}
 
@@ -25,7 +25,7 @@ class Controller {
 		$filename=BASEPATH.'application/view/'.$name;
 		if(!file_exists($filename))
 			return false;
-		return new View($name);
+		return new NpView($name);
 	}
 }
 ?>

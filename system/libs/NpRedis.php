@@ -1,7 +1,7 @@
 <?php
-require_once('Cache.php');
+require_once('NpCache.php');
 
-class CcRedis implements Cache {
+class NpRedis implements NpCache {
 	private $cache;
 	private $prefix;
 
@@ -36,7 +36,7 @@ class CcRedis implements Cache {
 	}
 
 	public static function getInstance($host, $port, $prefix) {
-		$instance=new CcRedis($prefix);
+		$instance=new NpRedis($prefix);
 		if(!$instance->connect($host, $port))
 			throw new Exception('Redis cannot connect');
 		return $instance;

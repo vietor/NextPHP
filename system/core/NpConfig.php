@@ -1,5 +1,5 @@
 <?php
-class Config {
+class NpConfig {
 	private $configs;
 
 	public function __construct() {
@@ -51,7 +51,7 @@ class Config {
 		// read custom config
 		$custom_file=BASEPATH.'application/config.php';
 		if(file_exists($custom_file))
-			include_once($custom_file);
+			include($custom_file);
 		$this->configs=$_CONFIG;
 
 		date_default_timezone_set($_CONFIG->system->timeZone);
@@ -60,9 +60,10 @@ class Config {
 	private static $instance;
 
 	public static function execute() {
-		if(is_null(self::$instance))
-			self::$instance=new Config();
-		require_once('Loader.php');
+		if(is_null(self::$instance)) {
+			self::$instance=new NpConfig();
+			require_once('NpFactory.php');
+		}
 	}
 
 	public static function getConfig($key) {
@@ -71,6 +72,4 @@ class Config {
 		return self::$instance->configs->$key;
 	}
 }
-
-Config::execute();
 ?>

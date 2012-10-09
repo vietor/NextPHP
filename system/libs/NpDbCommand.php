@@ -1,7 +1,7 @@
 <?php
-require_once('DbDataReader.php');
+require_once('NpDbDataReader.php');
 
-class DbCommand {
+class NpDbCommand {
 	const VAR_INT=PDO::PARAM_INT;
 	const VAR_STR=PDO::PARAM_STR;
 	const VAR_BOOL=PDO::PARAM_BOOL;
@@ -94,7 +94,7 @@ class DbCommand {
 			$this->bindValues($variables);
 		$this->pdoStmt->execute();
 		if($method==='')
-			$result=new CDbDataReader($this->pdoStmt);
+			$result=new NpDbDataReader($this->pdoStmt);
 		else {
 			$mode=(array)$mode;
 			$result=call_user_func_array(array($this->pdoStmt, $method), $mode);

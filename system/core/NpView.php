@@ -1,10 +1,10 @@
 <?php
-class View {
+class NpView {
 	private $smarty;
 	private $template;
 
 	public function __construct($template) {
-		$this->smarty=Loader::loadSmarty();
+		$this->smarty=NpFactory::createSmarty();
 		$this->smarty->template_dir = BASEPATH."application/view/";
 		$this->smarty->compile_dir = BASEPATH."temporary/smarty/templates_c/";
 		$this->smarty->cache_dir = BASEPATH."temporary/smarty/cache/";

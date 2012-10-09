@@ -1,7 +1,7 @@
 <?php
-require_once('DbCommand.php');
+require_once('NpDbCommand.php');
 
-class DbConnection {
+class NpDbConnection {
 	private $pdo;
 
 	public function __construct($dsn='',$username='',$password='') {
@@ -29,11 +29,11 @@ class DbConnection {
 	}
 
 	public function command() {
-		return new DbCommand($this->pdo);
+		return new NpDbCommand($this->pdo);
 	}
 
 	public function prepare($statement) {
-		return new DbCommand($this->pdo, $statement);
+		return new NpDbCommand($this->pdo, $statement);
 	}
 }
 ?>

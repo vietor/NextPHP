@@ -1,5 +1,5 @@
 <?php
-class DbDataReader {
+class NpDbDataReader {
 	private $pdoStmt;
 
 	public function __construct($pdoStmt) {

@@ -1,5 +1,5 @@
 <?php
-class Request {
+class NpRequest {
 	private $params=array();
 
 	public function __construct($params) {

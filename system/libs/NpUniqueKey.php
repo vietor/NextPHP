@@ -1,13 +1,13 @@
 <?php
-require_once('EasyCrypto.php');
+require_once('NpCrypto.php');
 
-class UniqueKey {
+class NpUniqueKey {
 	private $crypto;
 	private $secret;
 	private $expire;
 
 	public function __construct($mode,$password,$expire) {
-		$this->crypto=new EasyCrypto($mode);
+		$this->crypto=new NpCrypto($mode);
 		$this->secret=$password;
 		$this->expire=$expire;
 	}
@@ -32,6 +32,15 @@ class UniqueKey {
 		if($obj->expire>0 && time()>$obj->expire)
 			return false;
 		return $obj->data;
+	}
+
+	private static $instance;
+
+	public static function getInstance($mode,$password,$expire) {
+		if(!is_null(self::$instance))
+			return self::$instance;
+		self::$instance=new NpUniqueKey($mode,$password,$expire);
+		return self::$instance;
 	}
 }
 ?>
