@@ -21,8 +21,9 @@ class NpBootstrap {
 
 	public function handleException(Exception $e) {
 		if($e instanceof NpUndefinedException) {
-			if(!empty($e->getMessage()))
-				error_log($e->getMessage());
+			$errorMessage=$e->getMessage();
+			if(!empty($errorMessage))
+				error_log($errorMessage);
 			header("HTTP/1.1 404 Not Found");
 			header("Status: 404 Not Found");
 		}
