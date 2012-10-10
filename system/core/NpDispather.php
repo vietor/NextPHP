@@ -6,7 +6,7 @@ require_once('NpController.php');
 class NpDispather {
 	public function dispath($module,$action,$params) {
 		if(!class_exists($module)) {
-			$module_file = BASEPATH."application/controller/".$module.".php";
+			$module_file = NP_BASEPATH."application/controller/".$module.".php";
 			if(file_exists($module_file))
 				require_once($module_file);
 			if(!class_exists($module))

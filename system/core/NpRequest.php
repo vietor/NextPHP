@@ -10,6 +10,20 @@ class NpRequest {
 		return $_SERVER ['REQUEST_METHOD'];
 	}
 
+	public function getUrlByHost($path='') {
+		return NP_BASEURL.$path;
+	}
+
+	public function getUrlByBackward($backward=1, $path='') {
+		$array=explode('/',$_SERVER['REQUEST_URI']);
+		$count=count($array);
+		$count-=min($count,$backward);
+		$url='';
+		for($i=0; $i<$count;++$i)
+			$url.=$array[$i].'/';
+		return NP_BASEURL.$url.$path;
+	}
+
 	public function hasParam($key, $minLen=0) {
 		$result=false;
 		if(isset($this->params[$key]) && !empty($this->params[$key])) {

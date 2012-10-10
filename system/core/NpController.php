@@ -17,12 +17,12 @@ class NpController {
 
 	public function loadModel($name) {
 		class_exists($name)
-			or require_once(BASEPATH.'application/model/'.$name.'.php');
+			or require_once(NP_BASEPATH.'application/model/'.$name.'.php');
 		return new $name();
 	}
 
 	public function loadView($name) {
-		$filename=BASEPATH.'application/view/'.$name.'php';
+		$filename=NP_BASEPATH.'application/view/'.$name.'php';
 		if(!file_exists($filename))
 			return false;
 		return new NpView($name);

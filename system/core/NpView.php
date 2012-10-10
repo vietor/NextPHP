@@ -14,9 +14,7 @@ class NpView {
 	public function fetch() {
 		ob_start();
 		include($this->template);
-		$message = ob_get_contents();
-		ob_end();
-		return $message;
+		return ob_get_clean();
 	}
 
 	public function display() {
