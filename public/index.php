@@ -1,5 +1,6 @@
 <?php
-define('BASEPATH', dirname(dirname(__FILE__)).'/');
+defined('BASEPATH')
+	or define('BASEPATH', dirname(dirname(__FILE__)).'/');
 
 class_exists("NpBootstrap") 
 	or require_once(BASEPATH.'system/core/NpBootstrap.php');

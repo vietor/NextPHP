@@ -20,14 +20,13 @@ class NpBootstrap {
 	}
 
 	public function handleException(Exception $e) {
-		if($e instanceof NpPeacefulException)
-			;
-		else if($e instanceof NpUndefinedException) {
-			error_log($e->getMessage());
+		if($e instanceof NpUndefinedException) {
+			if(!empty($e->getMessage()))
+				error_log($e->getMessage());
 			header("HTTP/1.1 404 Not Found");
 			header("Status: 404 Not Found");
 		}
-		else{
+		else if(!($e instanceof NpPeacefulException)) {
 			error_log($e->getMessage().' '.$e->getTraceAsString());
 			header('HTTP/1.1 503 Service Temporarily Unavailable');
 			header('Status: 503 Service Temporarily Unavailable');
@@ -51,14 +50,14 @@ class NpBootstrap {
 		}
 
 		if(!isset($_GET['url']) || empty($_GET['url']))
-			throw new NpUndefinedException('No found parameter: url');
+			throw new NpUndefinedException();
 		$url=$_GET['url'];
 		if(substr($url,0,1)=='/')
 			$url=substr($url,1);
 		$urlArray = array();
 		$urlArray = explode('/',$url);
 		if(count($urlArray)<2)
-			throw new NpUndefinedException('Bad parameter size: url');
+			throw new NpUndefinedException();
 		unset($url, $_GET['url']);
 
 		$module=$urlArray[0];
