@@ -58,9 +58,7 @@ RewriteRule (.*)    public/$1  [L]
 
 RewriteEngine on
 RewriteBase /public/
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+RewriteRule ^service/(.*)$ index.php?url=$1 [QSA,L]
 
 3.2 nginx
 
@@ -76,9 +74,7 @@ server {
 		rewrite ^(.*)$ /public/$1 last;
 	}
 	location /public/ {
-		if (!-e $request_filename) {
-			rewrite ^/public/(.*)$ /public/index.php?url=$1 last;
-		}
+		rewrite ^/public/service/(.*)$ /public/index.php?url=$1 last;
 	}
 }
 
