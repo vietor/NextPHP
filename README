@@ -2,8 +2,11 @@ NonePHP - A Anthoer PHP Framework
 
 1. install
 
-mkdir -p temporary
-chmod 777 temporary
+directory copy to target environment.
+
+export archive file example:
+zip -r content.zip application public -x public/index.php
+zip -r framework.zip system public/index.php
 
 2. depends
 
@@ -79,8 +82,4 @@ server {
 	}
 }
 
-4. export archive file
-
-zip -r content.zip application public -x public/index.php
-zip -r framework.zip system public/index.php
 

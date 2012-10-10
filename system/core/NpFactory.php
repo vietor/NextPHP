@@ -53,12 +53,6 @@ class NpFactory {
 		return self::newInstance('NpCrypto', array($type));
 	}
 
-	public static function createSmarty() {
-		class_exists('Smarty')
-			or require(BASEPATH.'system/libs/Smarty/Smarty.class.php');
-		return new Smarty;
-	}
-
 	public static function sendMail($toName, $toAddress, $subject, $body, $html=null) {
 		class_exists('PHPMailer')
 			or require(BASEPATH.'system/libs/Mailer/class.phpmailer.php');

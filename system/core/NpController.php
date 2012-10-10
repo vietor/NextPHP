@@ -10,7 +10,7 @@ class NpController {
 		$this->request=$request;
 		$this->reponse=$reponse;
 	}
-	
+
 	public function exitProcess() {
 		throw new NpPeacefulException();
 	}
@@ -22,7 +22,7 @@ class NpController {
 	}
 
 	public function loadView($name) {
-		$filename=BASEPATH.'application/view/'.$name;
+		$filename=BASEPATH.'application/view/'.$name.'php';
 		if(!file_exists($filename))
 			return false;
 		return new NpView($name);

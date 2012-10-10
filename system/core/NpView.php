@@ -1,26 +1,26 @@
 <?php
 class NpView {
-	private $smarty;
 	private $template;
+	private $data=array();
 
 	public function __construct($template) {
-		$this->smarty=NpFactory::createSmarty();
-		$this->smarty->template_dir = BASEPATH."application/view/";
-		$this->smarty->compile_dir = BASEPATH."temporary/smarty/templates_c/";
-		$this->smarty->cache_dir = BASEPATH."temporary/smarty/cache/";
 		$this->template=$template;
 	}
 
 	public function assign($name,$value) {
-		$this->smarty->assign($name,$value);
+		$this->data[$name]=$value;
 	}
 
 	public function fetch() {
-		return $this->smarty->fetch($this->template);
+		ob_start();
+		include($this->template);
+		$message = ob_get_contents();
+		ob_end();
+		return $message;
 	}
 
 	public function display() {
-		$this->smarty->display($this->template);
+		include($this->template);
 	}
 }
 ?>
