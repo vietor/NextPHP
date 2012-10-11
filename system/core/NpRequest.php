@@ -10,6 +10,28 @@ class NpRequest {
 		return $_SERVER ['REQUEST_METHOD'];
 	}
 
+	public function getSession($key,$defaultValue=null) {
+		if(!isset($_SESSION[$key]))
+			return $defaultValue;
+		return $_SESSION[$key];
+	}
+
+	public function setSession($key,$value) {
+		return $_SESSION[$key]=$value;
+	}
+
+	public function getSessionId() {
+		return session_id();
+	}
+
+	public function startSession() {
+		session_start();
+	}
+
+	public function stopSession() {
+		session_destroy();
+	}
+
 	public function getUrlByHost($path='') {
 		return NP_BASEURL.$path;
 	}

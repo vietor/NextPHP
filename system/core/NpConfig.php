@@ -4,6 +4,10 @@ class NpConfig {
 
 	public function __construct() {
 		$_CONFIG=new stdClass;
+		// session
+		$config=new stdClass;
+		$config->enable     = true;
+		$_CONFIG->session=$config;
 		// cookie
 		$config=new stdClass;
 		$config->domain     = $_SERVER['SERVER_NAME'];
@@ -57,6 +61,16 @@ class NpConfig {
 		date_default_timezone_set($_CONFIG->system->timeZone);
 	}
 
+	private function routine()
+	{
+		if($this->configs->session->enable){
+			if(!isset($_SESSION['NP_SESSION_START'])){
+				session_start();
+				$_SESSION['NP_SESSION_START']=time();
+			}
+		}
+	}
+
 	private static $instance;
 
 	public static function execute() {
@@ -64,6 +78,7 @@ class NpConfig {
 			self::$instance=new NpConfig();
 			require_once('NpFactory.php');
 		}
+		self::$instance->routine();
 	}
 
 	public static function getConfig($key) {
