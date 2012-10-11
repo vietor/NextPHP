@@ -30,6 +30,7 @@ php-pecl-memcache or php-pecl-memcache or php-redis(https://github.com/nicolasff
 		Allow from all
 		AllowOverride None
 		Options FollowSymLinks
+		
 		RewriteEngine on
 		RewriteBase /
 		RewriteRule ^$      public/    [L]
@@ -39,7 +40,7 @@ php-pecl-memcache or php-pecl-memcache or php-redis(https://github.com/nicolasff
 	<Directory "/var/www/vhost/someone/public">
 		RewriteEngine on
 		RewriteBase /public/
-		RewriteRule ^service/(.*)$ index.php?url=$1 [QSA,L]
+		RewriteRule ^services/(.*)$ index.php?url=$1 [QSA,L]
 	</Directory>
 </VirtualHost>
 
@@ -56,7 +57,7 @@ RewriteRule (.*)    public/$1  [L]
 
 RewriteEngine on
 RewriteBase /public/
-RewriteRule ^service/(.*)$ index.php?url=$1 [QSA,L]
+RewriteRule ^services/(.*)$ index.php?url=$1 [QSA,L]
 
 3.2 nginx
 
@@ -72,7 +73,7 @@ server {
 		rewrite ^(.*)$ /public/$1 last;
 	}
 	location /public/ {
-		rewrite ^/public/service/(.*)$ /public/index.php?url=$1 last;
+		rewrite ^/public/services/(.*)$ /public/index.php?url=$1 last;
 	}
 }
 
