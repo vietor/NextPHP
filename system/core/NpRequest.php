@@ -14,7 +14,7 @@ class NpRequest {
 		return NP_BASEURL.$path;
 	}
 
-	public function getUrlByBackward($backward=1, $path='') {
+	public function getUrlByBackward($path='',$backward=3) {
 		$array=explode('/',$_SERVER['REQUEST_URI']);
 		$count=count($array);
 		$count-=min($count,$backward);
