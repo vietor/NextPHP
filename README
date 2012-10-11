@@ -39,9 +39,7 @@ php-pecl-memcache or php-pecl-memcache or php-redis(https://github.com/nicolasff
 	<Directory "/var/www/vhost/someone/public">
 		RewriteEngine on
 		RewriteBase /public/
-		RewriteCond %{REQUEST_FILENAME} !-f
-		RewriteCond %{REQUEST_FILENAME} !-d
-		RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+		RewriteRule ^service/(.*)$ index.php?url=$1 [QSA,L]
 	</Directory>
 </VirtualHost>
 
