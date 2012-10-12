@@ -3,7 +3,7 @@ class NpRequest {
 	private $params=array();
 
 	public function __construct($params) {
-		$this->params=array_merge($params,$_COOKIE,$_GET,$_POST);
+		$this->params=$params;
 	}
 
 	public function getMethod() {
@@ -48,29 +48,26 @@ class NpRequest {
 
 	public function hasParam($key, $minLen=0) {
 		$result=false;
-		if(isset($this->params[$key]) && !empty($this->params[$key])) {
-			if($minLen<1 || strlen($this->params[$key])>=$minLen)
+		$value=$this->getParam($key);
+		if(!is_null($value)) {
+			if($minLen>0)
+				$result=strlen($value)>=$minLen;
+			else
 				$result=true;
 		}
 		return $result;
 	}
 
 	public function getParam($key,$defaultValue=null) {
-		if(!$this->hasParam($key))
-			return $defaultValue;
-		return $this->params[$key];
-	}
-
-	public function getGet($key,$defaultValue=null) {
-		if(!isset($_GET[$key]))
-			return $defaultValue;
-		return $_GET[$key];
-	}
-
-	public function getPost($key,$defaultValue=null) {
-		if(!isset($_POST[$key]))
-			return $defaultValue;
-		return $_POST[$key];
+		if(!isset($this->params[$key]))
+			$result=$this->params[$key];
+		else if(!isset($_POST[$key]))
+			$result=$_POST[$key];
+		else if(!isset($_GET[$key]))
+			$result=$_GET[$key];
+		else
+			$result=$defaultValue;
+		return $result;
 	}
 
 	public function getCooke($key,$defaultValue=null) {
