@@ -9,19 +9,19 @@ class RESTful extends NpController {
 		$result=array();
 		$result['error'] = $code;
 		$result['description'] = self::$errorMessage[$code];
-		$this->reponse->output(json_encode($result), 'application/json');
+		$this->getResponse()->output(json_encode($result), 'application/json');
 		$this->exitProcess();
 	}
 
 	protected function resultSuccessed($result) {
-		$this->reponse->output(json_encode($result,true), 'application/json');
+		$this->getResponse()->output(json_encode($result,true), 'application/json');
 	}
 
 	protected function getParamOrFailed($param,$minLen=0) {
-		if(!$this->request->hasParam($param,$minLen))
+		if(!$this->getRequest()->hasParam($param,$minLen))
 			$this->resultFailed(100001);
 		else
-			return $this->request->getParam($param);
+			return $this->getRequest()->getParam($param);
 	}
 }
 ?>

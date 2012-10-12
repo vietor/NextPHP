@@ -55,9 +55,9 @@ class NpRequest {
 		return $result;
 	}
 
-	public function getParam($key) {
+	public function getParam($key,$defaultValue=null) {
 		if(!$this->hasParam($key))
-			return null;
+			return $defaultValue;
 		return $this->params[$key];
 	}
 

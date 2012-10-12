@@ -13,12 +13,11 @@ class NpDispather {
 				throw new NpUndefinedException('No module: '.$module);
 		}
 		$controller=new $module();
-		if(!method_exists($controller,$action))
+		if(!method_exists($controller,$action)) {
+			unset($controller);
 			throw new NpUndefinedException('No action: '.$action.' in module: '.$module);
-
-		$request=new NpRequest($params);
-		$reponse=new NpReponse($request);
-		$controller->initialize($request,$reponse);
+		}
+		$controller->initialize(new NpRequest($params),new NpReponse($request));
 		$controller->$action();
 	}
 }

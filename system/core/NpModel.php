@@ -1,18 +1,25 @@
 <?php
 class NpModel {
-	private $cache;
-	private $database;
+	private $controller;
+
+	public function initialize($controller) {
+		$this->controller=$controler;
+	}
 	
+	public function getRequest() {
+		return $this->controller->getRequest();
+	}
+	
+	public function getResponse() {
+		return $this->controller->getResponse();
+	}
+
 	public function getCache() {
-		if($this->cache===null)
-			$this->cache=NpFactory::createCache();
-		return $this->cache;
+		return $this->controller->getCache();
 	}
 
 	public function getDatabase() {
-		if($this->database===null)
-			$this->database=NpFactory::createDatabase();
-		return $this->database;
+		return $this->controller->getDatabase();
 	}
 }
 ?>
