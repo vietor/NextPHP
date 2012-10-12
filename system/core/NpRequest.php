@@ -61,9 +61,9 @@ class NpRequest {
 		return $this->params[$key];
 	}
 
-	public function getCooke($key) {
+	public function getCooke($key,$defaultValue=null) {
 		if(!isset($_COOKIE[$key]))
-			return null;
+			return $defaultValue;
 		return $_COOKIE[$key];
 	}
 
