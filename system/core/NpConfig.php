@@ -64,10 +64,8 @@ class NpConfig {
 	private function routine()
 	{
 		if($this->configs->session->enable){
-			if(!isset($_SESSION['NP_SESSION_START'])){
+			if(empty(session_id()))
 				session_start();
-				$_SESSION['NP_SESSION_START']=time();
-			}
 		}
 	}
 
