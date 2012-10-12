@@ -76,7 +76,7 @@ class NpBootstrap {
 			}
 		}
 		unset($urlArray);
-		$this->dispather->dispath($module,$action,array_merge($params,$_GET,$_POST));
+		$this->dispather->dispath($module,$action,$params);
 	}
 
 	private static $instance=null;

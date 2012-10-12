@@ -3,7 +3,7 @@ class NpRequest {
 	private $params=array();
 
 	public function __construct($params) {
-		$this->params=$params;
+		$this->params=array_merge($params,$_COOKIE,$_GET,$_POST);
 	}
 
 	public function getMethod() {
@@ -59,6 +59,18 @@ class NpRequest {
 		if(!$this->hasParam($key))
 			return $defaultValue;
 		return $this->params[$key];
+	}
+
+	public function getGet($key,$defaultValue=null) {
+		if(!isset($_GET[$key]))
+			return $defaultValue;
+		return $_GET[$key];
+	}
+
+	public function getPost($key,$defaultValue=null) {
+		if(!isset($_POST[$key]))
+			return $defaultValue;
+		return $_POST[$key];
 	}
 
 	public function getCooke($key,$defaultValue=null) {
