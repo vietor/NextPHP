@@ -52,7 +52,7 @@ class NpController {
 		$filename=NP_BASEPATH.'application/view/'.$name.'.php';
 		if(!file_exists($filename))
 			throw new NpUndefinedException('No found view: '.$name);
-		return new NpView($name);
+		return new NpView($filename);
 	}
 }
 ?>
