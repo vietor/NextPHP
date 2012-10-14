@@ -62,7 +62,7 @@ server {
 	location / {
 		rewrite ^(.*)$ /public/$1 break; 
 	}
-	location /services {
+	location /services/ {
 		rewrite ^/services/(.*)$ /public/index.php?url=$1 break;
 	}
 }
