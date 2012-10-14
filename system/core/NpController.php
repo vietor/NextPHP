@@ -38,16 +38,20 @@ class NpController {
 	}
 
 	public function loadModel($name) {
-		class_exists($name) or require_once(NP_BASEPATH.'application/model/'.$name.'.php');
+		if(!class_exists($name)){
+			require_once(NP_BASEPATH.'application/model/'.$name.'.php');
+			if(!class_exists($name))
+				throw new NpUndefinedException('No found module: '.$name);
+		}
 		$model=new $name();
 		$model->initialize($this);
 		return $model;
 	}
 
 	public function loadView($name) {
-		$filename=NP_BASEPATH.'application/view/'.$name.'php';
+		$filename=NP_BASEPATH.'application/view/'.$name.'.php';
 		if(!file_exists($filename))
-			return false;
+			throw new NpUndefinedException('No found view: '.$name);
 		return new NpView($name);
 	}
 }
