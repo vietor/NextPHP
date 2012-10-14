@@ -12,7 +12,7 @@ class NpFactory {
 			if(is_null($args))
 				return call_user_func(array($className,"getInstance"));
 			else
-				return call_user_func(array($className,"getInstance"), $args);
+				return call_user_func_array(array($className,"getInstance"), $args);
 		}
 		else{
 			if(is_null($args))
