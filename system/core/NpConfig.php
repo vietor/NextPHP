@@ -4,10 +4,6 @@ class NpConfig {
 
 	public function __construct() {
 		$_CONFIG=new stdClass;
-		// session
-		$config=new stdClass;
-		$config->enable     = true;
-		$_CONFIG->session=$config;
 		// cookie
 		$config=new stdClass;
 		$config->domain     = $_SERVER['SERVER_NAME'];
@@ -50,7 +46,8 @@ class NpConfig {
 		$_CONFIG->mailer=$config;
 		// system
 		$config=new stdClass;
-		$config->timeZone   = 'UTC';
+		$config->timeZone    = 'UTC';
+		$config->autoSession = true;
 		$_CONFIG->system    = $config;
 		// read custom config
 		$custom_file=NP_BASEPATH.'application/config.php';
@@ -63,8 +60,8 @@ class NpConfig {
 
 	private function routine()
 	{
-		if($this->configs->session->enable){
-			if(session_id()=="")
+		if($this->configs->system->autoSession) {
+			if(session_id()=='')
 				session_start();
 		}
 	}
