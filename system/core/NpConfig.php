@@ -64,7 +64,7 @@ class NpConfig {
 	private function routine()
 	{
 		if($this->configs->session->enable){
-			if(empty(session_id()))
+			if(session_id()=="")
 				session_start();
 		}
 	}
