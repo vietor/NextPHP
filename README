@@ -23,24 +23,19 @@ php-pecl-memcache or php-pecl-memcache or php-redis(https://github.com/nicolasff
 
 <VirtualHost *:80>
 	ServerName someone
-	DocumentRoot "/var/www/vhost/someone"
+	DocumentRoot "/var/www/someone"
 
-	<Directory "/var/www/vhost/someone">
+	<Directory "/var/www/someone">
 		Order allow,deny
 		Allow from all
 		AllowOverride None
-		Options FollowSymLinks
-		
+		Options -Indexes +FollowSymLinks
 		RewriteEngine on
 		RewriteBase /
-		RewriteRule ^$      public/    [L]
-		RewriteRule (.*)    public/$1  [L]
-	</Directory>
-
-	<Directory "/var/www/vhost/someone/public">
-		RewriteEngine on
-		RewriteBase /public/
-		RewriteRule ^services/(.*)$ index.php?url=$1 [QSA,L]
+		RewriteCond %{REQUEST_URI} !^/public/
+		RewriteCond %{REQUEST_URI} !^/services/
+		RewriteRule ^(.*)$ public/$1  [L]
+		RewriteRule ^services/(.*)$ public/index.php?url=$1 [QSA,L]
 	</Directory>
 </VirtualHost>
 
@@ -50,14 +45,10 @@ php-pecl-memcache or php-pecl-memcache or php-redis(https://github.com/nicolasff
 
 RewriteEngine on
 RewriteBase /
-RewriteRule ^$      public/    [L]
-RewriteRule (.*)    public/$1  [L]
-
-3.1.2.2 directory /public/
-
-RewriteEngine on
-RewriteBase /public/
-RewriteRule ^services/(.*)$ index.php?url=$1 [QSA,L]
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteCond %{REQUEST_URI} !^/services/
+RewriteRule ^(.*)$ public/$1  [L]
+RewriteRule ^services/(.*)$ public/index.php?url=$1 [QSA,L]
 
 3.2 nginx
 
@@ -65,15 +56,14 @@ server {
     listen       80;
     server_name  someone;
     
-	root   /var/www;
+	root   /var/www/someone;
     index  index.html index.htm index.php;
 
-    location / {
-		rewrite ^/$ /public/ last;
-		rewrite ^(.*)$ /public/$1 last;
+	location / {
+		rewrite ^(.*)$ /public/$1 break; 
 	}
-	location /public/ {
-		rewrite ^/public/services/(.*)$ /public/index.php?url=$1 last;
+	location /services {
+		rewrite ^/services/(.*)$ /public/index.php?url=$1 break;
 	}
 }
 
