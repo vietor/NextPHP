@@ -59,11 +59,11 @@ class NpRequest {
 	}
 
 	public function getParam($key,$defaultValue=null) {
-		if(!isset($this->params[$key]))
+		if(isset($this->params[$key]))
 			$result=$this->params[$key];
-		else if(!isset($_POST[$key]))
+		else if(isset($_POST[$key]))
 			$result=$_POST[$key];
-		else if(!isset($_GET[$key]))
+		else if(isset($_GET[$key]))
 			$result=$_GET[$key];
 		else
 			$result=$defaultValue;

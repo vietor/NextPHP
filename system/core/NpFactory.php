@@ -15,10 +15,11 @@ class NpFactory {
 				return call_user_func_array(array($className,"getInstance"), $args);
 		}
 		else{
+			$reflection=new ReflectionClass($className);
 			if(is_null($args))
 				return $reflection->newInstance();
 			else
-				return $reflection->newInstanceArgs(args);
+				return $reflection->newInstanceArgs($args);
 		}
 	}
 
@@ -54,8 +55,7 @@ class NpFactory {
 	}
 
 	public static function sendMail($toName, $toAddress, $subject, $body, $html=null) {
-		class_exists('PHPMailer')
-			or require(NP_BASEPATH.'system/libs/Mailer/class.phpmailer.php');
+		class_exists('PHPMailer') or require(NP_BASEPATH.'system/libs/Mailer/class.phpmailer.php');
 		$config=NpConfig::getConfig('mailer');
 		$mail=new PHPMailer();
 		$mail->IsSMTP();

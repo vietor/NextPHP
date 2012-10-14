@@ -3,7 +3,7 @@ class NpModel {
 	private $controller;
 
 	public function initialize($controller) {
-		$this->controller=$controler;
+		$this->controller=$controller;
 	}
 	
 	public function getRequest() {
