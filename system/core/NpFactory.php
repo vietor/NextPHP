@@ -55,7 +55,7 @@ class NpFactory {
 	}
 
 	public static function sendMail($toName, $toAddress, $subject, $body, $html=null) {
-		class_exists('PHPMailer') or require(NP_BASEPATH.'system/libs/Mailer/class.phpmailer.php');
+		class_exists('PHPMailer') or require_once(NP_BASEPATH.'system/libs/Mailer/class.phpmailer.php');
 		$config=NpConfig::getConfig('mailer');
 		$mail=new PHPMailer();
 		$mail->IsSMTP();
