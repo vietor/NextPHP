@@ -1,9 +1,11 @@
 <?php
 class NpView {
 	private $template;
+	private $base;
 	private $data=array();
 
 	public function __construct($template) {
+		$this->base=NP_BASEURL;
 		$this->template=$template;
 	}
 
