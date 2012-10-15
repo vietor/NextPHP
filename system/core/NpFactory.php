@@ -33,7 +33,7 @@ class NpFactory {
 			$className='NpMemcached';
 		else
 			throw new Exception('Unsupport cache type {'.$config->type.'}');
-		return self::newInstance($className, array($config->host, $config->port, $config->prefix), true);
+		return self::newInstance($className, array($config->host, $config->port, $config->prefix, $config->timeout), true);
 	}
 
 	public static function createDatabase(){

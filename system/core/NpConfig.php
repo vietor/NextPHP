@@ -32,6 +32,7 @@ class NpConfig {
 		$config->host       = 'localhost';
 		$config->port       = 11211;
 		$config->prefix     = '';
+		$config->timeout	= 0; // seconds
 		$_CONFIG->cache=$config;
 		// mailer
 		$config=new stdClass;

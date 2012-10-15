@@ -4,9 +4,11 @@ require_once('NpCache.php');
 class NpMemcache implements NpCache {
 	private $cache;
 	private $prefix;
+	private $timeout;
 
-	public function __construct($prefix) {
+	public function __construct($prefix,$timeout) {
 		$this->prefix=$prefix;
+		$this->timeout=$timeout;
 	}
 
 	public function __destruct() {
@@ -27,7 +29,11 @@ class NpMemcache implements NpCache {
 
 	public function set($key,$value,$timeout=0) {
 		if($timeout==0)
-			return $this->cache->set($this->prefix.$key, $value);
+		{
+			$timeout=$this->timeout;
+			if($timeout==0)
+				return $this->cache->set($this->prefix.$key, $value);
+		}
 		return $this->cache->set($this->prefix.$key, $value, 0, $timeout);
 	}
 
@@ -35,8 +41,8 @@ class NpMemcache implements NpCache {
 		return $this->cache->delete($this->prefix.$key);
 	}
 
-	public static function getInstance($host, $port, $prefix) {
-		$instance=new NpMemcache($prefix);
+	public static function getInstance($host, $port, $prefix, $timeout) {
+		$instance=new NpMemcache($prefix,$timeout);
 		if(!$instance->connect($host, $port))
 			throw new Exception('Memcached cannot connect');
 		return $instance;
