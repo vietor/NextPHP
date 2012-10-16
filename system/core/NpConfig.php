@@ -47,7 +47,6 @@ class NpConfig {
 		// system
 		$config=new stdClass;
 		$config->timeZone    = 'UTC';
-		$config->autoSession = true;
 		$_CONFIG->system    = $config;
 		// read custom config
 		$custom_file=NP_BASEPATH.'application/config.php';
@@ -58,14 +57,6 @@ class NpConfig {
 		date_default_timezone_set($_CONFIG->system->timeZone);
 	}
 
-	private function routine()
-	{
-		if($this->configs->system->autoSession) {
-			if(session_id()=='')
-				session_start();
-		}
-	}
-
 	private static $instance;
 
 	public static function execute() {
@@ -73,7 +64,6 @@ class NpConfig {
 			self::$instance=new NpConfig();
 			require_once('NpFactory.php');
 		}
-		self::$instance->routine();
 	}
 
 	public static function getConfig($key) {

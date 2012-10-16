@@ -25,7 +25,8 @@ class NpRequest {
 	}
 
 	public function startSession() {
-		session_start();
+		if(session_id=='')
+			session_start();
 	}
 
 	public function stopSession() {
