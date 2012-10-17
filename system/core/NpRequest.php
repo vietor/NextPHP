@@ -1,6 +1,7 @@
 <?php
 class NpRequest {
 	private $params=array();
+	private $sessionOn=false;
 
 	public function __construct($params) {
 		$this->params=$params;
@@ -10,27 +11,41 @@ class NpRequest {
 		return $_SERVER ['REQUEST_METHOD'];
 	}
 
+	private function startSession()
+	{
+		if(!$this->sessionOn)
+		{
+			$this->sessionOn=true;
+			if(session_id()=='')
+				session_start();
+		}
+	}
+
 	public function getSession($key,$defaultValue=null) {
+		$this->startSession();
 		if(!isset($_SESSION[$key]))
 			return $defaultValue;
 		return $_SESSION[$key];
 	}
 
 	public function setSession($key,$value) {
+		$this->startSession();
 		return $_SESSION[$key]=$value;
 	}
 
 	public function getSessionId() {
+		$this->startSession();
 		return session_id();
 	}
 
-	public function startSession() {
-		if(session_id=='')
-			session_start();
+	public function removeSession($key)
+	{
+		unset($_SESSION[$key]);
 	}
 
-	public function stopSession() {
+	public function clearSession() {
 		session_destroy();
+		$this->sessionOn=false;
 	}
 
 	public function getUrlByHost($path='') {

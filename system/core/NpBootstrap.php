@@ -72,7 +72,7 @@ class NpBootstrap {
 
 	private static $instance=null;
 
-	public static function execute($startSession=false, $module=null,$action=null) {
+	public static function execute($module=null,$action=null) {
 		if (get_magic_quotes_gpc ()) {
 			$in = array (&$_GET, &$_POST, &$_COOKIE, &$_FILES );
 			while ( (list ( $k, $v ) = each ( $in )) !== false ) {
@@ -87,8 +87,6 @@ class NpBootstrap {
 			unset ( $in );
 		}
 		NpConfig::execute();
-		if($startSession && session_id()=='')
-			session_start();
 
 		if(is_null(self::$instance))
 			self::$instance=new NpBootstrap();

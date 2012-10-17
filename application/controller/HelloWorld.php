@@ -25,5 +25,13 @@ class HelloWorld extends NpController {
 				</BODY>
 				</HTML>');
 	}
+
+	public function Test3() {
+		$view=$this->loadView();
+		$view->assign('method', __METHOD__);
+		$view->assign('sessionId', $this->getRequest()->getSessionId());
+		$view->assign('sessionValue', $this->getRequest()->getSession(SESSION_KEY));
+		return $view->getVariables();
+	}
 }
 ?>
