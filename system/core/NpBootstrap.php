@@ -36,20 +36,6 @@ class NpBootstrap {
 	}
 
 	private function handleRequest() {
-		if (get_magic_quotes_gpc ()) {
-			$in = array (&$_GET, &$_POST, &$_COOKIE, &$_FILES );
-			while ( (list ( $k, $v ) = each ( $in )) !== false ) {
-				foreach ( $v as $key => $val ) {
-					if (! is_array ( $val )) {
-						$in [$k] [$key] = stripslashes ( $val );
-						continue;
-					}
-					$in [] = & $in [$k] [$key];
-				}
-			}
-			unset ( $in );
-		}
-
 		if(!isset($_GET['url']) || empty($_GET['url']))
 			throw new NpUndefinedException();
 		$url=$_GET['url'];
@@ -79,12 +65,35 @@ class NpBootstrap {
 		$this->dispather->dispath($module,$action,$params);
 	}
 
+	private function handleController($module,$action)
+	{
+		return $this->dispather->dispath($module,$action,array());
+	}
+
 	private static $instance=null;
 
-	public static function execute() {
+	public static function execute($module=null,$action=null) {
+		if (get_magic_quotes_gpc ()) {
+			$in = array (&$_GET, &$_POST, &$_COOKIE, &$_FILES );
+			while ( (list ( $k, $v ) = each ( $in )) !== false ) {
+				foreach ( $v as $key => $val ) {
+					if (! is_array ( $val )) {
+						$in [$k] [$key] = stripslashes ( $val );
+						continue;
+					}
+					$in [] = & $in [$k] [$key];
+				}
+			}
+			unset ( $in );
+		}
+		NpConfig::execute();
+
 		if(is_null(self::$instance))
 			self::$instance=new NpBootstrap();
-		self::$instance->handleRequest();
+		if(is_null($module) || is_null($action))
+			self::$instance->handleRequest();
+		else
+			return self::$instance->handleController($module,$action);
 	}
 }
 ?>
