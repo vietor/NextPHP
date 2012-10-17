@@ -48,7 +48,9 @@ class NpController {
 		return $model;
 	}
 
-	public function loadView($name) {
+	public function loadView($name='') {
+		if($name=='')
+			return new NpViewBase();
 		$filename=NP_BASEPATH.'application/view/'.$name.'.php';
 		if(!file_exists($filename))
 			throw new NpUndefinedException('No found view: '.$name);
