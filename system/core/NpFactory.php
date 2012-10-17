@@ -1,8 +1,7 @@
 <?php
 class NpFactory {
 
-	private static function newInstance($className, $args=null, $staticConstructor=false)
-	{
+	private static function newInstance($className, $args=null, $staticConstructor=false) {
 		if(!class_exists($className)){
 			require_once(NP_BASEPATH.'system/libs/'.$className.'.php');
 			if(!class_exists($className))

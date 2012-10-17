@@ -1,6 +1,8 @@
 <?php
 require_once('NpConfig.php');
-require_once('NpDispather.php');
+require_once('NpRequest.php');
+require_once('NpReponse.php');
+require_once('NpController.php');
 
 class NpUndefinedException extends Exception {
 	public function __construct($message='', $code=0) {
@@ -12,10 +14,8 @@ class NpPeacefulException extends Exception {
 }
 
 class NpBootstrap {
-	private $dispather;
 
 	private function __construct() {
-		$this->dispather=new NpDispather();
 		set_exception_handler(array($this, 'handleException'));
 	}
 
@@ -33,6 +33,12 @@ class NpBootstrap {
 			header('Status: 503 Service Temporarily Unavailable');
 		}
 		exit();
+	}
+
+	private function dispath($module,$action,$params) {
+		NpRequest::getInstance()->addParams($params);
+		$controller=NpController::getInstance($module,$action);
+		return $controller->$action();
 	}
 
 	private function handleRequest() {
@@ -62,12 +68,12 @@ class NpBootstrap {
 			}
 		}
 		unset($urlArray);
-		$this->dispather->dispath($module,$action,$params);
+		$this->dispath($module,$action,$params);
 	}
 
 	private function handleController($module,$action)
 	{
-		return $this->dispather->dispath($module,$action,array());
+		return $this->dispath($module,$action,array());
 	}
 
 	private static $instance=null;

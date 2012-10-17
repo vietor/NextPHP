@@ -3,8 +3,8 @@ class NpRequest {
 	private $params=array();
 	private $sessionOn=false;
 
-	public function __construct($params) {
-		$this->params=$params;
+	public function addParams($params) {
+		$this->params=array_merge($this->params,$params);
 	}
 
 	public function getMethod() {
@@ -13,8 +13,7 @@ class NpRequest {
 
 	private function startSession()
 	{
-		if(!$this->sessionOn)
-		{
+		if(!$this->sessionOn) {
 			$this->sessionOn=true;
 			if(session_id()=='')
 				session_start();
@@ -106,6 +105,13 @@ class NpRequest {
 		else
 			$ip=$_SERVER['REMOTE_ADDR'];
 		return $ip;
+	}
+
+	private static $_instance;
+	public static function getInstance() {
+		if(self::$_instance==null)
+			self::$_instance=new NpRequest();
+		return self::$_instance;
 	}
 }
 ?>

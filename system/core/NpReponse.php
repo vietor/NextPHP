@@ -29,8 +29,7 @@ class NpReponse {
 	}
 
 	public function htmlLocation($url) {
-		echo '
-		<!DOCTYPE html>
+		echo '<!DOCTYPE html>
 		<html>
 		<head>
 		<title>Launching...</title>
@@ -40,6 +39,13 @@ class NpReponse {
 		</script>
 		<body style="text-align: center; font-family: Arial, sans-serif;">Launching...</body>
 		</html>';
+	}
+	
+	private static $_instance;
+	public static function getInstance() {
+		if(self::$_instance==null)
+			self::$_instance=new NpReponse();
+		return self::$_instance;
 	}
 }
 ?>

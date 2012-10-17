@@ -19,5 +19,14 @@ class NpView extends NpViewBase {
 		extract($this->getVariables($vars));
 		include($this->template);
 	}
+
+	public static function loadView($name='') {
+		if($name=='')
+			return new NpViewBase();
+		$filename=NP_BASEPATH.'application/view/'.$name.'.php';
+		if(!file_exists($filename))
+			throw new NpUndefinedException('No found view: '.$name);
+		return new NpView($filename);
+	}
 }
 ?>

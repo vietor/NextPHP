@@ -3,44 +3,26 @@ require_once('NpModel.php');
 require_once('NpView.php');
 
 class NpController {
-	private $request;
-	private $reponse;
-
-	public function initialize($request,$reponse) {
-		$this->request=$request;
-		$this->reponse=$reponse;
-	}
-
-	public function getRequest() {
-		return $this->request;
-	}
-
-	public function getResponse() {
-		return $this->reponse;
-	}
 
 	public function exitProcess() {
 		throw new NpPeacefulException();
 	}
 
-	public function loadModel($name) {
-		if(!class_exists($name)){
-			require_once(NP_BASEPATH.'application/model/'.$name.'.php');
-			if(!class_exists($name))
-				throw new NpUndefinedException('No found module: '.$name);
+	public static function getInstance($module, $action) {
+		if(!class_exists($module)) {
+			$module_file = NP_BASEPATH."application/controller/".$module.".php";
+			if(file_exists($module_file))
+				require_once($module_file);
+			if(!class_exists($module))
+				throw new NpUndefinedException('No module: '.$module);
 		}
-		$model=new $name();
-		$model->initialize($this);
-		return $model;
+		$controller=new $module();
+		if(!method_exists($controller,$action)) {
+			unset($controller);
+			throw new NpUndefinedException('No action: '.$action.' in module: '.$module);
+		}
+		return $controller;
 	}
 
-	public function loadView($name='') {
-		if($name=='')
-			return new NpViewBase();
-		$filename=NP_BASEPATH.'application/view/'.$name.'.php';
-		if(!file_exists($filename))
-			throw new NpUndefinedException('No found view: '.$name);
-		return new NpView($filename);
-	}
 }
 ?>
