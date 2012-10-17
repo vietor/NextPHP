@@ -35,7 +35,7 @@ php-pecl-memcache or php-pecl-memcache or php-redis(https://github.com/nicolasff
 		RewriteCond %{REQUEST_URI} !^/public/
 		RewriteCond %{REQUEST_URI} !^/services/
 		RewriteRule ^(.*)$ public/$1  [L]
-		RewriteRule ^services/(.*)$ public/index.php?url=$1 [QSA,L]
+		RewriteRule ^services/(.*)$ public/np-services.php?url=$1 [QSA,L]
 	</Directory>
 </VirtualHost>
 
@@ -48,7 +48,7 @@ RewriteBase /
 RewriteCond %{REQUEST_URI} !^/public/
 RewriteCond %{REQUEST_URI} !^/services/
 RewriteRule ^(.*)$ public/$1  [L]
-RewriteRule ^services/(.*)$ public/index.php?url=$1 [QSA,L]
+RewriteRule ^services/(.*)$ public/np-services.php?url=$1 [QSA,L]
 
 3.2 nginx
 
@@ -65,7 +65,7 @@ server {
 	location /public/ {
 	}
 	location /services/ {
-		rewrite ^/services/(.*)$ /public/index.php?url=$1 break;
+		rewrite ^/services/(.*)$ /public/np-services.php?url=$1 break;
 	}
 }
 
