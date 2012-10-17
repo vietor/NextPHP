@@ -19,14 +19,6 @@ class NpController {
 		return $this->reponse;
 	}
 
-	public function getCache() {
-		return NpFactory::getCache();
-	}
-
-	public function getDatabase() {
-		return NpFactory::getDatabase();
-	}
-
 	public function exitProcess() {
 		throw new NpPeacefulException();
 	}

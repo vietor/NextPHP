@@ -17,7 +17,7 @@ class NpDispather {
 			unset($controller);
 			throw new NpUndefinedException('No action: '.$action.' in module: '.$module);
 		}
-		$controller->initialize(new NpRequest($params),new NpReponse($request));
+		$controller->initialize(new NpRequest($params),new NpReponse());
 		return $controller->$action();
 	}
 }
