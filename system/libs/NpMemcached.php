@@ -33,17 +33,11 @@ class NpMemcached implements NpCache {
 		return $this->cache->delete($this->prefix.$key);
 	}
 
-	private static $instance;
-
 	public static function getInstance($host, $port, $prefix, $timeout) {
-		if(!is_null(self::$instance))
-			return self::$instance;
 		$instance=new NpMemcached($prefix,$timeout);
 		if(!$instance->connect($host, $port))
 			throw new Exception('Memcached cannot connect');
-		else
-			self::$instance=$instance;
-		return self::$instance;
+		return $instance;
 	}
 }
 ?>

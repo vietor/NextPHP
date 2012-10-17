@@ -23,34 +23,46 @@ class NpFactory {
 		}
 	}
 
-	public static function createCache(){
-		$config=NpConfig::getConfig('cache');
-		if($config->type=='redis')
-			$className='NpRedis';
-		else if($config->type=='memcache')
-			$className='NpMemcache';
-		else if($config->type=='memcached')
-			$className='NpMemcached';
-		else
-			throw new Exception('Unsupport cache type {'.$config->type.'}');
-		return self::newInstance($className, array($config->host, $config->port, $config->prefix, $config->timeout), true);
+	private static $_cache;
+	public static function getCache(){
+		if(self::$_cache==null){
+			$config=NpConfig::getConfig('cache');
+			if($config->type=='redis')
+				$className='NpRedis';
+			else if($config->type=='memcache')
+				$className='NpMemcache';
+			else if($config->type=='memcached')
+				$className='NpMemcached';
+			else
+				throw new Exception('Unsupport cache type {'.$config->type.'}');
+			self::$_cache=self::newInstance($className, array($config->host, $config->port, $config->prefix, $config->timeout), true);
+		}
+		return self::$_cache;
 	}
 
-	public static function createDatabase(){
-		$config=NpConfig::getConfig('database');
-		return self::newInstance('NpDbConnection', array($config->type.':dbname='.$config->dbname.';host='.$config->host.';port='.$config->port.';charset='.$config->charset,$config->user,$config->passwd));
+	private static $_database;
+	public static function getDatabase(){
+		if(self::$_database==null){
+			$config=NpConfig::getConfig('database');
+			self::$_database= self::newInstance('NpDbConnection', array($config->type.':dbname='.$config->dbname.';host='.$config->host.';port='.$config->port.';charset='.$config->charset,$config->user,$config->passwd));
+		}
+		return self::$_database;
 	}
 
-	public static function createUniqueKey() {
-		$config=NpConfig::getConfig('unique');
-		return self::newInstance('NpUniqueKey', array($config->mode,$config->secret,$config->expire), true);
+	private static $_uniqueKey;
+	public static function getUniqueKey() {
+		if(self::$_uniqueKey==null){
+			$config=NpConfig::getConfig('unique');
+			self::$_uniqueKey=self::newInstance('NpUniqueKey', array($config->mode,$config->secret,$config->expire));
+		}
+		return self::$_uniqueKey;
 	}
 
-	public static function createWebRequest(){
+	public static function newWebRequest(){
 		return self::newInstance('NpWebRequest');
 	}
 
-	public static function createCrypto($type){
+	public static function newCrypto($type){
 		return self::newInstance('NpCrypto', array($type));
 	}
 

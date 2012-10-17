@@ -33,14 +33,5 @@ class NpUniqueKey {
 			return false;
 		return $obj->d;
 	}
-
-	private static $instance;
-
-	public static function getInstance($mode,$password,$expire) {
-		if(!is_null(self::$instance))
-			return self::$instance;
-		self::$instance=new NpUniqueKey($mode,$password,$expire);
-		return self::$instance;
-	}
 }
 ?>

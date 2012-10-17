@@ -5,8 +5,6 @@ require_once('NpView.php');
 class NpController {
 	private $request;
 	private $reponse;
-	private $cache;
-	private $database;
 
 	public function initialize($request,$reponse) {
 		$this->request=$request;
@@ -22,15 +20,11 @@ class NpController {
 	}
 
 	public function getCache() {
-		if($this->cache===null)
-			$this->cache=NpFactory::createCache();
-		return $this->cache;
+		return NpFactory::getCache();
 	}
 
 	public function getDatabase() {
-		if($this->database===null)
-			$this->database=NpFactory::createDatabase();
-		return $this->database;
+		return NpFactory::getDatabase();
 	}
 
 	public function exitProcess() {
