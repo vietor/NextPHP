@@ -1,5 +1,15 @@
 <?php
 class NpReponse {
+
+	public function noCache()
+	{
+		header("Expires: Mon, 26 Jul 1990 05:00:00 GMT");
+		header("Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT");
+		header("Cache-Control: no-store, no-cache, must-revalidate");
+		header("Cache-Control: post-check=0, pre-check=0", false);
+		header("Pragma: no-cache");
+	}
+
 	public function setCookie ($name, $value, $expire=null, $path=null, $domain=null) {
 		$config = NpConfig::getConfig('cookie');
 		$expire = is_null($expire) ? time()+$config->expire*86400 : time()+$expire*68400;
