@@ -1,5 +1,5 @@
 <?php
-require_once('np_env.php');
+require_once('np-env.php');
 
 NpBootstrap::execute();
 ?>
