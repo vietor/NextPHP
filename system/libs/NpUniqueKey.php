@@ -16,10 +16,10 @@ class NpUniqueKey {
 		if($expire==0)
 			$expire=$this->expire;
 		$obj = new stdClass;
-		$obj->data = $data;
-		$obj->bind = $bind;
-		$obj->expire = $expire>0?time()+$expire:0;
-		$obj->uniqueid = mt_rand(0, 65535).uniqid();
+		$obj->d = $data;
+		$obj->b = $bind;
+		$obj->e = $expire>0?time()+$expire:0;
+		$obj->u = uniqid(mt_rand(0, 65535),true);
 		return $this->crypto->encrypt($this->secret,json_encode($obj));
 	}
 
@@ -27,11 +27,11 @@ class NpUniqueKey {
 		$json=$this->crypto->decrypt($this->secret, $key);
 		if(!($obj=json_decode($json)))
 			return false;
-		if($obj->bind != $bind)
+		if($obj->b != $bind)
 			return false;
-		if($obj->expire>0 && time()>$obj->expire)
+		if($obj->e>0 && time()>$obj->e)
 			return false;
-		return $obj->data;
+		return $obj->d;
 	}
 
 	private static $instance;

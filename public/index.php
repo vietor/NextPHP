@@ -15,5 +15,10 @@ extract(NpBootstrap::execute('HelloWorld','Test3'));
 	<center>
 		<?php echo $sessionValue?>
 	</center>
+	<p />
+	<p />
+	<center>
+		<?php echo $uniqueKey?>
+	</center>
 </BODY>
 </HTML>

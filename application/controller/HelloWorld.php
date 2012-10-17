@@ -27,10 +27,12 @@ class HelloWorld extends NpController {
 	}
 
 	public function Test3() {
+		$uniqueKey=NpFactory::createUniqueKey();
 		$view=$this->loadView();
 		$view->assign('method', __METHOD__);
 		$view->assign('sessionId', $this->getRequest()->getSessionId());
 		$view->assign('sessionValue', $this->getRequest()->getSession(SESSION_KEY));
+		$view->assign('uniqueKey', $uniqueKey->generate($this->getRequest()->getSessionId()));
 		return $view->getVariables();
 	}
 }
