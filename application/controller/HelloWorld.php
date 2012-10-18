@@ -30,7 +30,7 @@ class HelloWorld extends NpController {
 
 	public function Test3() {
 		$request=NpRequest::getInstance();
-		$uniqueKey=NpFactory::createUniqueKey();
+		$uniqueKey=NpFactory::getUniqueKey();
 		$view=NpView::loadView();
 		$view->assign('method', __METHOD__);
 		$view->assign('sessionId', $request->getSessionId());
