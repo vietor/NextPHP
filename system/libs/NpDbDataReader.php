@@ -24,22 +24,20 @@ class NpDbDataReader {
 		return $this->pdoStmt->rowCount();
 	}
 
-	public function read($fetchAssociative=false) {
+	public function read($fetchAssociative=true,$className='') {
 		if(is_null($this->pdoStmt))
 			return false;
-		$row=$this->pdoStmt->fetch($fetchAssociative ? PDO::FETCH_ASSOC : PDO::FETCH_NUM);
+		if(!$fetchAssociative&&!empty($className))
+			$row=$this->pdoStmt->fetchObject($className);
+		else
+			$row=$this->pdoStmt->fetch($fetchAssociative?PDO::FETCH_ASSOC:PDO::FETCH_NUM);
 		if($row===false)
 			$this->close();
 		return $row;
 	}
 
-	public function readObject($className=null) {
-		if(is_null($this->pdoStmt))
-			return false;
-		$object=$this->pdoStmt->fetchObject(is_null($className)?$className:'stdClass');
-		if($object===false)
-			$this->close();
-		return $object;
+	public function readObject($className='stdClass') {
+		return $this->read(false,$className);
 	}
 }
 ?>

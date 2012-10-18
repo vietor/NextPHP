@@ -67,46 +67,59 @@ class NpDbCommand {
 	}
 
 	public function execute($variables=null) {
-		if(is_null($this->pdoStmt))
-			return false;
-		if(!is_null($variables))
-			$this->bindValues($variables);
-		$this->pdoStmt->execute();
+		if(!$this->queryExecute($variables))
+			return 0;
 		return $this->pdoStmt->rowCount();
-	}
-
-	public function query($variables=null) {
-		return $this->queryInternal('',0,$variables);
-	}
-
-	public function queryRow($variables=null,$fetchAssociative=true) {
-		return $this->queryInternal('fetch',$fetchAssociative ? PDO::FETCH_ASSOC : PDO::FETCH_NUM, $variables);
-	}
-
-	public function queryAll($variables=null,$fetchAssociative=true) {
-		return $this->queryInternal('fetchAll',$fetchAssociative ? PDO::FETCH_ASSOC : PDO::FETCH_NUM, $variables);
-	}
-
-	private function queryInternal($method,$mode,$variables=null) {
-		if(is_null($this->pdoStmt))
-			return false;
-		if(!is_null($variables))
-			$this->bindValues($variables);
-		$this->pdoStmt->execute();
-		if($method==='')
-			$result=new NpDbDataReader($this->pdoStmt);
-		else {
-			$mode=(array)$mode;
-			$result=call_user_func_array(array($this->pdoStmt, $method), $mode);
-			$this->pdoStmt->closeCursor();
-		}
-		return $result;
 	}
 
 	public function lastInsertId() {
 		if(is_null($this->pdo))
 			return false;
 		return $this->pdo->lastInsertId();
+	}
+
+	private function queryExecute($variables=null) {
+		if(is_null($this->pdoStmt))
+			return false;
+		if(!is_null($variables))
+			$this->bindValues($variables);
+		return $this->pdoStmt->execute();
+	}
+
+	public function queryReader($variables=null) {
+		if(!$this->queryExecute($variables))
+			return false;
+		return new NpDbDataReader($this->pdoStmt);
+	}
+
+	public function queryRow($variables=null,$fetchAssociative=true, $className='') {
+		if(!$this->queryExecute($variables))
+			return false;
+		if(!$fetchAssociative&&!empty($className))
+			$result=$this->pdoStmt->fetchObject($className);
+		else
+			$result=$this->pdoStmt->fetch($fetchAssociative?PDO::FETCH_ASSOC:PDO::FETCH_NUM);
+		$this->pdoStmt->closeCursor();
+		return $result;
+	}
+
+	public function queryObject($variables=null,$className='stdClass') {
+		return $this->queryRow($variables,false,$className);
+	}
+
+	public function queryAll($variables=null,$fetchAssociative=true, $className='') {
+		if(!$this->queryExecute($variables))
+			return false;
+		if(!$fetchAssociative&&!empty($className))
+			$result=$this->pdoStmt->fetchAll(PDO::FETCH_CLASS, $className);
+		else
+			$result=$this->pdoStmt->fetchAll($fetchAssociative?PDO::FETCH_ASSOC:PDO::FETCH_NUM);
+		$this->pdoStmt->closeCursor();
+		return $result;
+	}
+
+	public function queryObjectAll($variables=null,$className='stdClass') {
+		return $this->queryAll($variables,false,$className);
 	}
 }
 ?>
