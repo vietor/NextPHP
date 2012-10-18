@@ -1,5 +1,5 @@
 <?php
-class NpReponse {
+class NpResponse {
 
 	public function noCache()
 	{

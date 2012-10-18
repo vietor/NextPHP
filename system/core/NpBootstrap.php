@@ -1,7 +1,7 @@
 <?php
 require_once('NpConfig.php');
 require_once('NpRequest.php');
-require_once('NpReponse.php');
+require_once('NpResponse.php');
 require_once('NpController.php');
 
 class NpUndefinedException extends Exception {
