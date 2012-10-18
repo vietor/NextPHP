@@ -44,7 +44,7 @@ class NpResponse {
 	private static $_instance;
 	public static function getInstance() {
 		if(self::$_instance==null)
-			self::$_instance=new NpReponse();
+			self::$_instance=new NpResponse();
 		return self::$_instance;
 	}
 }
