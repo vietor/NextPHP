@@ -35,5 +35,9 @@ class NpDbConnection {
 	public function prepare($statement) {
 		return new NpDbCommand($this->pdo, $statement);
 	}
+
+	public function execute($statement, $variables=null) {
+		return $this->prepare($statement)->execute($variables);
+	}
 }
 ?>
