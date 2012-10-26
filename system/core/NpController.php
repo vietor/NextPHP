@@ -8,6 +8,13 @@ class NpController {
 		throw new NpPeacefulException();
 	}
 
+	public function beforeProcess() {
+		return true;
+	}
+
+	public function afterProcess() {
+	}
+
 	public static function getInstance($module, $action) {
 		if(!class_exists($module)) {
 			$module_file = NP_BASEPATH."application/controller/".$module.".php";

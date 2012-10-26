@@ -38,7 +38,12 @@ class NpBootstrap {
 	private function dispath($module,$action,$params) {
 		NpRequest::getInstance()->addParams($params);
 		$controller=NpController::getInstance($module,$action);
-		return $controller->$action();
+		$result=false;
+		if($controller->beforeProcess()) {
+			$result=$controller->$action();
+			$controller->afterProcess();
+		}
+		return $result;
 	}
 
 	private function handleRequest() {
