@@ -22,10 +22,12 @@ class NpResponse {
 		if(!is_null($contentType))
 			header('content-type: '.$contentType);
 		echo $content;
+		NpEnvironment::safetyExit();
 	}
 
 	public function location($url) {
 		header('Location: '.$contentType);
+		NpEnvironment::safetyExit();
 	}
 
 	public function htmlLocation($url) {
@@ -39,8 +41,9 @@ class NpResponse {
 		</script>
 		<body style="text-align: center; font-family: Arial, sans-serif;">Launching...</body>
 		</html>';
+		NpEnvironment::safetyExit();
 	}
-	
+
 	private static $_instance;
 	public static function getInstance() {
 		if(self::$_instance==null)
