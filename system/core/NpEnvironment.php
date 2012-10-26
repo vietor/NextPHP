@@ -13,9 +13,25 @@ class NpUndefinedException extends Exception {
 class NpPeacefulException extends Exception {
 }
 
-class NpEnvironment  {
+class Np {
+	public static function __callStatic($name, $arguments) {
+		if(method_exists('NpFactory', $name))
+			$target='NpFactory';
+		else if(method_exists('NpRequest', $name))
+			$target=NpRequest::getInstance();
+		else if(method_exists('NpResponse', $name))
+			$target=NpResponse::getInstance();
+		else if(method_exists('NpConfig', $name))
+			$target='NpConfig';
+		else
+			throw new NpUndefinedException('Not found fuzzy class method:'.$name);
 
-	private function __construct() {
+		return call_user_func_array(array($target, $name), $arguments);
+	}
+}
+
+class NpEnvironment  {
+	protected function __construct() {
 		set_exception_handler(array($this, 'handleException'));
 	}
 
@@ -35,27 +51,8 @@ class NpEnvironment  {
 		exit();
 	}
 
-	public static function safetyExit()
-	{
+	public static function safetyExit() {
 		throw new NpPeacefulException();
-	}
-
-	public static function callFuzzyMethod($name, $arguments) {
-		if(method_exists('NpFactory', $name))
-			$target='NpFactory';
-		else if(method_exists('NpRequest', $name))
-			$target=NpRequest::getInstance();
-		else if(method_exists('NpResponse', $name))
-			$target=NpResponse::getInstance();
-		else if(method_exists('NpConfig', $name))
-			$target='NpConfig';
-		else
-			throw new NpUndefinedException('Not found fuzzy class method:'.$name);
-
-		if(empty($arguments))
-			call_user_func(array($target, $name));
-		else
-			call_user_func_array(array($target, $name), $arguments);
 	}
 }
 

@@ -4,10 +4,6 @@ require_once('NpView.php');
 
 class NpController {
 
-	public static function __callStatic($name, $arguments) {
-		NpEnvironment::callFuzzyMethod($name, $arguments);
-	}
-
 	public function exitProcess() {
 		NpEnvironment::safetyExit();
 	}

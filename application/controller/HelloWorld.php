@@ -6,7 +6,7 @@ class HelloWorld extends NpController {
 		$request=NpRequest::getInstance();
 		$request->setSession(SESSION_KEY,__METHOD__.' at '.time());
 		$hostUrl=$request->getUrlByBackward();
-		NpReponse::getInstance()->output('<HTML>
+		Np::output('<HTML>
 				<BODY>
 				<center>'.__METHOD__.'</center><p><p>
 				<center><a href="Test2">To Test2</a></center><p><p>
@@ -16,10 +16,9 @@ class HelloWorld extends NpController {
 	}
 
 	public function Test2() {
-		$request=NpRequest::getInstance();
-		$sessionId=$request->getSessionId();
-		$sessionValue=$request->getSession(SESSION_KEY);
-		NpReponse::getInstance()->output('<HTML>
+		$sessionId=Np::getSessionId();
+		$sessionValue=Np::getSession(SESSION_KEY);
+		NpResponse::getInstance()->output('<HTML>
 				<BODY>
 				<center>'.__METHOD__.'</center><p><p>
 				<center>SessionId: '.$sessionId.'</center>
@@ -30,7 +29,7 @@ class HelloWorld extends NpController {
 
 	public function Test3() {
 		$request=NpRequest::getInstance();
-		$uniqueKey=NpFactory::getUniqueKey();
+		$uniqueKey=Np::getUniqueKey();
 		$view=NpView::loadView();
 		$view->assign('method', __METHOD__);
 		$view->assign('sessionId', $request->getSessionId());

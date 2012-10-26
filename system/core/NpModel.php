@@ -1,10 +1,6 @@
 <?php
 class NpModel {
 
-	public static function __callStatic($name, $arguments) {
-		NpEnvironment::callFuzzyMethod($name, $arguments);
-	}
-
 	private static $_models=array();
 
 	public static function loadModel($name) {
