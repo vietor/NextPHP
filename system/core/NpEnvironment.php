@@ -28,6 +28,14 @@ class Np {
 
 		return call_user_func_array(array($target, $name), $arguments);
 	}
+
+	public static function loadModel($name) {
+		return NpModel::loadModel($name);
+	}
+
+	public static function loadView($name='') {
+		return NpView::loadView($name);
+	}
 }
 
 class NpEnvironment  {
