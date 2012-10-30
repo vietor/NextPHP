@@ -67,8 +67,10 @@ class NpDbCommand {
 	}
 
 	public function execute($variables=null) {
-		if(!$this->queryExecute($variables))
-			return 0;
+		return $this->queryExecute($variables);
+	}
+
+	public function rowCount() {
 		return $this->pdoStmt->rowCount();
 	}
 
