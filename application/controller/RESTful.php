@@ -5,23 +5,23 @@ class RESTful extends NpController {
 			100002 => 'Perharps Database or Memcache has wrong',
 	);
 
-	protected function resultFailed($code) {
+	protected function terminateWithFailed($code) {
 		$result=array();
 		$result['error'] = $code;
 		$result['description'] = self::$errorMessage[$code];
 		NpResponse::getInstance()->output(json_encode($result), 'application/json');
-		$this->exitProcess();
-	}
-
-	protected function resultSuccessed($result) {
-		NpResponse::getInstance()->output(json_encode($result,true), 'application/json');
+		$this->terminateProcess();
 	}
 
 	protected function getParamOrFailed($param,$minLen=0) {
 		if(!NpRequest::getInstance()->hasParam($param,$minLen))
-			$this->resultFailed(100001);
+			$this->terminateWithFailed(100001);
 		else
 			return NpRequest::getInstance()->getParam($param);
+	}
+
+	public function afterProcess() {
+		NpResponse::getInstance()->output(json_encode($result,true), 'application/json');
 	}
 }
 ?>
