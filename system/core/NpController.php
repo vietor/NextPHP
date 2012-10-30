@@ -4,7 +4,7 @@ require_once('NpView.php');
 
 class NpController {
 
-	public function exitProcess() {
+	protected function exitProcess() {
 		NpEnvironment::safetyExit();
 	}
 
