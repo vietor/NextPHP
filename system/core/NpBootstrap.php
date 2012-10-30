@@ -6,11 +6,9 @@ class NpBootstrap extends NpEnvironment{
 	private function dispath($module,$action,$params) {
 		NpRequest::getInstance()->addParams($params);
 		$controller=NpController::getInstance($module,$action);
-		$result=false;
-		if($controller->beforeProcess()) {
-			$result=$controller->$action();
-			$controller->afterProcess();
-		}
+		$controller->beforeProcess();
+		$result=$controller->$action();
+		$controller->afterProcess();
 		return $result;
 	}
 

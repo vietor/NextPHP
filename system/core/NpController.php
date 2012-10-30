@@ -9,7 +9,6 @@ class NpController {
 	}
 
 	public function beforeProcess() {
-		return true;
 	}
 
 	public function afterProcess() {
