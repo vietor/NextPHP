@@ -17,6 +17,7 @@ class RESTful extends NpController {
 		$result['error'] = $code;
 		$result['timestamp'] = time();
 		$result['description'] = self::$errorMessage[$code];
+		NpResponse::getInstance()->noCache();
 		NpResponse::getInstance()->output(json_encode($result), 'application/json');
 		$this->terminateProcess();
 	}
@@ -34,6 +35,7 @@ class RESTful extends NpController {
 	}
 
 	public function afterProcess() {
+		NpResponse::getInstance()->noCache();
 		NpResponse::getInstance()->output(json_encode($this->result,true), 'application/json');
 	}
 }

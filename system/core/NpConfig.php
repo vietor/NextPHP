@@ -8,13 +8,13 @@ class NpConfig {
 		$config=new stdClass;
 		$config->domain     = $_SERVER['SERVER_NAME'];
 		$config->path       = '/';
-		$config->expire     = 14; //day
+		$config->expire     = 14 * 24 * 3600; // seconds
 		$_CONFIG->cookie=$config;
 		// unique
 		$config=new stdClass;
 		$config->mode       = 'aes'; // as: aes(32), 3des(16)
 		$config->secret     = 'b5ee4d5b4f59451431081b0246c57c7b';
-		$config->expire		= 0;
+		$config->expire		= 0; // seconds
 		$_CONFIG->unique=$config;
 		// database
 		$config=new stdClass;
