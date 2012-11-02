@@ -48,7 +48,7 @@ class NpRequest {
 	}
 
 	public function getUrlByHost($path='') {
-		return NP_BASEURL.$path;
+		return NP_URL_PATH.$path;
 	}
 
 	public function getUrlByBackward($path='',$backward=3) {
@@ -58,7 +58,7 @@ class NpRequest {
 		$url='';
 		for($i=0; $i<$count;++$i)
 			$url.=$array[$i].'/';
-		return NP_BASEURL.$url.$path;
+		return NP_URL_PATH.$url.$path;
 	}
 
 	public function hasParam($key, $minLen=0) {

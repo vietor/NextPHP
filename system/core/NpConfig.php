@@ -50,7 +50,7 @@ class NpConfig {
 		$config->timeZone    = 'UTC';
 		$_CONFIG->system    = $config;
 		// read custom config
-		$custom_file=NP_BASEPATH.'application/config.php';
+		$custom_file=NP_APP_PATH.'config.php';
 		if(file_exists($custom_file))
 			include($custom_file);
 		$this->configs=$_CONFIG;

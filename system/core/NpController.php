@@ -16,7 +16,7 @@ class NpController {
 
 	public static function getInstance($module, $action) {
 		if(!class_exists($module)) {
-			$module_file = NP_BASEPATH."application/controller/".$module.".php";
+			$module_file = NP_APP_PATH."controller/".$module.".php";
 			if(file_exists($module_file))
 				require_once($module_file);
 			if(!class_exists($module))

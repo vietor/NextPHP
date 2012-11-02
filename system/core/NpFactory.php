@@ -3,7 +3,7 @@ class NpFactory {
 
 	private static function newInstance($className, $args=null, $staticConstructor=false) {
 		if(!class_exists($className)){
-			require_once(NP_BASEPATH.'system/libs/'.$className.'.php');
+			require_once(NP_SYS_PATH.'libs/'.$className.'.php');
 			if(!class_exists($className))
 				throw new Exception('Not found class name {'.$className.'}');
 		}
@@ -66,7 +66,7 @@ class NpFactory {
 	}
 
 	public static function sendMail($toName, $toAddress, $subject, $body, $html=null) {
-		class_exists('PHPMailer') or require_once(NP_BASEPATH.'system/libs/Mailer/class.phpmailer.php');
+		class_exists('PHPMailer') or require_once(NP_SYS_PATH.'libs/Mailer/class.phpmailer.php');
 		$config=NpConfig::getConfig('mailer');
 		$mail=new PHPMailer();
 		$mail->IsSMTP();

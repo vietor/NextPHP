@@ -6,7 +6,7 @@ class NpModel {
 	public static function loadModel($name) {
 		if(!isset(self::$_models[$name])) {
 			if(!class_exists($name)){
-				require_once(NP_BASEPATH.'application/model/'.$name.'.php');
+				require_once(NP_APP_PATH.'model/'.$name.'.php');
 				if(!class_exists($name))
 					throw new NpUndefinedException('No found module: '.$name);
 			}
