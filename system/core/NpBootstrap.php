@@ -4,7 +4,7 @@ require_once('NpEnvironment.php');
 class NpBootstrap extends NpEnvironment{
 
 	private function dispath($module,$action,$params) {
-		NpRequest::getInstance()->addParams($params);
+		NpRequest::addParams($params);
 		$controller=NpController::getInstance($module,$action);
 		$controller->beforeProcess();
 		$result=$controller->$action();
