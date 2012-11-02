@@ -63,7 +63,7 @@ class NpRequest {
 
 	public static function hasParam($key, $minLen=0) {
 		$result=false;
-		$value=self::$getParam($key);
+		$value=self::getParam($key);
 		if(!is_null($value)) {
 			if($minLen>0)
 				$result=strlen($value)>=$minLen;
