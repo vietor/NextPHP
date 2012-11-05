@@ -1,14 +1,8 @@
 <?php
 
 class NpModelException extends Exception {
-	private $code;
-
 	public function __construct($code=0) {
-		$this->code=$code;
-	}
-
-	public function getCode() {
-		return $this->code;
+		parent::__construct('',$code);
 	}
 }
 
