@@ -3,7 +3,7 @@ class HelloWorld extends NpController {
 	const SESSION_KEY='test-session-key';
 
 	public function Test1() {
-		NpRequest::setSession(SESSION_KEY,__METHOD__.' at '.time());
+		NpRequest::setSession(self::SESSION_KEY,__METHOD__.' at '.time());
 		$hostUrl=NpRequest::getUrlByBackward();
 		NpResponse::output('<HTML>
 				<BODY>
@@ -19,7 +19,7 @@ class HelloWorld extends NpController {
 				<BODY>
 				<center>'.__METHOD__.'</center><p><p>
 				<center>SessionId: '.NpRequest::getSessionId().'</center>
-				<center>SessionValue: '.NpRequest::getSession(SESSION_KEY).'</center>
+				<center>SessionValue: '.NpRequest::getSession(self::SESSION_KEY).'</center>
 				</BODY>
 				</HTML>');
 	}
@@ -28,7 +28,7 @@ class HelloWorld extends NpController {
 		$view=NpView::loadView();
 		$view->assign('method', __METHOD__);
 		$view->assign('sessionId', NpRequest::getSessionId());
-		$view->assign('sessionValue', NpRequest::getSession(SESSION_KEY));
+		$view->assign('sessionValue', NpRequest::getSession(self::SESSION_KEY));
 		$view->assign('uniqueKey', NpFactory::getUniqueKey()->generate(NpRequest::getSessionId()));
 		return $view->getVariables();
 	}
