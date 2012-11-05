@@ -32,5 +32,13 @@ class HelloWorld extends NpController {
 		$view->assign('uniqueKey', NpFactory::getUniqueKey()->generate(NpRequest::getSessionId()));
 		return $view->getVariables();
 	}
+
+	protected function beforeProcess() {
+		echo __METHOD__.'-1111111';
+	}
+
+	protected function afterProcess() {
+		echo __METHOD__.'-2222222';
+	}
 }
 ?>

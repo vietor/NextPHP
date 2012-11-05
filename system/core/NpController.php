@@ -8,13 +8,26 @@ class NpController {
 		NpEnvironment::safetyExit();
 	}
 
-	public function beforeProcess() {
+	protected function beforeProcess() {
 	}
 
-	public function afterProcess() {
+	protected function afterProcess() {
 	}
 
-	public function afterModelTerminate($code) {
+	protected function afterModelTerminate($code) {
+	}
+
+	public function invokeAction($action) {
+		$result=null;
+		$this->beforeProcess();
+		try {
+			$result=$this->$action();
+			$this->afterProcess();
+		}
+		catch(NpModelException $e) {
+			$this->afterModelTerminate($e->getCode());
+		}
+		return $result;
 	}
 
 	public static function getInstance($module, $action) {
