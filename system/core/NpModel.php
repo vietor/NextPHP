@@ -1,5 +1,22 @@
 <?php
+
+class NpModelException extends Exception {
+	private $code;
+
+	public function __construct($code=0) {
+		$this->code=$code;
+	}
+
+	public function getCode() {
+		return $this->code;
+	}
+}
+
 class NpModel {
+
+	protected function terminate($code) {
+		throw new NpModelException($code);
+	}
 
 	private static $_models=array();
 

@@ -14,6 +14,9 @@ class NpController {
 	public function afterProcess() {
 	}
 
+	public function afterModelTerminate($code) {
+	}
+
 	public static function getInstance($module, $action) {
 		if(!class_exists($module)) {
 			$module_file = NP_APP_PATH."controller/".$module.".php";

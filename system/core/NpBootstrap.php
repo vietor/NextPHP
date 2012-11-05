@@ -7,8 +7,13 @@ class NpBootstrap extends NpEnvironment{
 		NpRequest::addParams($params);
 		$controller=NpController::getInstance($module,$action);
 		$controller->beforeProcess();
-		$result=$controller->$action();
-		$controller->afterProcess();
+		try {
+			$result=$controller->$action();
+			$controller->afterProcess();
+		}
+		catch(NpModelException $e) {
+			$controller->afterModelTerminate($e->getCode());
+		}
 		return $result;
 	}
 
