@@ -1,24 +1,56 @@
 <?php
-require_once('NpEnvironment.php');
+require_once('NpConfig.php');
+require_once('NpRequest.php');
+require_once('NpResponse.php');
+require_once('NpController.php');
 
-class NpBootstrap extends NpEnvironment{
+class NpCoreException extends Exception {
+	public function __construct($message='') {
+		parent::__construct($message);
+	}
+}
+
+class NpExitException extends Exception {
+}
+
+class NpBootstrap {
+	public function __construct() {
+		set_exception_handler(array($this, 'handleException'));
+	}
 
 	private function dispath($module,$action,$params) {
 		NpRequest::addParams($params);
 		$controller=NpController::getInstance($module,$action);
 		return $controller->invokeAction($action);
 	}
+	
+	public function handleException(Exception $e) {
+		if($e instanceof NpCoreException) {
+			$errorMessage=$e->getMessage();
+			if(!empty($errorMessage))
+				error_log($errorMessage);
+			header("HTTP/1.1 404 Not Found");
+			header("Status: 404 Not Found");
+		}
+		else if(!($e instanceof NpExitException)) {
+			error_log($e->getMessage().' '.$e->getTraceAsString());
+			header('HTTP/1.1 503 Service Temporarily Unavailable');
+			header('Status: 503 Service Temporarily Unavailable');
+		}
+		exit();
+	}
 
 	private function handleRequest() {
 		if(!isset($_GET['url']) || empty($_GET['url']))
-			throw new NpUndefinedException();
+			throw new NpCoreException();
+		
 		$url=$_GET['url'];
 		if(substr($url,0,1)=='/')
 			$url=substr($url,1);
 		$urlArray = array();
 		$urlArray = explode('/',$url);
 		if(count($urlArray)<2)
-			throw new NpUndefinedException();
+			throw new NpCoreException();
 		unset($url, $_GET['url']);
 
 		$module=$urlArray[0];

@@ -32,6 +32,10 @@ class HelloWorld extends NpController {
 		$view->assign('uniqueKey', NpFactory::getUniqueKey()->generate(NpRequest::getSessionId()));
 		return $view->getVariables();
 	}
+	
+	public function Test4() {
+		$this->terminate("1111111111");
+	}
 
 	protected function beforeProcess() {
 		echo __METHOD__.'-1111111';

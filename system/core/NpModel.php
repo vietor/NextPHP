@@ -19,7 +19,7 @@ class NpModel {
 			if(!class_exists($name)){
 				require_once(NP_APP_PATH.'model/'.$name.'.php');
 				if(!class_exists($name))
-					throw new NpUndefinedException('No found module: '.$name);
+					throw new NpCoreException('No found module: '.$name);
 			}
 			self::$_models[$name]=new $name();
 		}

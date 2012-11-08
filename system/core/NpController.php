@@ -4,8 +4,11 @@ require_once('NpView.php');
 
 class NpController {
 
-	protected function terminateProcess() {
-		NpEnvironment::safetyExit();
+	protected function terminate($message=null) {
+		if(empty($message))
+			throw new NpExitException();
+		else
+			throw new NpCoreException($message);
 	}
 
 	protected function beforeProcess() {
@@ -14,7 +17,7 @@ class NpController {
 	protected function afterProcess() {
 	}
 
-	protected function afterModelTerminate($code) {
+	protected function modelTerminate($code) {
 	}
 
 	public function invokeAction($action) {
@@ -25,7 +28,7 @@ class NpController {
 			$this->afterProcess();
 		}
 		catch(NpModelException $e) {
-			$this->afterModelTerminate($e->getCode());
+			$this->modelTerminate($e->getCode());
 		}
 		return $result;
 	}
@@ -36,12 +39,12 @@ class NpController {
 			if(file_exists($module_file))
 				require_once($module_file);
 			if(!class_exists($module))
-				throw new NpUndefinedException('No module: '.$module);
+				throw new NpCoreException('No module: '.$module);
 		}
 		$controller=new $module();
 		if(!method_exists($controller,$action)) {
 			unset($controller);
-			throw new NpUndefinedException('No action: '.$action.' in module: '.$module);
+			throw new NpCoreException('No action: '.$action.' in module: '.$module);
 		}
 		return $controller;
 	}

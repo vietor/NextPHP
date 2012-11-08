@@ -19,7 +19,7 @@ class RESTful extends NpController {
 		$result['description'] = self::$errorMessage[$code];
 		NpResponse::noCache();
 		NpResponse::output(json_encode($result), 'application/json');
-		$this->terminateProcess();
+		$this->terminate();
 	}
 
 	protected function getParamOrFailed($param,$minLen=0) {
