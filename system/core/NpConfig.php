@@ -2,7 +2,8 @@
 class NpConfig {
 	private $configs;
 
-	public function __construct() {
+	public function __construct()
+	{
 		$_CONFIG=new stdClass;
 		// cookie
 		$config=new stdClass;
@@ -60,14 +61,16 @@ class NpConfig {
 
 	private static $instance;
 
-	public static function execute() {
+	public static function execute()
+	{
 		if(is_null(self::$instance)) {
 			self::$instance=new NpConfig();
 			require_once('NpFactory.php');
 		}
 	}
 
-	public static function getConfig($key) {
+	public static function getConfig($key)
+	{
 		if(!property_exists(self::$instance->configs,$key))
 			throw new Exception('Not found config item:'.$key);
 		return self::$instance->configs->$key;

@@ -1,7 +1,8 @@
 <?php
-class NpFactory {
-
-	private static function newInstance($className, $args=null, $staticConstructor=false) {
+class NpFactory
+{
+	private static function newInstance($className, $args=null, $staticConstructor=false)
+	{
 		if(!class_exists($className)){
 			require_once(NP_SYS_PATH.'libs/'.$className.'.php');
 			if(!class_exists($className))
@@ -23,7 +24,8 @@ class NpFactory {
 	}
 
 	private static $_cache;
-	public static function getCache(){
+	public static function getCache()
+	{
 		if(self::$_cache==null){
 			$config=NpConfig::getConfig('cache');
 			if($config->type=='redis')
@@ -40,7 +42,8 @@ class NpFactory {
 	}
 
 	private static $_database;
-	public static function getDatabase(){
+	public static function getDatabase()
+	{
 		if(self::$_database==null){
 			$config=NpConfig::getConfig('database');
 			self::$_database= self::newInstance('NpDbConnection', array($config->type.':dbname='.$config->dbname.';host='.$config->host.';port='.$config->port.';charset='.$config->charset,$config->user,$config->passwd));
@@ -49,7 +52,8 @@ class NpFactory {
 	}
 
 	private static $_uniqueKey;
-	public static function getUniqueKey() {
+	public static function getUniqueKey()
+	{
 		if(self::$_uniqueKey==null){
 			$config=NpConfig::getConfig('unique');
 			self::$_uniqueKey=self::newInstance('NpUniqueKey', array($config->mode,$config->secret,$config->expire));
@@ -57,15 +61,18 @@ class NpFactory {
 		return self::$_uniqueKey;
 	}
 
-	public static function newWebRequest(){
+	public static function newWebRequest()
+	{
 		return self::newInstance('NpWebRequest');
 	}
 
-	public static function newCrypto($type){
+	public static function newCrypto($type)
+	{
 		return self::newInstance('NpCrypto', array($type));
 	}
 
-	public static function sendMail($toName, $toAddress, $subject, $body, $html=null) {
+	public static function sendMail($toName, $toAddress, $subject, $body, $html=null)
+	{
 		class_exists('PHPMailer') or require_once(NP_SYS_PATH.'libs/Mailer/class.phpmailer.php');
 		$config=NpConfig::getConfig('mailer');
 		$mail=new PHPMailer();
@@ -82,7 +89,7 @@ class NpFactory {
 		$mail->Subject=$subject;
 		if($html==null)
 			$mail->Body=$body;
-		else{
+		else {
 			$mail->AltBody=$body;
 			$mail->MsgHTML($html);
 		}

@@ -1,30 +1,37 @@
 <?php
-require_once('NpConfig.php');
-require_once('NpRequest.php');
-require_once('NpResponse.php');
-require_once('NpController.php');
+require_once 'NpConfig.php';
+require_once 'NpRequest.php';
+require_once 'NpResponse.php';
+require_once 'NpController.php';
 
-class NpCoreException extends Exception {
-	public function __construct($message='') {
+class NpCoreException extends Exception
+{
+	public function __construct($message='')
+	{
 		parent::__construct($message);
 	}
 }
 
-class NpExitException extends Exception {
+class NpExitException extends Exception
+{
 }
 
-class NpBootstrap {
-	public function __construct() {
+class NpBootstrap
+{
+	public function __construct()
+	{
 		set_exception_handler(array($this, 'handleException'));
 	}
 
-	private function dispath($module,$action,$params) {
+	private function dispath($module,$action,$params)
+	{
 		NpRequest::addParams($params);
 		$controller=NpController::getInstance($module,$action);
 		return $controller->invokeAction($action);
 	}
 	
-	public function handleException(Exception $e) {
+	public function handleException(Exception $e)
+	{
 		if($e instanceof NpCoreException) {
 			$errorMessage=$e->getMessage();
 			if(!empty($errorMessage))
@@ -40,7 +47,8 @@ class NpBootstrap {
 		exit();
 	}
 
-	private function handleRequest() {
+	private function handleRequest()
+	{
 		if(!isset($_GET['url']) || empty($_GET['url']))
 			throw new NpCoreException();
 		
@@ -78,7 +86,8 @@ class NpBootstrap {
 
 	private static $instance=null;
 
-	public static function execute($module=null,$action=null) {
+	public static function execute($module=null,$action=null)
+	{
 		if (get_magic_quotes_gpc ()) {
 			$in = array (&$_GET, &$_POST, &$_COOKIE, &$_FILES );
 			while ( (list ( $k, $v ) = each ( $in )) !== false ) {

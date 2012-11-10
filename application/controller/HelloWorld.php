@@ -1,8 +1,10 @@
 <?php
-class HelloWorld extends NpController {
+class HelloWorld extends NpController
+{
 	const SESSION_KEY='test-session-key';
 
-	public function Test1() {
+	public function Test1()
+	{
 		NpRequest::setSession(self::SESSION_KEY,__METHOD__.' at '.time());
 		$hostUrl=NpRequest::getUrlByBackward();
 		NpResponse::output('<HTML>
@@ -14,7 +16,8 @@ class HelloWorld extends NpController {
 				</HTML>');
 	}
 
-	public function Test2() {
+	public function Test2()
+	{
 		NpResponse::output('<HTML>
 				<BODY>
 				<center>'.__METHOD__.'</center><p><p>
@@ -24,7 +27,8 @@ class HelloWorld extends NpController {
 				</HTML>');
 	}
 
-	public function Test3() {
+	public function Test3()
+	{
 		$view=NpView::loadView();
 		$view->assign('method', __METHOD__);
 		$view->assign('sessionId', NpRequest::getSessionId());
@@ -33,16 +37,35 @@ class HelloWorld extends NpController {
 		return $view->getVariables();
 	}
 	
-	public function Test4() {
-		$this->terminate("1111111111");
+	public function Test4()
+	{
+		$model=NpModel::loadModel('HelloModel');
+		$model->test();
+	}
+	
+	public function Test5()
+	{
+		$view=NpView::loadView('HelloView');
+		$view->assign('method', __METHOD__);
+		$view->assign('sessionId', NpRequest::getSessionId());
+		$view->assign('sessionValue', NpRequest::getSession(self::SESSION_KEY));
+		$view->assign('uniqueKey', NpFactory::getUniqueKey()->generate(NpRequest::getSessionId()));
+		$view->display();
 	}
 
-	protected function beforeProcess() {
+	protected function beforeProcess()
+	{
 		echo __METHOD__.'-1111111';
 	}
 
-	protected function afterProcess() {
+	protected function afterProcess()
+	{
 		echo __METHOD__.'-2222222';
+	}
+	
+	protected function modelTerminate($code)
+	{		
+		$this->Test5();
 	}
 }
 ?>

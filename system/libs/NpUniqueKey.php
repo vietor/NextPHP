@@ -1,18 +1,21 @@
 <?php
-require_once('NpCrypto.php');
+require_once 'NpCrypto.php';
 
-class NpUniqueKey {
+class NpUniqueKey 
+{
 	private $crypto;
 	private $secret;
 	private $expire;
 
-	public function __construct($mode,$password,$expire) {
+	public function __construct($mode,$password,$expire)
+	{
 		$this->crypto=new NpCrypto($mode);
 		$this->secret=$password;
 		$this->expire=$expire;
 	}
 
-	public function generate($data, $bind='', $expire=0) {
+	public function generate($data, $bind='', $expire=0)
+	{
 		if($expire==0)
 			$expire=$this->expire;
 		$obj = new stdClass;
@@ -23,7 +26,8 @@ class NpUniqueKey {
 		return $this->crypto->encrypt($this->secret,json_encode($obj));
 	}
 
-	public function validate($key, $bind='') {
+	public function validate($key, $bind='')
+	{
 		$json=$this->crypto->decrypt($this->secret, $key);
 		if(!($obj=json_decode($json)))
 			return false;

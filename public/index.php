@@ -1,5 +1,5 @@
 <?php
-require_once('np-env.php');
+require_once 'np-env.php';
 extract(NpBootstrap::execute('HelloWorld','Test3'));
 ?>
 <HTML>

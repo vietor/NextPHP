@@ -1,5 +1,6 @@
 <?php
-class NpCrypto{
+class NpCrypto
+{
 	private static $cryptoSupport=array(
 			'aes'=>array(
 					'cipher'=>MCRYPT_RIJNDAEL_256,
@@ -13,21 +14,25 @@ class NpCrypto{
 
 	private $cryptoObj;
 
-	public function __construct($type) {
+	public function __construct($type)
+	{
 		if(!isset(self::$cryptoSupport[$type]))
 			throw new Exception('Unsupport crypto type:'.$type);
 		$this->cryptoObj=self::$cryptoSupport[$type];
 	}
 
-	public function encrypt($secret,$content){
+	public function encrypt($secret,$content)
+	{
 		return self::do_encrypt($this->cryptoObj['cipher'], $this->cryptoObj['mode'], $secret, $content);
 	}
 
-	public function decrypt($secret,$content){
+	public function decrypt($secret,$content)
+	{
 		return self::do_decrypt($this->cryptoObj['cipher'], $this->cryptoObj['mode'], $secret, $content);
 	}
 
-	private function do_encrypt($cipher,$mode,$secret,$value) {
+	private function do_encrypt($cipher,$mode,$secret,$value)
+	{
 		return self::base64_url_encode(
 				trim(
 						mcrypt_encrypt(
@@ -47,7 +52,8 @@ class NpCrypto{
 		);
 	}
 
-	private function do_decrypt($cipher,$mode,$secret,$value) {
+	private function do_decrypt($cipher,$mode,$secret,$value)
+	{
 		return trim(
 				mcrypt_decrypt(
 						$cipher,
@@ -65,11 +71,13 @@ class NpCrypto{
 		);
 	}
 
-	private static function base64_url_encode($input) {
+	private static function base64_url_encode($input)
+	{
 		return strtr(rtrim(base64_encode($input), '='), '+/', '-_');
 	}
 
-	private static function base64_url_decode($input) {
+	private static function base64_url_decode($input)
+	{
 		return base64_decode(strtr($input, '-_', '+/'));
 	}
 

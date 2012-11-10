@@ -1,20 +1,23 @@
 <?php
-
-class NpModelException extends Exception {
-	public function __construct($code=0) {
+class NpModelException extends Exception
+{
+	public function __construct($code=0)
+	{
 		parent::__construct('',$code);
 	}
 }
 
-class NpModel {
-
-	protected function terminate($code) {
+class NpModel
+{
+	protected function terminate($code)
+	{
 		throw new NpModelException($code);
 	}
 
 	private static $_models=array();
 
-	public static function loadModel($name) {
+	public static function loadModel($name)
+	{
 		if(!isset(self::$_models[$name])) {
 			if(!class_exists($name)){
 				require_once(NP_APP_PATH.'model/'.$name.'.php');

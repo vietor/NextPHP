@@ -1,16 +1,20 @@
 <?php
-class NpDbDataReader {
+class NpDbDataReader
+{
 	private $pdoStmt;
 
-	public function __construct($pdoStmt) {
+	public function __construct($pdoStmt)
+	{
 		$this->pdoStmt=$pdoStmt;
 	}
 
-	public function __destruct() {
+	public function __destruct()
+	{
 		close();
 	}
 
-	private function close() {
+	private function close()
+	{
 		if(is_null($this->pdoStmt))
 			return false;
 		$this->pdoStmt->closeCursor();
@@ -18,13 +22,15 @@ class NpDbDataReader {
 		$this->pdoStmt=null;
 	}
 
-	public function rowCount() {
+	public function rowCount()
+	{
 		if(is_null($this->pdoStmt))
 			return false;
 		return $this->pdoStmt->rowCount();
 	}
 
-	public function read($fetchAssociative=true,$className='') {
+	public function read($fetchAssociative=true,$className='')
+	{
 		if(is_null($this->pdoStmt))
 			return false;
 		if(!$fetchAssociative&&!empty($className))
@@ -36,7 +42,8 @@ class NpDbDataReader {
 		return $row;
 	}
 
-	public function readObject($className='stdClass') {
+	public function readObject($className='stdClass')
+	{
 		return $this->read(false,$className);
 	}
 }

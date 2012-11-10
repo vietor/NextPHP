@@ -1,13 +1,16 @@
 <?php
-class NpRequest {
+class NpRequest
+{
 	private static $params=array();
 	private static $sessionOn=false;
 
-	public static function addParams($params) {
+	public static function addParams($params)
+	{
 		self::$params=array_merge(self::$params,$params);
 	}
 
-	public static function getMethod() {
+	public static function getMethod()
+	{
 		return $_SERVER ['REQUEST_METHOD'];
 	}
 
@@ -20,19 +23,22 @@ class NpRequest {
 		}
 	}
 
-	public static function getSession($key,$defaultValue=null) {
+	public static function getSession($key,$defaultValue=null)
+	{
 		self::startSession();
 		if(!isset($_SESSION[$key]))
 			return $defaultValue;
 		return $_SESSION[$key];
 	}
 
-	public static function setSession($key,$value) {
+	public static function setSession($key,$value)
+	{
 		self::startSession();
 		return $_SESSION[$key]=$value;
 	}
 
-	public static function getSessionId() {
+	public static function getSessionId()
+	{
 		self::startSession();
 		return session_id();
 	}
@@ -42,16 +48,19 @@ class NpRequest {
 		unset($_SESSION[$key]);
 	}
 
-	public static function clearSession() {
+	public static function clearSession()
+	{
 		session_destroy();
 		self::$sessionOn=false;
 	}
 
-	public static function getUrlByHost($path='') {
+	public static function getUrlByHost($path='')
+	{
 		return NP_URL_PATH.$path;
 	}
 
-	public static function getUrlByBackward($path='',$backward=3) {
+	public static function getUrlByBackward($path='',$backward=3)
+	{
 		$array=explode('/',$_SERVER['REQUEST_URI']);
 		$count=count($array);
 		$count-=min($count,$backward);
@@ -61,7 +70,8 @@ class NpRequest {
 		return NP_URL_PATH.$url.$path;
 	}
 
-	public static function hasParam($key, $minLen=0) {
+	public static function hasParam($key, $minLen=0)
+	{
 		$result=false;
 		$value=self::getParam($key);
 		if(!is_null($value)) {
@@ -73,7 +83,8 @@ class NpRequest {
 		return $result;
 	}
 
-	public static function getParam($key,$defaultValue=null) {
+	public static function getParam($key,$defaultValue=null)
+	{
 		if(isset(self::$params[$key]))
 			$result=self::$params[$key];
 		else if(isset($_POST[$key]))
@@ -85,19 +96,22 @@ class NpRequest {
 		return $result;
 	}
 
-	public static function getCooke($key,$defaultValue=null) {
+	public static function getCooke($key,$defaultValue=null)
+	{
 		if(!isset($_COOKIE[$key]))
 			return $defaultValue;
 		return $_COOKIE[$key];
 	}
 
-	public static function uploadFile($key, $filename) {
+	public static function uploadFile($key, $filename)
+	{
 		if(!isset($_FILES[$key]))
 			return false;
 		return move_uploaded_file($_FILES[$key], $filename);
 	}
 
-	public static function getClientIp(){
+	public static function getClientIp()
+	{
 		if (!empty($_SERVER['HTTP_CLIENT_IP']))
 			$ip=$_SERVER['HTTP_CLIENT_IP'];
 		else if (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))

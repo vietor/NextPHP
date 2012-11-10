@@ -1,6 +1,6 @@
 <?php
-class NpResponse {
-
+class NpResponse 
+{
 	public static function noCache()
 	{
 		header("Expires: Mon, 26 Jul 1990 05:00:00 GMT");
@@ -10,7 +10,8 @@ class NpResponse {
 		header("Pragma: no-cache");
 	}
 
-	public static function setCookie ($name, $value, $expire=null, $path=null, $domain=null) {
+	public static function setCookie ($name, $value, $expire=null, $path=null, $domain=null)
+	{
 		$config = NpConfig::getConfig('cookie');
 		$expire = is_null($expire) ? (time()+$config->expire) : (time()+$expire);
 		$path = is_null($path) ? $config->path : $path;
@@ -18,17 +19,20 @@ class NpResponse {
 		setcookie($name, $value, $expire, $path, $domain);
 	}
 
-	public static function output($content, $contentType=null) {
+	public static function output($content, $contentType=null)
+	{
 		if(!is_null($contentType))
 			header('content-type: '.$contentType);
 		echo $content;
 	}
 
-	public static function location($url) {
+	public static function location($url)
+	{
 		header('Location: '.$contentType);
 	}
 
-	public static function htmlLocation($url) {
+	public static function htmlLocation($url)
+	{
 		echo '<!DOCTYPE html>
 		<html>
 		<head>

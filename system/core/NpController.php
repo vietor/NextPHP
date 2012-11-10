@@ -1,40 +1,45 @@
 <?php
-require_once('NpModel.php');
-require_once('NpView.php');
+require_once 'NpModel.php';
+require_once 'NpView.php';
 
-class NpController {
-
-	protected function terminate($message=null) {
+class NpController
+{
+	protected function terminate($message=null)
+	{
 		if(empty($message))
 			throw new NpExitException();
 		else
 			throw new NpCoreException($message);
 	}
 
-	protected function beforeProcess() {
+	protected function beforeProcess()
+	{
 	}
 
-	protected function afterProcess() {
+	protected function afterProcess()
+	{
 	}
 
-	protected function modelTerminate($code) {
+	protected function modelTerminate($code)
+	{
 		$this->terminate('Not implement modelTerminate, code='.$code);
 	}
 
-	public function invokeAction($action) {
+	public function invokeAction($action)
+	{
 		$result=null;
 		$this->beforeProcess();
 		try {
 			$result=$this->$action();
 			$this->afterProcess();
-		}
-		catch(NpModelException $e) {
+		} catch(NpModelException $e) {
 			$this->modelTerminate($e->getCode());
 		}
 		return $result;
 	}
 
-	public static function getInstance($module, $action) {
+	public static function getInstance($module, $action)
+	{
 		if(!class_exists($module)) {
 			$module_file = NP_APP_PATH."controller/".$module.".php";
 			if(file_exists($module_file))
