@@ -10,17 +10,17 @@ class NpView extends NpViewBase
 		$this->template=$template;
 	}
 
-	public function fetch($vars=null) 
+	public function fetch() 
 	{
-		extract($this->getVariables($vars));
+		extract($this->getVariables());
 		ob_start();
 		include($this->template);
 		return ob_get_clean();
 	}
 
-	public function display($vars=null) 
+	public function display() 
 	{
-		extract($this->getVariables($vars));
+		extract($this->getVariables());
 		include($this->template);
 	}
 

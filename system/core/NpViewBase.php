@@ -8,13 +8,16 @@ class NpViewBase
 		$this->variables[$name]=$value;
 	}
 
-	public function getVariables($vars=null)
+	protected function getVariables()
 	{
-		if(!is_null($vars) && is_array($vars))
-			$variables=array_merge($this->variables, $vars);
-		else
-			$variables=$this->variables;
-		return $variables;
+		return $this->variables;
+	}
+	
+	public function display()
+	{
+		foreach($this->variables as $k=>$v) {
+			$GLOBALS[$k] = $v;
+		}
 	}
 }
 ?>

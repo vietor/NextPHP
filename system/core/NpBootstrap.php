@@ -27,7 +27,12 @@ class NpBootstrap
 	{
 		NpRequest::addParams($params);
 		$controller=NpController::getInstance($module,$action);
-		return $controller->invokeAction($action);
+		$result=$controller->invokeAction($action);
+		if($result && is_object($result) && ($result instanceof NpViewBase)) {
+			$result->display();
+			$result=true;
+		}
+		return $result;
 	}
 	
 	public function handleException(Exception $e)
