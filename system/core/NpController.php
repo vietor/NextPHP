@@ -18,6 +18,7 @@ class NpController {
 	}
 
 	protected function modelTerminate($code) {
+		$this->terminate('Not implement modelTerminate, code='.$code);
 	}
 
 	public function invokeAction($action) {
