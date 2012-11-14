@@ -64,7 +64,7 @@ class NpBootstrap
 		$urlArray = explode('/',$url);
 		if(count($urlArray)<2)
 			throw new NpCoreException();
-		unset($url, $_GET['url']);
+		unset($url, $_GET['url'], $_REQUEST['url']);
 
 		$module=$urlArray[0];
 		$action=$urlArray[1];
