@@ -96,6 +96,11 @@ class NpRequest
 		return $result;
 	}
 
+	public static function getParamArray()
+	{
+		return array_merge(self::$params,$_GET,$_POST);
+	}
+
 	public static function getCooke($key,$defaultValue=null)
 	{
 		if(!isset($_COOKIE[$key]))
