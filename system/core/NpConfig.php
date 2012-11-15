@@ -49,7 +49,7 @@ class NpConfig {
 		// system
 		$config=new stdClass;
 		$config->timeZone        = 'UTC';
-		$config->stripNullParams = true;
+		$config->stripNullParams = false;
 		$_CONFIG->system    = $config;
 		// read custom config
 		$custom_file=NP_APP_PATH.'config.php';
