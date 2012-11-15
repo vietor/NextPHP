@@ -93,6 +93,8 @@ class NpBootstrap
 
 	public static function execute($module=null,$action=null)
 	{
+		NpConfig::execute();
+		
 		if (get_magic_quotes_gpc ()) {
 			$in = array (&$_GET, &$_POST, &$_COOKIE, &$_FILES );
 			while ( (list ( $k, $v ) = each ( $in )) !== false ) {
@@ -106,7 +108,18 @@ class NpBootstrap
 			}
 			unset ( $in );
 		}
-		NpConfig::execute();
+		if(NpConfig::getConfig('system')->stripNullParams) {
+			$in = array (&$_GET, &$_POST );
+			while ( (list ( $k, $v ) = each ( $in )) !== false ) {
+				foreach ( $v as $key => $val ) {
+					if( strlen($val) < 1 ) {
+						unset($in [$k] [$key]);
+						unset($_REQUEST[$key]);
+					}
+				}
+			}
+			unset ( $in );
+		}
 
 		if(is_null(self::$instance))
 			self::$instance=new NpBootstrap();

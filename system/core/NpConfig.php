@@ -48,7 +48,8 @@ class NpConfig {
 		$_CONFIG->mailer=$config;
 		// system
 		$config=new stdClass;
-		$config->timeZone    = 'UTC';
+		$config->timeZone        = 'UTC';
+		$config->stripNullParams = true;
 		$_CONFIG->system    = $config;
 		// read custom config
 		$custom_file=NP_APP_PATH.'config.php';
@@ -71,7 +72,7 @@ class NpConfig {
 
 	public static function getConfig($key)
 	{
-		if(!property_exists(self::$instance->configs,$key))
+		if(!isset(self::$instance->configs->$key))
 			throw new Exception('Not found config item:'.$key);
 		return self::$instance->configs->$key;
 	}
