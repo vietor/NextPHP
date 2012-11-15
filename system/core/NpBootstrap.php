@@ -108,7 +108,7 @@ class NpBootstrap
 			}
 			unset ( $in );
 		}
-		if(NpConfig::getConfig('system')->stripNullParams) {
+		if(NpConfig::get('system')->stripNullParams) {
 			$in = array (&$_GET, &$_POST );
 			while ( (list ( $k, $v ) = each ( $in )) !== false ) {
 				foreach ( $v as $key => $val ) {

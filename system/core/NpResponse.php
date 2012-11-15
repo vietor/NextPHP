@@ -12,7 +12,7 @@ class NpResponse
 
 	public static function setCookie ($name, $value, $expire=null, $path=null, $domain=null)
 	{
-		$config = NpConfig::getConfig('cookie');
+		$config = NpConfig::get('cookie');
 		$expire = is_null($expire) ? (time()+$config->expire) : (time()+$expire);
 		$path = is_null($path) ? $config->path : $path;
 		$domain = is_null($domain) ? $config->domain : $domain;

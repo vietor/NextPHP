@@ -70,7 +70,7 @@ class NpConfig {
 		}
 	}
 
-	public static function getConfig($key)
+	public static function get($key)
 	{
 		if(!isset(self::$instance->configs->$key))
 			throw new Exception('Not found config item:'.$key);

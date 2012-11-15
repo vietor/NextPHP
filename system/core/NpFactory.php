@@ -27,7 +27,7 @@ class NpFactory
 	public static function getCache()
 	{
 		if(self::$_cache==null){
-			$config=NpConfig::getConfig('cache');
+			$config=NpConfig::get('cache');
 			if($config->type=='redis')
 				$className='NpRedis';
 			else if($config->type=='memcache')
@@ -45,7 +45,7 @@ class NpFactory
 	public static function getDatabase()
 	{
 		if(self::$_database==null){
-			$config=NpConfig::getConfig('database');
+			$config=NpConfig::get('database');
 			self::$_database= self::newInstance('NpDbConnection', array($config->type.':dbname='.$config->dbname.';host='.$config->host.';port='.$config->port.';charset='.$config->charset,$config->user,$config->passwd));
 		}
 		return self::$_database;
@@ -55,7 +55,7 @@ class NpFactory
 	public static function getUniqueKey()
 	{
 		if(self::$_uniqueKey==null){
-			$config=NpConfig::getConfig('unique');
+			$config=NpConfig::get('unique');
 			self::$_uniqueKey=self::newInstance('NpUniqueKey', array($config->mode,$config->secret,$config->expire));
 		}
 		return self::$_uniqueKey;
@@ -74,7 +74,7 @@ class NpFactory
 	public static function sendMail($toName, $toAddress, $subject, $body, $html=null)
 	{
 		class_exists('PHPMailer') or require_once(NP_SYS_PATH.'libs/Mailer/class.phpmailer.php');
-		$config=NpConfig::getConfig('mailer');
+		$config=NpConfig::get('mailer');
 		$mail=new PHPMailer();
 		$mail->IsSMTP();
 		$mail->SMTPAuth=$config->SMTPAuth;
