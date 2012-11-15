@@ -70,17 +70,10 @@ class NpRequest
 		return NP_URL_PATH.$url.$path;
 	}
 
-	public static function hasParam($key, $minLen=0)
+	public static function hasParam($key,$minLen=1)
 	{
-		$result=false;
 		$value=self::getParam($key);
-		if(!is_null($value)) {
-			if($minLen>0)
-				$result=strlen($value)>=$minLen;
-			else
-				$result=true;
-		}
-		return $result;
+		return !is_null($value) && strlen($value)>=$minLen;
 	}
 
 	public static function getParam($key,$defaultValue=null)
