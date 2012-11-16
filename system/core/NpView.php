@@ -24,7 +24,7 @@ class NpView extends NpViewBase
 		include($this->template);
 	}
 
-	public static function loadView($name='') 
+	public static function load($name='') 
 	{
 		if($name=='')
 			return new NpViewBase();

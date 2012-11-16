@@ -29,7 +29,7 @@ class HelloWorld extends NpController
 
 	public function Test3()
 	{
-		$view=NpView::loadView();
+		$view=NpView::load();
 		$view->assign('method', __METHOD__);
 		$view->assign('sessionId', NpRequest::getSessionId());
 		$view->assign('sessionValue', NpRequest::getSession(self::SESSION_KEY));
@@ -39,13 +39,13 @@ class HelloWorld extends NpController
 	
 	public function Test4()
 	{
-		$model=NpModel::loadModel('HelloModel');
+		$model=NpModel::load('HelloModel');
 		$model->test();
 	}
 	
 	public function Test5()
 	{
-		$view=NpView::loadView('HelloView');
+		$view=NpView::load('HelloView');
 		$view->assign('method', __METHOD__);
 		$view->assign('sessionId', NpRequest::getSessionId());
 		$view->assign('sessionValue', NpRequest::getSession(self::SESSION_KEY));

@@ -16,7 +16,7 @@ class NpModel
 
 	private static $_models=array();
 
-	public static function loadModel($name)
+	public static function load($name)
 	{
 		if(!isset(self::$_models[$name])) {
 			if(!class_exists($name)){
