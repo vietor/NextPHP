@@ -1,19 +1,19 @@
 <?php
 require_once 'NpCache.php';
 
-class NpRedis implements NpCache 
+class NpRedis implements NpCache
 {
 	private $cache;
 	private $prefix;
 	private $timeout;
 
-	public function __construct($prefix,$timeout) 
+	public function __construct($prefix,$timeout)
 	{
 		$this->prefix=$prefix;
 		$this->timeout=$timeout;
 	}
 
-	public function __destruct() 
+	public function __destruct()
 	{
 		if(!is_null($this->cache)) {
 			$this->cache->close();
@@ -25,6 +25,16 @@ class NpRedis implements NpCache
 	{
 		$this->cache=new Redis();
 		return $this->cache->pconnect($host,$port);
+	}
+
+	public function inc($key, $value=1)
+	{
+		return $this->cache->incrBy($key, $value);
+	}
+
+	public function dec($key, $value=1)
+	{
+		return $this->cache->decrBy($key, $value);
 	}
 
 	public function get($key)

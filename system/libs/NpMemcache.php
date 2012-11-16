@@ -26,6 +26,16 @@ class NpMemcache implements NpCache
 		$this->cache=new Memcache();
 		return $this->cache->pconnect($host,$port);
 	}
+	
+	public function inc($key, $value=1)
+	{
+		return $this->cache->increment($key, $value);	
+	}
+	
+	public function dec($key, $value=1)
+	{
+		return $this->cache->decrement($key, $value);
+	}
 
 	public function get($key)
 	{
