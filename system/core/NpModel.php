@@ -19,11 +19,7 @@ class NpModel
 	public static function load($name)
 	{
 		if(!isset(self::$_models[$name])) {
-			if(!class_exists($name)){
-				require_once(NP_APP_PATH.'model/'.$name.'.php');
-				if(!class_exists($name))
-					throw new NpCoreException('No found module: '.$name);
-			}
+			require_once(NP_APP_PATH.'model/'.$name.'.php');
 			self::$_models[$name]=new $name();
 		}
 		return self::$_models[$name];
