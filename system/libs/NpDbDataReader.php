@@ -15,7 +15,7 @@ class NpDbDataReader
 
 	private function close()
 	{
-		if(is_null($this->pdoStmt))
+		if($this->pdoStmt===null)
 			return false;
 		$this->pdoStmt->closeCursor();
 		$this->pdoStmt=null;
@@ -24,14 +24,14 @@ class NpDbDataReader
 
 	public function rowCount()
 	{
-		if(is_null($this->pdoStmt))
+		if($this->pdoStmt===null)
 			return false;
 		return $this->pdoStmt->rowCount();
 	}
 
 	public function read($fetchAssociative=true,$className='')
 	{
-		if(is_null($this->pdoStmt))
+		if($this->pdoStmt===null)
 			return false;
 		if(!$fetchAssociative&&!empty($className))
 			$row=$this->pdoStmt->fetchObject($className);

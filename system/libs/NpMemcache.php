@@ -15,7 +15,7 @@ class NpMemcache implements NpCache
 
 	public function __destruct()
 	{
-		if(!is_null($this->cache)) {
+		if($this->cache!==null) {
 			$this->cache->close();
 			$this->cache=null;
 		}

@@ -25,7 +25,7 @@ class NpDbCommand
 	public function __construct($pdo, $statement=null)
 	{
 		$this->pdo=$pdo;
-		if(!is_null($statement))
+		if($statement!==null)
 			$this->prepare($statement);
 	}
 
@@ -37,7 +37,7 @@ class NpDbCommand
 
 	public function prepare($statement)
 	{
-		if(!is_null($this->pdoStmt))
+		if($this->pdoStmt!==null)
 			$this->pdoStmt=null;
 		$this->pdoStmt=$this->pdo->prepare($statement);
 		return $this;
@@ -45,9 +45,9 @@ class NpDbCommand
 
 	public function bindParam ($parameter, &$variable, $dataType=null)
 	{
-		if(is_null($this->pdoStmt))
+		if($this->pdoStmt===null)
 			return false;
-		if(is_null($dataType))
+		if($dataType===null)
 			$this->pdoStmt->bindParam($parameter, $variable, self::getPdoType(gettype($variable)));
 		else
 			$this->pdoStmt->bindParam($parameter, $variable, $dataType);
@@ -56,9 +56,9 @@ class NpDbCommand
 
 	public function bindValue ($parameter, $variable, $dataType=null)
 	{
-		if(is_null($this->pdoStmt))
+		if($this->pdoStmt===null)
 			return false;
-		if(is_null($dataType))
+		if($dataType===mull)
 			$this->pdoStmt->bindValue($parameter, $variable, self::getPdoType(gettype($variable)));
 		else
 			$this->pdoStmt->bindValue($parameter, $variable, $dataType);
@@ -86,16 +86,16 @@ class NpDbCommand
 
 	public function lastInsertId()
 	{
-		if(is_null($this->pdo))
+		if($this->pdo===null)
 			return false;
 		return $this->pdo->lastInsertId();
 	}
 
 	private function queryExecute($variables=null)
 	{
-		if(is_null($this->pdoStmt))
+		if($this->pdoStmt===null)
 			return false;
-		if(!is_null($variables))
+		if($variables!==null)
 			$this->bindValues($variables);
 		return $this->pdoStmt->execute();
 	}

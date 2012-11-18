@@ -9,14 +9,14 @@ class NpFactory
 				throw new Exception('Not found class name {'.$className.'}');
 		}
 		if($staticConstructor){
-			if(is_null($args))
+			if($args===null)
 				return call_user_func(array($className,"getInstance"));
 			else
 				return call_user_func_array(array($className,"getInstance"), $args);
 		}
 		else{
 			$reflection=new ReflectionClass($className);
-			if(is_null($args))
+			if($args===null)
 				return $reflection->newInstance();
 			else
 				return $reflection->newInstanceArgs($args);
@@ -26,7 +26,7 @@ class NpFactory
 	private static $_cache;
 	public static function getCache()
 	{
-		if(self::$_cache==null){
+		if(self::$_cache===null){
 			$config=NpConfig::get('cache');
 			if($config->type=='redis')
 				$className='NpRedis';
@@ -44,7 +44,7 @@ class NpFactory
 	private static $_database;
 	public static function getDatabase()
 	{
-		if(self::$_database==null){
+		if(self::$_database===null){
 			$config=NpConfig::get('database');
 			self::$_database= self::newInstance('NpDbConnection', array($config->type.':dbname='.$config->dbname.';host='.$config->host.';port='.$config->port.';charset='.$config->charset,$config->user,$config->passwd));
 		}
@@ -54,7 +54,7 @@ class NpFactory
 	private static $_uniqueKey;
 	public static function getUniqueKey()
 	{
-		if(self::$_uniqueKey==null){
+		if(self::$_uniqueKey===null){
 			$config=NpConfig::get('unique');
 			self::$_uniqueKey=self::newInstance('NpUniqueKey', array($config->mode,$config->secret,$config->expire));
 		}
