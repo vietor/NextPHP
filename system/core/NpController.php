@@ -40,13 +40,10 @@ class NpController
 
 	public static function getInstance($module, $action)
 	{
-		if(!class_exists($module)) {
-			$module_file = NP_APP_PATH."controller/".$module.".php";
-			if(file_exists($module_file))
-				require_once($module_file);
-			if(!class_exists($module))
-				throw new NpCoreException('No module: '.$module);
-		}
+		$moduleFile = NP_APP_PATH."controller/".$module.".php";
+		if(!file_exists($moduleFile))
+			throw new NpCoreException('No module: '.$module);
+		require_once($moduleFile);
 		$controller=new $module();
 		if(!method_exists($controller,$action)) {
 			unset($controller);
