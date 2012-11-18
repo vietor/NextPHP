@@ -1,5 +1,6 @@
 <?php
 require_once 'NpConfig.php';
+require_once 'NpFactory.php';
 require_once 'NpRequest.php';
 require_once 'NpResponse.php';
 require_once 'NpController.php';
@@ -54,28 +55,26 @@ class NpBootstrap
 
 	private function handleRequest()
 	{
-		if(!isset($_GET['url']) || empty($_GET['url']))
+		if(empty($_GET['url']))
 			throw new NpCoreException();
 		
-		$url=$_GET['url'];
-		if(substr($url,0,1)=='/')
-			$url=substr($url,1);
-		$urlArray = array();
-		$urlArray = explode('/',$url);
-		if(count($urlArray)<2)
+		$urlArray=array();
+		$urlArray=explode('/',$_GET['url']);
+		$urlArraySize=count($urlArray);
+		if($urlArraySize<2)
 			throw new NpCoreException();
-		unset($url, $_GET['url'], $_REQUEST['url']);
+		unset($_GET['url'], $_REQUEST['url']);
 
 		$module=$urlArray[0];
 		$action=$urlArray[1];
 		$key=null;
 		$params=array();
-		for($i=2;$i<count($urlArray);++$i) {
-			if(empty($urlArray[$i]))
-				continue;
-			if(is_null($key))
+		for($i=2;$i<$urlArraySize;++$i) {
+			if($key===null) {
+				if(empty($urlArray[$i]))
+					break;
 				$key=$urlArray[$i];
-			else {
+			} else {
 				$params[$key]=$urlArray[$i];
 				$key=null;
 			}
@@ -89,7 +88,7 @@ class NpBootstrap
 		return $this->dispath($module,$action,array());
 	}
 
-	private static $instance=null;
+	private static $instance;
 
 	public static function execute($module=null,$action=null)
 	{
@@ -121,9 +120,9 @@ class NpBootstrap
 			unset ( $in );
 		}
 
-		if(is_null(self::$instance))
+		if(self::$instance===null)
 			self::$instance=new NpBootstrap();
-		if(is_null($module) || is_null($action))
+		if($module===null || $action===null)
 			self::$instance->handleRequest();
 		else
 			return self::$instance->handleController($module,$action);
