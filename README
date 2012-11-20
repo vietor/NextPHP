@@ -5,8 +5,8 @@ NonePHP - A Anthoer PHP Framework
 directory copy to target environment.
 
 export archive file example:
-zip -r content.zip application public -x public/index.php
-zip -r framework.zip system public/index.php
+zip -r framework.zip system public/np-env.php public/np-services.php
+zip -r content.zip application public -x public/np-env.php public/np-services.php
 
 2. depends
 
@@ -56,17 +56,17 @@ server {
     listen       80;
     server_name  someone;
     
-	root   /var/www/someone;
+    root   /var/www/someone;
     index  index.html index.htm index.php;
 
-	location / {
-		rewrite ^(.*)$ /public/$1 break; 
-	}
-	location /public/ {
-	}
-	location /services/ {
-		rewrite ^/services/(.*)$ /public/np-services.php?url=$1 break;
-	}
+    location / {
+        rewrite ^(.*)$ /public/$1 break; 
+    }
+    location /public/ {
+    }
+    location /services/ {
+	rewrite ^/services/(.*)$ /public/np-services.php?url=$1 break;
+    }
 }
 
 
