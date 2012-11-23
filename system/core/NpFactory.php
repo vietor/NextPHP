@@ -40,6 +40,20 @@ class NpFactory
 		}
 		return self::$_cache;
 	}
+	
+	public static function getCacheDirect($type, $host, $port)
+	{
+		if($type=='redis')
+			$className='NpRedis';
+		else if($type=='memcache')
+			$className='NpMemcache';
+		else if($type=='memcached')
+			$className='NpMemcached';
+		else
+			throw new Exception('Unsupport cache type {'.$type.'}');
+		$config=NpConfig::get('cache');
+		return self::newInstance($className, array($host, $port, $config->prefix, $config->timeout), true);
+	}
 
 	private static $_database;
 	public static function getDatabase()
