@@ -29,12 +29,22 @@ class NpMemcache implements NpCache
 	
 	public function inc($key, $value=1)
 	{
-		return $this->cache->increment($key, $value);	
+		$result=$this->cache->increment($key, $value);
+		if(!$result) {
+			if($this->cache->set($key, $value))
+				$result=$value;
+		}
+		return $result;
 	}
 	
 	public function dec($key, $value=1)
 	{
-		return $this->cache->decrement($key, $value);
+		$result=$this->cache->decrement($key, $value);
+		if(!$result) {
+			if($this->cache->set($key, 0-$value))
+				$result=0-$value;
+		}
+		return $result;
 	}
 
 	public function get($key)
