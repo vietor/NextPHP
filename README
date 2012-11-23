@@ -1,4 +1,4 @@
-NonePHP - A Anthoer PHP Framework
+NextPHP - Lightweight PHP Framework
 
 1. install
 
@@ -13,7 +13,7 @@ zip -r content.zip application public -x public/np-env.php public/np-services.ph
 php-pdo
 php-mcrypt
 php-mysql or php-pgsql
-php-pecl-memcache or php-pecl-memcache or php-redis(https://github.com/nicolasff/phpredis)
+php-pecl-memcache or php-pecl-memcached or php-redis (https://github.com/nicolasff/phpredis)
 
 3. rewrite setting demo
 
