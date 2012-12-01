@@ -23,18 +23,6 @@ class NpBootstrap
 	{
 		set_exception_handler(array($this, 'handleException'));
 	}
-
-	private function dispath($module,$action,$params)
-	{
-		NpRequest::addParams($params);
-		$controller=NpController::getInstance($module,$action);
-		$result=$controller->invokeAction($action);
-		if($result && is_object($result) && ($result instanceof NpViewBase)) {
-			$result->display();
-			$result=true;
-		}
-		return $result;
-	}
 	
 	public function handleException(Exception $e)
 	{
@@ -79,13 +67,20 @@ class NpBootstrap
 				$key=null;
 			}
 		}
-		unset($urlArray);
-		$this->dispath($module,$action,$params);
+		if(count($params)>0)
+			NpRequest::addParams($params);
+		$this->handleController($module,$action);
 	}
 
 	private function handleController($module,$action)
 	{
-		return $this->dispath($module,$action,array());
+		$controller=NpController::getInstance($module,$action);
+		$result=$controller->invokeAction($action);
+		if($result && is_object($result) && ($result instanceof NpViewBase)) {
+			$result->display();
+			$result=true;
+		}
+		return $result;
 	}
 
 	private static $instance;
