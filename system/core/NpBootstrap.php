@@ -87,6 +87,9 @@ class NpBootstrap
 
 	public static function execute($module=null,$action=null)
 	{
+		if(self::$instance!==null)
+			throw new NpCoreException('Framework multiple entry');
+		
 		NpConfig::execute();
 		
 		if (get_magic_quotes_gpc ()) {
@@ -103,8 +106,7 @@ class NpBootstrap
 			unset ( $in );
 		}
 
-		if(self::$instance===null)
-			self::$instance=new NpBootstrap();
+		self::$instance=new NpBootstrap();
 		if($module===null || $action===null)
 			self::$instance->handleRequest();
 		else
