@@ -10,16 +10,42 @@ class NpFactory
 		}
 		if($staticConstructor){
 			if($args===null)
-				return call_user_func(array($className,"getInstance"));
-			else
-				return call_user_func_array(array($className,"getInstance"), $args);
-		}
-		else{
-			$reflection=new ReflectionClass($className);
+				return $className::getInstance();
+			else {
+				$argCount=count($args);
+				if($argCount==1)
+					return $className::getInstance($args[0]);
+				else if($argCount==2)
+					return $className::getInstance($args[0],$args[1]);
+				else if($argCount==3)
+					return $className::getInstance($args[0],$args[1],$args[2]);
+				else if($argCount==4)
+					return $className::getInstance($args[0],$args[1],$args[2],$args[3]);
+				else if($argCount==5)
+					return $className::getInstance($args[0],$args[1],$args[2],$args[3],$args[4]);
+				else
+					return call_user_func_array(array($className,"getInstance"), $args);
+			}
+		}else{
 			if($args===null)
-				return $reflection->newInstance();
-			else
-				return $reflection->newInstanceArgs($args);
+				return new $className;
+			else{
+				$argCount=count($args);
+				if($argCount==1)
+					return new $className($args[0]);
+				else if($argCount==2)
+					return new $className($args[0],$args[1]);
+				else if($argCount==3)
+					return new $className($args[0],$args[1],$args[2]);
+				else if($argCount==4)
+					return new $className($args[0],$args[1],$args[2],$args[3]);
+				else if($argCount==5)
+					return new $className($args[0],$args[1],$args[2],$args[3],$args[4]);
+				else {
+					$reflection=new ReflectionClass($className);
+					return $reflection->newInstanceArgs($args);
+				}
+			}
 		}
 	}
 
