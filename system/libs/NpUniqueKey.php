@@ -18,24 +18,24 @@ class NpUniqueKey
 	{
 		if($expire==0)
 			$expire=$this->expire;
-		$obj = new stdClass;
-		$obj->d = $data;
-		$obj->b = $bind;
-		$obj->e = $expire>0?time()+$expire:0;
-		$obj->u = uniqid(mt_rand(0, 65535),true);
+		$obj = array();
+		$obj['d'] = $data;
+		$obj['b'] = $bind;
+		$obj['e'] = $expire>0?time()+$expire:0;
+		$obj['u'] = uniqid(mt_rand(0, 65535),true);
 		return $this->crypto->encrypt($this->secret,json_encode($obj));
 	}
 
 	public function validate($key, $bind='')
 	{
 		$json=$this->crypto->decrypt($this->secret, $key);
-		if(!($obj=json_decode($json)))
+		if(!($obj=json_decode($json,true)))
 			return false;
-		if($obj->b != $bind)
+		if($obj['b'] != $bind)
 			return false;
-		if($obj->e>0 && time()>$obj->e)
+		if($obj['e']>0 && time()>$obj['e'])
 			return false;
-		return $obj->d;
+		return $obj['d'];
 	}
 }
 ?>
