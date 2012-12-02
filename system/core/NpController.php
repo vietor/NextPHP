@@ -25,7 +25,7 @@ class NpController
 		$this->terminate('Not implement modelTerminate, code='.$code);
 	}
 
-	public function invokeAction($action)
+	private function invokeAction($action)
 	{
 		$result=null;
 		$this->beforeProcess();
@@ -37,8 +37,8 @@ class NpController
 		}
 		return $result;
 	}
-
-	public static function getInstance($module, $action)
+	
+	public static function execute($module, $action)
 	{
 		$moduleFile = NP_APP_PATH."controller/".$module.".php";
 		if(!file_exists($moduleFile))
@@ -47,7 +47,7 @@ class NpController
 		$controller=new $module();
 		if(!method_exists($controller,$action))
 			throw new NpCoreException('No action: '.$action.' in module: '.$module);
-		return $controller;
+		return $controller->invokeAction($action);
 	}
 
 }

@@ -69,13 +69,12 @@ class NpBootstrap
 		}
 		if(count($params)>0)
 			NpRequest::addParams($params);
-		$this->handleController($module,$action);
+		$this->executeController($module,$action);
 	}
 
-	private function handleController($module,$action)
+	private function executeController($module,$action)
 	{
-		$controller=NpController::getInstance($module,$action);
-		$result=$controller->invokeAction($action);
+		$result=NpController::execute($module,$action);
 		if($result && is_object($result) && ($result instanceof NpViewBase)) {
 			$result->display();
 			$result=true;
@@ -110,7 +109,7 @@ class NpBootstrap
 		if($module===null || $action===null)
 			self::$instance->handleRequest();
 		else
-			return self::$instance->handleController($module,$action);
+			return self::$instance->executeController($module,$action);
 	}
 }
 ?>
