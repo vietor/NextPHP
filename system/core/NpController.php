@@ -45,10 +45,8 @@ class NpController
 			throw new NpCoreException('No module: '.$module);
 		require_once($moduleFile);
 		$controller=new $module();
-		if(!method_exists($controller,$action)) {
-			unset($controller);
+		if(!method_exists($controller,$action))
 			throw new NpCoreException('No action: '.$action.' in module: '.$module);
-		}
 		return $controller;
 	}
 

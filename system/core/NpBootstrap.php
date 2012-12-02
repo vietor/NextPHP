@@ -102,18 +102,6 @@ class NpBootstrap
 			}
 			unset ( $in );
 		}
-		if(NpConfig::get('system')->stripNullParams) {
-			$in = array (&$_GET, &$_POST );
-			while ( (list ( $k, $v ) = each ( $in )) !== false ) {
-				foreach ( $v as $key => $val ) {
-					if( strlen($val) < 1 ) {
-						unset($in [$k] [$key]);
-						unset($_REQUEST[$key]);
-					}
-				}
-			}
-			unset ( $in );
-		}
 
 		if(self::$instance===null)
 			self::$instance=new NpBootstrap();
