@@ -63,7 +63,7 @@ class NpConfig {
 	public static function get($key)
 	{
 		if(!isset(self::$configs->$key))
-			throw new Exception('Not found config item:'.$key);
+			throw new NpCoreException('Not found config item:'.$key);
 		return self::$configs->$key;
 	}
 }

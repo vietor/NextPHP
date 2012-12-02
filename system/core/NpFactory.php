@@ -3,11 +3,7 @@ class NpFactory
 {
 	private static function newInstance($className, $args=null, $staticConstructor=false)
 	{
-		if(!class_exists($className)){
-			require_once(NP_SYS_PATH.'libs/'.$className.'.php');
-			if(!class_exists($className))
-				throw new Exception('Not found class name {'.$className.'}');
-		}
+		class_exists($className) or require_once(NP_SYS_PATH.'libs/'.$className.'.php');
 		if($staticConstructor){
 			if($args===null)
 				return $className::getInstance();
@@ -28,7 +24,7 @@ class NpFactory
 			}
 		}else{
 			if($args===null)
-				return new $className;
+				return new $className();
 			else{
 				$argCount=count($args);
 				if($argCount==1)
@@ -54,14 +50,15 @@ class NpFactory
 	{
 		if(self::$_cache===null){
 			$config=NpConfig::get('cache');
-			if($config->type=='redis')
+			$type=$config->type;
+			if($type=='redis')
 				$className='NpRedis';
-			else if($config->type=='memcache')
+			else if($type=='memcache')
 				$className='NpMemcache';
-			else if($config->type=='memcached')
+			else if($type=='memcached')
 				$className='NpMemcached';
 			else
-				throw new Exception('Unsupport cache type {'.$config->type.'}');
+				throw new NpCoreException('Unsupport cache type {'.$type.'}');
 			self::$_cache=self::newInstance($className, array($config->host, $config->port, $config->prefix, $config->timeout), true);
 		}
 		return self::$_cache;
@@ -76,7 +73,7 @@ class NpFactory
 		else if($type=='memcached')
 			$className='NpMemcached';
 		else
-			throw new Exception('Unsupport cache type {'.$type.'}');
+			throw new NpCoreException('Unsupport cache type {'.$type.'}');
 		$config=NpConfig::get('cache');
 		return self::newInstance($className, array($host, $port, $config->prefix, $config->timeout), true);
 	}
