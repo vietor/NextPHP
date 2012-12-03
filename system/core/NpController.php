@@ -20,7 +20,7 @@ class NpController
 	{
 	}
 
-	protected function modelTerminate($code)
+	protected function onModelTerminate($code)
 	{
 		$this->terminate('Not implement modelTerminate, code='.$code);
 	}
@@ -33,7 +33,7 @@ class NpController
 			$result=$this->$action();
 			$this->afterProcess();
 		} catch(NpModelException $e) {
-			$this->modelTerminate($e->getCode());
+			$this->onModelTerminate($e->getCode());
 		}
 		return $result;
 	}
