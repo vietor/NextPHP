@@ -50,12 +50,22 @@ class NpVariableView extends NpViewFace
 	}
 }
 
+class NpOutputView extends NpViewFace
+{
+	public function display()
+	{
+		echo json_encode($this->getVariables());
+	}
+}
+
 class NpView
 {
 	public static function load($name='')
 	{
 		if($name=='')
 			return new NpVariableView();
+		else if($name=='output')
+			return new NpOutputView();
 		return new NpTempleteView(NP_APP_PATH.'view/'.$name.'.php');
 	}
 }
