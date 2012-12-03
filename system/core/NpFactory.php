@@ -50,7 +50,7 @@ class NpFactory
 	{
 		if(self::$_cache===null){
 			$config=NpConfig::get('cache');
-			$type=$config->type;
+			$type=$config['type'];
 			if($type=='redis')
 				$className='NpRedis';
 			else if($type=='memcache')
@@ -59,7 +59,7 @@ class NpFactory
 				$className='NpMemcached';
 			else
 				throw new NpCoreException('Unsupport cache type {'.$type.'}');
-			self::$_cache=self::newInstance($className, array($config->host, $config->port, $config->prefix, $config->timeout), true);
+			self::$_cache=self::newInstance($className, array($config['host'], $config['port'], $config['prefix'], $config['timeout']), true);
 		}
 		return self::$_cache;
 	}
@@ -75,7 +75,7 @@ class NpFactory
 		else
 			throw new NpCoreException('Unsupport cache type {'.$type.'}');
 		$config=NpConfig::get('cache');
-		return self::newInstance($className, array($host, $port, $config->prefix, $config->timeout), true);
+		return self::newInstance($className, array($host, $port, $config['prefix'], $config['timeout']), true);
 	}
 
 	private static $_database;
@@ -83,7 +83,7 @@ class NpFactory
 	{
 		if(self::$_database===null){
 			$config=NpConfig::get('database');
-			self::$_database= self::newInstance('NpDbConnection', array($config->type.':dbname='.$config->dbname.';host='.$config->host.';port='.$config->port.';charset='.$config->charset,$config->user,$config->passwd));
+			self::$_database= self::newInstance('NpDbConnection', array($config['type'].':dbname='.$config['dbname'].';host='.$config['host'].';port='.$config['port'].';charset='.$config['charset'],$config['user'],$config['passwd']));
 		}
 		return self::$_database;
 	}
@@ -93,7 +93,7 @@ class NpFactory
 	{
 		if(self::$_uniqueKey===null){
 			$config=NpConfig::get('unique');
-			self::$_uniqueKey=self::newInstance('NpUniqueKey', array($config->mode,$config->secret,$config->expire));
+			self::$_uniqueKey=self::newInstance('NpUniqueKey', array($config['mode'],$config['secret'],$config['expire']));
 		}
 		return self::$_uniqueKey;
 	}
@@ -114,14 +114,14 @@ class NpFactory
 		$config=NpConfig::get('mailer');
 		$mail=new PHPMailer();
 		$mail->IsSMTP();
-		$mail->SMTPAuth=$config->SMTPAuth;
-		$mail->SMTPSecure=$config->SMTPSecure;
-		$mail->Host=$config->Host;
-		$mail->Port=$config->Port;
-		$mail->Username=$config->Username;
-		$mail->Password=$config->Password;
-		$mail->SetFrom($config->FromAddress,$config->FromName);
-		$mail->AddReplyTo($config->FromAddress,$config->FromName);
+		$mail->SMTPAuth=$config['SMTPAuth'];
+		$mail->SMTPSecure=$config['SMTPSecure'];
+		$mail->Host=$config['Host'];
+		$mail->Port=$config['Port'];
+		$mail->Username=$config['Username'];
+		$mail->Password=$config['Password'];
+		$mail->SetFrom($config['FromAddress'],$config['FromName']);
+		$mail->AddReplyTo($config['FromAddress'],$config['FromName']);
 		$mail->AddAddress($toAddress,$toName);
 		$mail->Subject=$subject;
 		if($html==null)
