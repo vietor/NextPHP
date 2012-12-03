@@ -1,34 +1,62 @@
 <?php
-require_once 'NpViewBase.php';
+abstract class NpViewFace
+{
+	private $variables=array();
 
-class NpView extends NpViewBase 
+	public function assign($name,$value)
+	{
+		$this->variables[$name]=$value;
+	}
+
+	protected function getVariables()
+	{
+		return $this->variables;
+	}
+
+	abstract public function display();
+}
+
+class NpTempleteView extends NpViewFace
 {
 	private $template;
 
-	public function __construct($template) 
+	public function __construct($template)
 	{
 		$this->template=$template;
 	}
 
-	public function fetch() 
+	public function fetch()
 	{
 		extract($this->getVariables());
 		ob_start();
-		include($this->template);
+		@include($this->template);
 		return ob_get_clean();
 	}
 
-	public function display() 
+	public function display()
 	{
 		extract($this->getVariables());
-		include($this->template);
+		@include($this->template);
 	}
+}
 
-	public static function load($name='') 
+class NpVariableView extends NpViewFace
+{
+	public function display()
+	{
+		foreach($this->getVariables() as $k=>$v) {
+			$GLOBALS[$k] = $v;
+		}
+	}
+}
+
+class NpView
+{
+	public static function load($name='')
 	{
 		if($name=='')
-			return new NpViewBase();
-		return new NpView(NP_APP_PATH.'view/'.$name.'.php');
+			return new NpVariableView();
+		return new NpTempleteView(NP_APP_PATH.'view/'.$name.'.php');
 	}
 }
 ?>

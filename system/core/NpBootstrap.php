@@ -75,7 +75,7 @@ class NpBootstrap
 	private function executeController($module,$action)
 	{
 		$result=NpController::execute($module,$action);
-		if($result && is_object($result) && ($result instanceof NpViewBase)) {
+		if($result && is_object($result) && ($result instanceof NpViewFace)) {
 			$result->display();
 			$result=true;
 		}
