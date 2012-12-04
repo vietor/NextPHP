@@ -60,8 +60,8 @@ class NpOutputView extends NpViewFace
 
 class NpView
 {
-	const OUTPUT='output';
-	const VARIABLE='variable';
+	const OUTPUT='*output*';
+	const VARIABLE='*variable*';
 
 	public static function load($name=NpView::VARIABLE)
 	{
