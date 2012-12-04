@@ -60,12 +60,15 @@ class NpOutputView extends NpViewFace
 
 class NpView
 {
-	public static function load($name='')
+	const OUTPUT='output';
+	const VARIABLE='variable';
+
+	public static function load($name=NpView::VARIABLE)
 	{
-		if($name=='')
-			return new NpVariableView();
-		else if($name=='output')
+		if($name==self::OUTPUT)
 			return new NpOutputView();
+		else if($name==self::VARIABLE)
+			return new NpVariableView();
 		return new NpTempleteView(NP_APP_PATH.'view/'.$name.'.php');
 	}
 }
