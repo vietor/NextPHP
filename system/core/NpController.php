@@ -12,7 +12,7 @@ class NpController
 			throw new NpCoreException($message);
 	}
 
-	protected function beforeProcess()
+	protected function beforeProcess($action)
 	{
 	}
 
@@ -28,7 +28,7 @@ class NpController
 	private function invokeAction($action)
 	{
 		$result=null;
-		$this->beforeProcess();
+		$this->beforeProcess($action);
 		try {
 			$result=$this->$action();
 			$this->afterProcess();
