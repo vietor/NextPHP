@@ -29,12 +29,12 @@ class NpRedis implements NpCache
 
 	public function inc($key, $value=1)
 	{
-		return $this->cache->incrBy($key, $value);
+		return $this->cache->incrBy($this->prefix.$key, $value);
 	}
 
 	public function dec($key, $value=1)
 	{
-		return $this->cache->decrBy($key, $value);
+		return $this->cache->decrBy($this->prefix.$key, $value);
 	}
 
 	public function get($key)
