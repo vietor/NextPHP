@@ -21,9 +21,10 @@ class NpMemcached implements NpCache
 
 	public function inc($key, $value=1)
 	{
-		$result=$this->cache->increment($this->prefix.$key, $value);
+		$key=$this->prefix.$key;
+		$result=$this->cache->increment($key, $value);
 		if(!$result) {
-			if($this->cache->set($this->prefix.$key, $value))
+			if($this->cache->set($key, $value))
 				$result=$value;
 		}
 		return $result;
@@ -31,9 +32,10 @@ class NpMemcached implements NpCache
 
 	public function dec($key, $value=1)
 	{
-		$result=$this->cache->decrement($this->prefix.$key, $value);
+		$key=$this->prefix.$key;
+		$result=$this->cache->decrement($key, $value);
 		if(!$result) {
-			if($this->cache->set($this->prefix.$key, 0-$value))
+			if($this->cache->set($key, 0-$value))
 				$result=0-$value;
 		}
 		return $result;
@@ -41,22 +43,25 @@ class NpMemcached implements NpCache
 
 	public function get($key)
 	{
-		return $this->cache->get($this->prefix.$key);
+		$key=$this->prefix.$key;
+		return $this->cache->get($key);
 	}
 
 	public function set($key,$value,$timeout=0)
 	{
+		$key=$this->prefix.$key;
 		if($timeout==0){
 			$timeout=$this->timeout;
 			if($timeout==0)
-				return $this->cache->set($this->prefix.$key, $value);
+				return $this->cache->set($key, $value);
 		}
-		return $this->cache->set($this->prefix.$key, $value, $timeout);
+		return $this->cache->set($key, $value, $timeout);
 	}
 
 	public function delete($key)
 	{
-		return $this->cache->delete($this->prefix.$key);
+		$key=$this->prefix.$key;
+		return $this->cache->delete($key);
 	}
 
 	public static function getInstance($host, $port, $prefix, $timeout)
