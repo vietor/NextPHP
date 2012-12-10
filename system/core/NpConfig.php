@@ -27,7 +27,6 @@ class NpConfig {
 			$config['passwd']     = '';
 			$config['dbname']     = 'mysql';
 			$config['charset']    = 'utf8';
-			$config['persistent'] = false;
 			$_CONFIG['database']=$config;
 			// cache
 			$config=array();

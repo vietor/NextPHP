@@ -5,9 +5,9 @@ class NpDbConnection
 {
 	private $pdo;
 
-	public function __construct($dsn,$username,$password,$persistent=false)
+	public function __construct($dsn,$username,$password)
 	{
-		$this->pdo=new PDO($dsn,$username,$password,array(PDO::ATTR_PERSISTENT=>$persistent));
+		$this->pdo=new PDO($dsn,$username,$password,array(PDO::ATTR_PERSISTENT=>true));
 	}
 
 	public function __destruct()
