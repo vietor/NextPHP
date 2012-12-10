@@ -1,144 +1,99 @@
 <?php
-require_once 'NpDbDataReader.php';
-
 class NpDbCommand
-{
+{	
 	const VAR_INT=PDO::PARAM_INT;
 	const VAR_STR=PDO::PARAM_STR;
 	const VAR_BOOL=PDO::PARAM_BOOL;
 	const VAR_NULL=PDO::PARAM_NULL;
 
-	public static function getPdoType($type)
+	private static function getPdoType($type)
 	{
 		static $map=array(
-				'boolean'=>PDO::PARAM_BOOL,
-				'integer'=>PDO::PARAM_INT,
-				'string'=>PDO::PARAM_STR,
-				'NULL'=>PDO::PARAM_NULL,
+			'boolean'=>PDO::PARAM_BOOL,
+			'integer'=>PDO::PARAM_INT,
+			'string'=>PDO::PARAM_STR,
+			'NULL'=>PDO::PARAM_NULL,
 		);
-		return isset($map[$type]) ? $map[$type] : PDO::PARAM_STR;
+		return isset($map[$type])?$map[$type]:PDO::PARAM_STR;
 	}
 
-	private $pdo;
 	private $pdoStmt;
+	private $isExecuted;
 
-	public function __construct($pdo, $statement=null)
+	public function __construct($pdoStmt)
 	{
-		$this->pdo=$pdo;
-		if($statement!==null)
-			$this->prepare($statement);
+		$this->pdoStmt=$pdoStmt;
+		$this->isExecuted=false;
 	}
 
 	public function __destruct()
 	{
-		$this->pdo=null;
+		if($this->isExecuted)
+			$this->pdoStmt->closeCursor();
 		$this->pdoStmt=null;
-	}
-
-	public function prepare($statement)
-	{
-		if($this->pdoStmt!==null)
-			$this->pdoStmt=null;
-		$this->pdoStmt=$this->pdo->prepare($statement);
-		return $this;
-	}
-
-	public function bindParam ($parameter, &$variable, $dataType=null)
-	{
-		if($this->pdoStmt===null)
-			return false;
-		if($dataType===null)
-			$this->pdoStmt->bindParam($parameter, $variable, self::getPdoType(gettype($variable)));
-		else
-			$this->pdoStmt->bindParam($parameter, $variable, $dataType);
-		return $this;
-	}
-
-	public function bindValue ($parameter, $variable, $dataType=null)
-	{
-		if($this->pdoStmt===null)
-			return false;
-		if($dataType===mull)
-			$this->pdoStmt->bindValue($parameter, $variable, self::getPdoType(gettype($variable)));
-		else
-			$this->pdoStmt->bindValue($parameter, $variable, $dataType);
-		return $this;
-	}
-
-	private function bindValues($variables)
-	{
-		foreach($variables as $name=>$value) {
-			if(is_int($name))
-				$name=$name+1;
-			$this->pdoStmt->bindValue($name,$value,self::getPdoType(gettype($value)));
-		}
 	}
 
 	public function execute($variables=null)
 	{
-		return $this->queryExecute($variables);
+		if($this->isExecuted) {
+			$this->isExecuted=false;
+			$this->pdoStmt->closeCursor();
+		}
+		if($variables!==null) {
+			foreach($variables as $name=>$value) {
+				if(is_int($name))
+					$name=$name+1;
+				$this->pdoStmt->bindParam($name,$value,self::getPdoType(gettype($value)));
+			}
+		}
+		if($this->pdoStmt->execute())
+			$this->isExecuted=true;
+		return $this->isExecuted;
+	}
+	
+	public function query($variables=null)
+	{
+		$this->execute($variables);
+		return $this;
 	}
 
 	public function rowCount()
 	{
+		if(!$this->isExecuted)
+			return 0;
 		return $this->pdoStmt->rowCount();
 	}
 
-	public function lastInsertId()
+	public function fetch($fetchAssociative=true, $className='')
 	{
-		if($this->pdo===null)
-			return false;
-		return $this->pdo->lastInsertId();
-	}
-
-	private function queryExecute($variables=null)
-	{
-		if($this->pdoStmt===null)
-			return false;
-		if($variables!==null)
-			$this->bindValues($variables);
-		return $this->pdoStmt->execute();
-	}
-
-	public function queryReader($variables=null)
-	{
-		if(!$this->queryExecute($variables))
-			return false;
-		return new NpDbDataReader($this->pdoStmt);
-	}
-
-	public function queryRow($variables=null,$fetchAssociative=true, $className='')
-	{
-		if(!$this->queryExecute($variables))
+		if(!$this->isExecuted)
 			return false;
 		if(!$fetchAssociative&&!empty($className))
 			$result=$this->pdoStmt->fetchObject($className);
 		else
 			$result=$this->pdoStmt->fetch($fetchAssociative?PDO::FETCH_ASSOC:PDO::FETCH_NUM);
-		$this->pdoStmt->closeCursor();
 		return $result;
 	}
 
-	public function queryObject($variables=null,$className='stdClass')
+	public function fetchObject($className='stdClass')
 	{
-		return $this->queryRow($variables,false,$className);
+		return $this->fetch(false,$className);
 	}
 
-	public function queryAll($variables=null,$fetchAssociative=true, $className='')
+	public function fetchAll($fetchAssociative=true, $className='')
 	{
-		if(!$this->queryExecute($variables))
+		if(!$this->isExecuted)
 			return false;
 		if(!$fetchAssociative&&!empty($className))
 			$result=$this->pdoStmt->fetchAll(PDO::FETCH_CLASS, $className);
 		else
 			$result=$this->pdoStmt->fetchAll($fetchAssociative?PDO::FETCH_ASSOC:PDO::FETCH_NUM);
-		$this->pdoStmt->closeCursor();
 		return $result;
 	}
 
-	public function queryObjectAll($variables=null,$className='stdClass')
+	public function fetchAllObject($className='stdClass')
 	{
-		return $this->queryAll($variables,false,$className);
+		return $this->fetchAll(false,$className);
 	}
 }
 ?>

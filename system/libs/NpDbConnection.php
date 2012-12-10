@@ -5,10 +5,9 @@ class NpDbConnection
 {
 	private $pdo;
 
-	public function __construct($dsn='',$username='',$password='')
+	public function __construct($dsn,$username,$password,$persistent=false)
 	{
-		$this->pdo=new PDO($dsn,$username,$password);
-		$this->pdo->setAttribute(PDO::ATTR_PERSISTENT,true);
+		$this->pdo=new PDO($dsn,$username,$password,array(PDO::ATTR_PERSISTENT=>$persistent));
 	}
 
 	public function __destruct()
@@ -18,12 +17,12 @@ class NpDbConnection
 
 	public function beginTransaction()
 	{
-		$this->pdo->beginTransaction();
+		return $this->pdo->beginTransaction();
 	}
 
 	public function inTransaction()
 	{
-		$this->pdo->inTransaction();
+		return $this->pdo->inTransaction();
 	}
 
 	public function endTransaction($rollBack=false)
@@ -34,19 +33,15 @@ class NpDbConnection
 			$this->pdo->commit();
 	}
 
-	public function command()
-	{
-		return new NpDbCommand($this->pdo);
-	}
-
 	public function prepare($statement)
 	{
-		return new NpDbCommand($this->pdo, $statement);
+		return new NpDbCommand($this->pdo->prepare($statement));
 	}
 
-	public function execute($statement, $variables=null)
+	public function lastInsertId()
 	{
-		return $this->prepare($statement)->execute($variables);
+		return $this->pdo->lastInsertId();
 	}
+
 }
 ?>
