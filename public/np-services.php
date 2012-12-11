@@ -1,4 +1,4 @@
 <?php
 require_once 'np-env.php';
-NpBootstrap::execute(); // Execute MVC mode
+NpFramework::execute(); // Execute MVC mode
 ?>

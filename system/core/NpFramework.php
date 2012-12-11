@@ -17,7 +17,7 @@ class NpExitException extends Exception
 {
 }
 
-class NpBootstrap
+class NpFramework
 {
 	public function __construct()
 	{

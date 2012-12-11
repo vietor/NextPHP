@@ -1,6 +1,6 @@
 <?php
 require_once 'np-env.php';
-NpBootstrap::execute('HelloWorld','Test3');
+NpFramework::execute('HelloWorld','Test3');
 ?>
 <HTML>
 <BODY>
