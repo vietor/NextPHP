@@ -105,7 +105,7 @@ class NpFramework
 			unset ( $in );
 		}
 
-		self::$instance=new NpBootstrap();
+		self::$instance=new NpFramework();
 		if($module===null || $action===null)
 			self::$instance->handleRequest();
 		else
