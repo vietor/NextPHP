@@ -40,10 +40,10 @@ class NpDbCommand
 			$this->pdoStmt->closeCursor();
 		}
 		if($variables!==null) {
-			foreach($variables as $name=>$value) {
+			foreach($variables as $name=>&$value) {
 				if(is_int($name))
 					$name=$name+1;
-				$this->pdoStmt->bindValue($name,$value,self::getPdoType(gettype($value)));
+				$this->pdoStmt->bindParam($name,$value,self::getPdoType(gettype($value)));
 			}
 		}
 		if($this->pdoStmt->execute())
