@@ -43,7 +43,7 @@ class NpDbCommand
 			foreach($variables as $name=>$value) {
 				if(is_int($name))
 					$name=$name+1;
-				$this->pdoStmt->bindParam($name,$value,self::getPdoType(gettype($value)));
+				$this->pdoStmt->bindValue($name,$value,self::getPdoType(gettype($value)));
 			}
 		}
 		if($this->pdoStmt->execute())
