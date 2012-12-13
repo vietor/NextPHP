@@ -2,9 +2,9 @@
 class NpConfig {
 	private static $configs;
 
-	public static function execute()
+	public static function load()
 	{
-		if(self::$configs===null) {			
+		if(self::$configs===null) {
 			$_CONFIG=array();
 			// cookie
 			$config=array();

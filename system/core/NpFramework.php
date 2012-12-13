@@ -17,30 +17,25 @@ class NpExitException extends Exception
 {
 }
 
+function NpExceptionHandler(Exception $e)
+{
+	if($e instanceof NpCoreException) {
+		$errorMessage=$e->getMessage();
+		if(!empty($errorMessage))
+			error_log($errorMessage);
+		header("HTTP/1.1 404 Not Found");
+		header("Status: 404 Not Found");
+	}
+	else if(!($e instanceof NpExitException)) {
+		error_log($e->getMessage().' '.$e->getTraceAsString());
+		header('HTTP/1.1 503 Service Temporarily Unavailable');
+		header('Status: 503 Service Temporarily Unavailable');
+	}
+	exit();
+}
+
 class NpFramework
 {
-	public function __construct()
-	{
-		set_exception_handler(array($this, 'handleException'));
-	}
-	
-	public function handleException(Exception $e)
-	{
-		if($e instanceof NpCoreException) {
-			$errorMessage=$e->getMessage();
-			if(!empty($errorMessage))
-				error_log($errorMessage);
-			header("HTTP/1.1 404 Not Found");
-			header("Status: 404 Not Found");
-		}
-		else if(!($e instanceof NpExitException)) {
-			error_log($e->getMessage().' '.$e->getTraceAsString());
-			header('HTTP/1.1 503 Service Temporarily Unavailable');
-			header('Status: 503 Service Temporarily Unavailable');
-		}
-		exit();
-	}
-
 	private function handleRequest()
 	{
 		if(empty($_GET['url']))
@@ -89,7 +84,7 @@ class NpFramework
 		if(self::$instance!==null)
 			throw new NpCoreException('Framework multiple entry');
 		
-		NpConfig::execute();
+		set_exception_handler('NpExceptionHandler');
 		
 		if (get_magic_quotes_gpc ()) {
 			$in = array (&$_GET, &$_POST, &$_COOKIE, &$_FILES );
@@ -104,7 +99,8 @@ class NpFramework
 			}
 			unset ( $in );
 		}
-
+		
+		NpConfig::load();
 		self::$instance=new NpFramework();
 		if($module===null || $action===null)
 			self::$instance->handleRequest();
