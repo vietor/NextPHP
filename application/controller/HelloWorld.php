@@ -6,7 +6,7 @@ class HelloWorld extends NpController
 	public function Test1()
 	{
 		NpRequest::setSession(self::SESSION_KEY,__METHOD__.' at '.time());
-		$hostUrl=NpRequest::getUrlByBackward();
+		$hostUrl=NpRequest::getBaseUrl();
 		NpResponse::output('<HTML>
 				<BODY>
 				<center>'.__METHOD__.'</center><p><p>
