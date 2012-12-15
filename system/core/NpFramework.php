@@ -7,10 +7,6 @@ require_once 'NpController.php';
 
 class NpCoreException extends Exception
 {
-	public function __construct($message='')
-	{
-		parent::__construct($message);
-	}
 }
 
 class NpExitException extends Exception
@@ -21,10 +17,15 @@ function NpExceptionHandler(Exception $e)
 {
 	if($e instanceof NpCoreException) {
 		$errorMessage=$e->getMessage();
-		if(!empty($errorMessage))
+		if(!empty($errorMessage)) {
 			error_log($errorMessage);
-		header("HTTP/1.1 404 Not Found");
-		header("Status: 404 Not Found");
+			header("HTTP/1.1 403 Forbidden");
+			header("Status: ".$errorMessage);
+		}
+		else {
+			header("HTTP/1.1 404 Not Found");
+			header("Status: 404 Not Found");
+		}
 	}
 	else if(!($e instanceof NpExitException)) {
 		error_log($e->getMessage().' '.$e->getTraceAsString());
@@ -38,15 +39,15 @@ class NpFramework
 {
 	private function handleRequest()
 	{
-		if(empty($_GET['url']))
+		if(empty($_GET[NP_REQUEST_KEY]))
 			throw new NpCoreException();
-		
+
 		$urlArray=array();
-		$urlArray=explode('/',$_GET['url']);
+		$urlArray=explode('/',$_GET[NP_REQUEST_KEY]);
 		$urlArraySize=count($urlArray);
 		if($urlArraySize<2)
 			throw new NpCoreException();
-		unset($_GET['url'], $_REQUEST['url']);
+		unset($_GET[NP_REQUEST_KEY], $_REQUEST[NP_REQUEST_KEY]);
 
 		$module=$urlArray[0];
 		$action=$urlArray[1];
@@ -83,9 +84,10 @@ class NpFramework
 	{
 		if(self::$instance!==null)
 			throw new NpCoreException('Framework multiple entry');
-		
+
 		set_exception_handler('NpExceptionHandler');
-		
+		defined('NP_REQUEST_KEY') or define('NP_REQUEST_KEY','url');
+
 		if (get_magic_quotes_gpc ()) {
 			$in = array (&$_GET, &$_POST, &$_COOKIE, &$_FILES );
 			while ( (list ( $k, $v ) = each ( $in )) !== false ) {
@@ -99,7 +101,7 @@ class NpFramework
 			}
 			unset ( $in );
 		}
-		
+
 		NpConfig::load();
 		self::$instance=new NpFramework();
 		if($module===null || $action===null)
