@@ -1,7 +1,7 @@
 <?php
 class NpFactory
 {
-	private static function newInstance($className, $args=null, $staticConstructor=false)
+	private static function createObject($className, $args=null, $staticConstructor=false)
 	{
 		class_exists($className) or require_once(NP_SYS_PATH.'libs/'.$className.'.php');
 		if($staticConstructor){
@@ -59,7 +59,7 @@ class NpFactory
 				$className='NpMemcached';
 			else
 				throw new NpCoreException('Unsupport cache type {'.$type.'}');
-			self::$_cache=self::newInstance($className, array($config['host'], $config['port'], $config['prefix'], $config['timeout']), true);
+			self::$_cache=self::createObject($className, array($config['host'], $config['port'], $config['prefix'], $config['timeout']), true);
 		}
 		return self::$_cache;
 	}
@@ -75,7 +75,7 @@ class NpFactory
 		else
 			throw new NpCoreException('Unsupport cache type {'.$type.'}');
 		$config=NpConfig::get('cache');
-		return self::newInstance($className, array($host, $port, $config['prefix'], $config['timeout']), true);
+		return self::createObject($className, array($host, $port, $config['prefix'], $config['timeout']), true);
 	}
 
 	private static $_database;
@@ -83,7 +83,7 @@ class NpFactory
 	{
 		if(self::$_database===null){
 			$config=NpConfig::get('database');
-			self::$_database= self::newInstance('NpDbConnection', array($config['type'].':dbname='.$config['dbname'].';host='.$config['host'].';port='.$config['port'].';charset='.$config['charset'],$config['user'],$config['passwd']));
+			self::$_database=self::createObject('NpDbConnection', array($config['type'].':dbname='.$config['dbname'].';host='.$config['host'].';port='.$config['port'].';charset='.$config['charset'],$config['user'],$config['passwd']));
 		}
 		return self::$_database;
 	}
@@ -93,19 +93,19 @@ class NpFactory
 	{
 		if(self::$_uniqueKey===null){
 			$config=NpConfig::get('unique');
-			self::$_uniqueKey=self::newInstance('NpUniqueKey', array($config['mode'],$config['secret'],$config['expire']));
+			self::$_uniqueKey=self::createObject('NpUniqueKey', array($config['mode'],$config['secret'],$config['expire']));
 		}
 		return self::$_uniqueKey;
 	}
 
 	public static function newWebRequest()
 	{
-		return self::newInstance('NpWebRequest');
+		return self::createObject('NpWebRequest');
 	}
 
 	public static function newCrypto($type)
 	{
-		return self::newInstance('NpCrypto', array($type));
+		return self::createObject('NpCrypto', array($type));
 	}
 }
 ?>
