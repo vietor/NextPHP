@@ -107,30 +107,5 @@ class NpFactory
 	{
 		return self::newInstance('NpCrypto', array($type));
 	}
-
-	public static function sendMail($toName, $toAddress, $subject, $body, $html=null)
-	{
-		class_exists('PHPMailer') or require_once(NP_SYS_PATH.'libs/Mailer/class.phpmailer.php');
-		$config=NpConfig::get('mailer');
-		$mail=new PHPMailer();
-		$mail->IsSMTP();
-		$mail->SMTPAuth=$config['SMTPAuth'];
-		$mail->SMTPSecure=$config['SMTPSecure'];
-		$mail->Host=$config['Host'];
-		$mail->Port=$config['Port'];
-		$mail->Username=$config['Username'];
-		$mail->Password=$config['Password'];
-		$mail->SetFrom($config['FromAddress'],$config['FromName']);
-		$mail->AddReplyTo($config['FromAddress'],$config['FromName']);
-		$mail->AddAddress($toAddress,$toName);
-		$mail->Subject=$subject;
-		if($html==null)
-			$mail->Body=$body;
-		else {
-			$mail->AltBody=$body;
-			$mail->MsgHTML($html);
-		}
-		return $mail->Send();
-	}
 }
 ?>

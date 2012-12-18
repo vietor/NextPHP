@@ -36,17 +36,6 @@ class NpConfig {
 			$config['prefix']     = '';
 			$config['timeout']	= 0; // seconds
 			$_CONFIG['cache']=$config;
-			// mailer
-			$config=array();
-			$config['SMTPAuth']   = true;
-			$config['SMTPSecure'] = 'ssl';
-			$config['Host']       = 'smtp.gmail.com';
-			$config['Port']       = 465;
-			$config['Username']   = 'yourusername@gmail.com';
-			$config['Password']   = 'yourpassword';
-			$config['FromName']   = 'First Last';
-			$config['FromAddress'] = 'name@yourdomain.com';
-			$_CONFIG['mailer']=$config;
 			// system
 			$config=array();
 			$config['timeZone']   = 'UTC';
