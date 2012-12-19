@@ -50,32 +50,15 @@ class NpFactory
 	{
 		if(self::$_cache===null){
 			$config=NpConfig::get('cache');
-			$type=$config['type'];
-			if($type=='redis')
-				$className='NpRedis';
-			else if($type=='memcache')
-				$className='NpMemcache';
-			else if($type=='memcached')
-				$className='NpMemcached';
-			else
-				throw new NpCoreException('Unsupport cache type {'.$type.'}');
-			self::$_cache=self::createObject($className, array($config['host'], $config['port'], $config['prefix'], $config['timeout']), true);
+			self::$_cache=self::createObject('NpCache', array($config['type'], $config['host'], $config['port'], $config['prefix'], $config['timeout']), true);
 		}
 		return self::$_cache;
 	}
 	
 	public static function getCacheDirect($type, $host, $port)
 	{
-		if($type=='redis')
-			$className='NpRedis';
-		else if($type=='memcache')
-			$className='NpMemcache';
-		else if($type=='memcached')
-			$className='NpMemcached';
-		else
-			throw new NpCoreException('Unsupport cache type {'.$type.'}');
 		$config=NpConfig::get('cache');
-		return self::createObject($className, array($host, $port, $config['prefix'], $config['timeout']), true);
+		return self::createObject('NpCache', array($type, $host, $port, $config['prefix'], $config['timeout']), true);
 	}
 
 	private static $_database;
