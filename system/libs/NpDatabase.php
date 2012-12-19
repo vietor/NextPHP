@@ -1,5 +1,5 @@
 <?php
-class NpDbCommand
+class NpDatabaseCommand
 {	
 	const VAR_INT=PDO::PARAM_INT;
 	const VAR_STR=PDO::PARAM_STR;
@@ -94,6 +94,49 @@ class NpDbCommand
 	public function fetchAllObject($className='stdClass')
 	{
 		return $this->fetchAll(false,$className);
+	}
+}
+
+class NpDatabase
+{
+	private $pdo;
+
+	public function __construct($dsn,$username,$password)
+	{
+		$this->pdo=new PDO($dsn,$username,$password,array(PDO::ATTR_PERSISTENT=>true));
+	}
+
+	public function __destruct()
+	{
+		$this->pdo=null;
+	}
+
+	public function beginTransaction()
+	{
+		return $this->pdo->beginTransaction();
+	}
+
+	public function inTransaction()
+	{
+		return $this->pdo->inTransaction();
+	}
+
+	public function endTransaction($rollBack=false)
+	{
+		if($rollBack)
+			$this->pdo->rollBack();
+		else
+			$this->pdo->commit();
+	}
+
+	public function prepare($statement)
+	{
+		return new NpDatabaseCommand($this->pdo->prepare($statement));
+	}
+
+	public function lastInsertId()
+	{
+		return $this->pdo->lastInsertId();
 	}
 }
 ?>

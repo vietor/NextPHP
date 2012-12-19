@@ -83,7 +83,7 @@ class NpFactory
 	{
 		if(self::$_database===null){
 			$config=NpConfig::get('database');
-			self::$_database=self::createObject('NpDbConnection', array($config['type'].':dbname='.$config['dbname'].';host='.$config['host'].';port='.$config['port'].';charset='.$config['charset'],$config['user'],$config['passwd']));
+			self::$_database=self::createObject('NpDatabase', array($config['type'].':dbname='.$config['dbname'].';host='.$config['host'].';port='.$config['port'].';charset='.$config['charset'],$config['user'],$config['passwd']));
 		}
 		return self::$_database;
 	}
