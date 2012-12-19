@@ -1,25 +1,25 @@
 <?php
-interface NpCacheFace
+abstract class NpAbstractCache
 {
-	public function inc($key, $value);
-	public function dec($key, $value);
-	public function get($key);
-	public function set($key,$value,$timeout);
-	public function delete($key);
-}
-
-class NpMemcache implements NpCacheFace
-{
-	private $cache;
-	private $prefix;
-	private $timeout;
-
+	protected $cache;
+	protected $prefix;
+	protected $timeout;
+	
 	public function __construct($prefix,$timeout)
 	{
 		$this->prefix=$prefix;
 		$this->timeout=$timeout;
 	}
+	
+	public abstract function inc($key, $value);
+	public abstract function dec($key, $value);
+	public abstract function get($key);
+	public abstract function set($key,$value,$timeout);
+	public abstract function delete($key);
+}
 
+class NpMemcache extends NpAbstractCache
+{
 	public function __destruct()
 	{
 		if($this->cache!==null) {
@@ -80,50 +80,16 @@ class NpMemcache implements NpCacheFace
 	}
 }
 
-class NpMemcached implements NpCacheFace
+class NpMemcached extends NpMemcache
 {
-	private $cache;
-	private $prefix;
-	private $timeout;
-
-	public function __construct($prefix,$timeout)
-	{
-		$this->prefix=$prefix;
-		$this->timeout=$timeout;
+	public function __destruct()
+	{		
 	}
-
+	
 	public function connect($host, $port)
 	{
 		$this->cache=new Memcached();
 		return $this->cache->addServer($host,$port);
-	}
-
-	public function inc($key, $value=1)
-	{
-		$key=$this->prefix.$key;
-		$result=$this->cache->increment($key, $value);
-		if(!$result) {
-			if($this->cache->set($key, $value))
-				$result=$value;
-		}
-		return $result;
-	}
-
-	public function dec($key, $value=1)
-	{
-		$key=$this->prefix.$key;
-		$result=$this->cache->decrement($key, $value);
-		if(!$result) {
-			if($this->cache->set($key, 0-$value))
-				$result=0-$value;
-		}
-		return $result;
-	}
-
-	public function get($key)
-	{
-		$key=$this->prefix.$key;
-		return $this->cache->get($key);
 	}
 
 	public function set($key,$value,$timeout=0)
@@ -136,26 +102,10 @@ class NpMemcached implements NpCacheFace
 		}
 		return $this->cache->set($key, $value, $timeout);
 	}
-
-	public function delete($key)
-	{
-		$key=$this->prefix.$key;
-		return $this->cache->delete($key);
-	}
 }
 
-class NpRedis implements NpCacheFace
+class NpRedis extends NpAbstractCache
 {
-	private $cache;
-	private $prefix;
-	private $timeout;
-
-	public function __construct($prefix,$timeout)
-	{
-		$this->prefix=$prefix;
-		$this->timeout=$timeout;
-	}
-
 	public function __destruct()
 	{
 		if($this->cache!==null) {
