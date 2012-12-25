@@ -14,7 +14,9 @@ class NpRequest
 	public static function getBaseUrl()
 	{
 		if(self::$basePath===null) {
-			if(isset($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!="off")
+			if(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS']==="on"||$_SERVER['HTTPS']===1))
+				$protocol="https";
+			else if(isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT']==='443')
 				$protocol="https";
 			else
 				$protocol="http";
