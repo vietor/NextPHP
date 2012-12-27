@@ -1,6 +1,6 @@
 <?php
 class NpDatabaseCommand
-{	
+{
 	const VAR_INT=PDO::PARAM_INT;
 	const VAR_STR=PDO::PARAM_STR;
 	const VAR_BOOL=PDO::PARAM_BOOL;
@@ -9,10 +9,10 @@ class NpDatabaseCommand
 	private static function getPdoType($type)
 	{
 		static $map=array(
-			'boolean'=>PDO::PARAM_BOOL,
-			'integer'=>PDO::PARAM_INT,
-			'string'=>PDO::PARAM_STR,
-			'NULL'=>PDO::PARAM_NULL,
+				'boolean'=>PDO::PARAM_BOOL,
+				'integer'=>PDO::PARAM_INT,
+				'string'=>PDO::PARAM_STR,
+				'NULL'=>PDO::PARAM_NULL,
 		);
 		return isset($map[$type])?$map[$type]:PDO::PARAM_STR;
 	}
@@ -50,7 +50,7 @@ class NpDatabaseCommand
 			$this->isExecuted=true;
 		return $this->isExecuted;
 	}
-	
+
 	public function query($variables=null)
 	{
 		$this->execute($variables);
@@ -95,6 +95,16 @@ class NpDatabaseCommand
 	{
 		return $this->fetchAll(false,$className);
 	}
+
+	public function errorCode()
+	{
+		return $this->pdoStmt->errorCode();
+	}
+
+	public function errorInfo()
+	{
+		return $this->pdoStmt->errorInfo();
+	}
 }
 
 class NpDatabase
@@ -137,6 +147,16 @@ class NpDatabase
 	public function lastInsertId()
 	{
 		return $this->pdo->lastInsertId();
+	}
+
+	public function errorCode()
+	{
+		return $this->pdo->errorCode();
+	}
+
+	public function errorInfo()
+	{
+		return $this->pdo->errorInfo();
 	}
 }
 ?>
