@@ -15,6 +15,7 @@ abstract class NpAbstractCache
 	public abstract function dec($key, $value);
 	public abstract function get($key);
 	public abstract function set($key,$value,$timeout);
+	public abstract function setNoExists($key,$value,$timeout);
 	public abstract function delete($key);
 }
 
@@ -72,6 +73,17 @@ class NpMemcache extends NpAbstractCache
 		}
 		return $this->cache->set($key, $value, 0, $timeout);
 	}
+	
+	public function setNoExists($key,$value,$timeout=0)
+	{
+		$key=$this->prefix.$key;
+		if($timeout==0) {
+			$timeout=$this->timeout;
+			if($timeout==0)
+				return $this->cache->add($key, $value);
+		}
+		return $this->cache->add($key, $value, 0, $timeout);
+	}
 
 	public function delete($key)
 	{
@@ -101,6 +113,17 @@ class NpMemcached extends NpMemcache
 				return $this->cache->set($key, $value);
 		}
 		return $this->cache->set($key, $value, $timeout);
+	}
+	
+	public function setNoExists($key,$value,$timeout=0)
+	{
+		$key=$this->prefix.$key;
+		if($timeout==0) {
+			$timeout=$this->timeout;
+			if($timeout==0)
+				return $this->cache->add($key, $value);
+		}
+		return $this->cache->add($key, $value, $timeout);
 	}
 }
 
@@ -147,6 +170,17 @@ class NpRedis extends NpAbstractCache
 				return $this->cache->set($key, $value);
 		}
 		return $this->cache->setex($key, $timeout, $value);
+	}
+	
+	public function setNoExists($key,$value,$timeout=0)
+	{
+		$key=$this->prefix.$key;
+		if($timeout==0)
+			$timeout=$this->timeout;
+		$result=$this->cache->setnx($key, $value);
+		if($result && $timeout>0)
+			$this->cache->setTimeout($timeout);
+		return $result;
 	}
 
 	public function delete($key)
