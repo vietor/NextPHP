@@ -4,18 +4,18 @@ abstract class NpAbstractCache
 	protected $cache;
 	protected $prefix;
 	protected $timeout;
-	
+
 	public function __construct($prefix,$timeout)
 	{
 		$this->prefix=$prefix;
 		$this->timeout=$timeout;
 	}
-	
+
 	public abstract function inc($key, $value);
 	public abstract function dec($key, $value);
 	public abstract function get($key);
 	public abstract function set($key,$value,$timeout);
-	public abstract function setNoExists($key,$value,$timeout);
+	public abstract function setNoKey($key,$value,$timeout);
 	public abstract function delete($key);
 }
 
@@ -73,8 +73,8 @@ class NpMemcache extends NpAbstractCache
 		}
 		return $this->cache->set($key, $value, 0, $timeout);
 	}
-	
-	public function setNoExists($key,$value,$timeout=0)
+
+	public function setNoKey($key,$value,$timeout=0)
 	{
 		$key=$this->prefix.$key;
 		if($timeout==0) {
@@ -95,9 +95,9 @@ class NpMemcache extends NpAbstractCache
 class NpMemcached extends NpMemcache
 {
 	public function __destruct()
-	{		
+	{
 	}
-	
+
 	public function connect($host, $port)
 	{
 		$this->cache=new Memcached();
@@ -114,8 +114,8 @@ class NpMemcached extends NpMemcache
 		}
 		return $this->cache->set($key, $value, $timeout);
 	}
-	
-	public function setNoExists($key,$value,$timeout=0)
+
+	public function setNoKey($key,$value,$timeout=0)
 	{
 		$key=$this->prefix.$key;
 		if($timeout==0) {
@@ -171,8 +171,8 @@ class NpRedis extends NpAbstractCache
 		}
 		return $this->cache->setex($key, $timeout, $value);
 	}
-	
-	public function setNoExists($key,$value,$timeout=0)
+
+	public function setNoKey($key,$value,$timeout=0)
 	{
 		$key=$this->prefix.$key;
 		if($timeout==0)
@@ -202,7 +202,7 @@ class NpCache
 			$className='NpMemcached';
 		else
 			throw new Exception('Unsupport cache type {'.$type.'}');
-		
+
 		$instance=new $className($prefix,$timeout);
 		if(!$instance->connect($host, $port))
 			throw new Exception($type.' cannot connect');
