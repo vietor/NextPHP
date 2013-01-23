@@ -24,17 +24,28 @@ class NpController
 	{
 		$this->terminate('Not implement modelTerminate, code='.$code);
 	}
+	
+	protected function onActionComplete()
+	{
+	}
 
 	private function invokeAction($action)
 	{
 		$result=null;
-		$this->beforeProcess($action);
-		try {
-			$result=$this->$action();
-			$this->afterProcess();
-		} catch(NpModelException $e) {
-			$this->onModelTerminate($e->getCode());
+		try
+		{
+			$this->beforeProcess($action);
+			try {
+				$result=$this->$action();
+				$this->afterProcess();
+			} catch(NpModelException $e) {
+				$this->onModelTerminate($e->getCode());
+			}
+		} catch(Exception $e) {
+			$this->onActionComplete();
+			throw $e;
 		}
+		$this->onActionComplete();
 		return $result;
 	}
 	
