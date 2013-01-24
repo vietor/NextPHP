@@ -20,12 +20,12 @@ class NpController
 	{
 	}
 
-	protected function onModelTerminate($code)
+	protected function handleProcessBreak($modelTerminateCode)
 	{
-		$this->terminate('Not implement modelTerminate, code='.$code);
+		$this->terminate('Not implement handleProcessBreak, code='.$modelTerminateCode);
 	}
 	
-	protected function onActionComplete()
+	protected function handleProcessCleanup()
 	{
 	}
 
@@ -42,10 +42,10 @@ class NpController
 				$this->onModelTerminate($e->getCode());
 			}
 		} catch(Exception $e) {
-			$this->onActionComplete();
+			$this->handleProcessCleanup();
 			throw $e;
 		}
-		$this->onActionComplete();
+		$this->handleProcessCleanup();
 		return $result;
 	}
 	

@@ -63,7 +63,7 @@ class HelloWorld extends NpController
 		echo __METHOD__.'-2222222';
 	}
 	
-	protected function modelTerminate($code)
+	protected function handleProcessBreak($code)
 	{		
 		$this->Test5();
 	}
