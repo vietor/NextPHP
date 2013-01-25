@@ -179,7 +179,7 @@ class NpRedis extends NpAbstractCache
 			$timeout=$this->timeout;
 		$result=$this->cache->setnx($key, $value);
 		if($result && $timeout>0)
-			$this->cache->setTimeout($timeout);
+			$this->cache->setTimeout($key, $timeout);
 		return $result;
 	}
 
