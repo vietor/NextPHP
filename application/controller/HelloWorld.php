@@ -33,7 +33,7 @@ class HelloWorld extends NpController
 		$view->assign('method', __METHOD__);
 		$view->assign('sessionId', NpRequest::getSessionId());
 		$view->assign('sessionValue', NpRequest::getSession(self::SESSION_KEY));
-		$view->assign('uniqueKey', NpFactory::getUniqueKey()->generate(NpRequest::getSessionId()));
+		$view->assign('uniqueKey', NpFactory::getEncryptor()->generateKey(NpRequest::getSessionId()));
 		return $view;
 	}
 	
@@ -49,7 +49,7 @@ class HelloWorld extends NpController
 		$view->assign('method', __METHOD__);
 		$view->assign('sessionId', NpRequest::getSessionId());
 		$view->assign('sessionValue', NpRequest::getSession(self::SESSION_KEY));
-		$view->assign('uniqueKey', NpFactory::getUniqueKey()->generate(NpRequest::getSessionId()));
+		$view->assign('uniqueKey', NpFactory::getEncryptor()->generateKey(NpRequest::getSessionId()));
 		return $view;
 	}
 
