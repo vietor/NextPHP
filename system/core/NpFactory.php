@@ -54,11 +54,17 @@ class NpFactory
 		}
 		return self::$_cache;
 	}
-	
-	public static function getCacheDirect($type, $host, $port)
+
+	private static $_extra_cache;
+	public static function getExtraCache($name)
 	{
-		$config=NpConfig::get('cache');
-		return self::createObject('NpCache', array($type, $host, $port, $config['prefix'], $config['timeout']), true);
+		if(!isset(self::$_extra_cache[$name])){
+			$base=NpConfig::get('cache');
+			$config=NpConfig::get('cache-'.$name);
+			self::$_extra_cache[$name]=self::createObject('NpCache', array($config['type'], $config['host'], $config['port'],
+					isset($config['prefix'])?$config['prefix']:$base['prefix'], isset($config['timeout'])?$config['timeout']:$base['timeout']), true);
+		}
+		return self::$_extra_cache[$name];
 	}
 
 	private static $_database;
@@ -69,6 +75,19 @@ class NpFactory
 			self::$_database=self::createObject('NpDatabase', array($config['type'].':dbname='.$config['dbname'].';host='.$config['host'].';port='.$config['port'].';charset='.$config['charset'],$config['user'],$config['passwd']));
 		}
 		return self::$_database;
+	}
+
+	private static $_extra_database;
+	public static function getExtraDatabase($name)
+	{
+		if(!isset(self::$_extra_database[$name])){
+			$base=NpConfig::get('database');
+			$config=NpConfig::get('database-'.$name);
+			$charset=isset($config['charset'])?$config['charset']:$base['charset'];
+			self::$_extra_database[$name]=self::createObject('NpDatabase', array($config['type'].':dbname='.$config['dbname'].';host='.$config['host'].';port='.$config['port'].';charset='.$charset,
+					isset($config['user'])?$config['user']:$base['user'],isset($config['passwd'])?$config['passwd']:$base['passwd']));
+		}
+		return self::$_extra_database[$name];
 	}
 
 	private static $_uniqueKey;
