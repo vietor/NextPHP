@@ -10,10 +10,10 @@ class NpResponse
 		header("Pragma: no-cache");
 	}
 
-	public static function setCookie ($name, $value, $expire=null, $path=null, $domain=null)
+	public static function setCookie ($name, $value, $timeout=null, $path=null, $domain=null)
 	{
 		$config = NpConfig::get('cookie');
-		$expire = $expire===null ? (time()+$config['expire']) : (time()+$expire);
+		$expire = $timeout===null ? (time()+$config['timeout']) : (time()+$timeout);
 		$path = $path===null ? $config['path'] : $path;
 		$domain = $domain===null ? $config['domain'] : $domain;
 		setcookie($name, $value, $expire, $path, $domain);

@@ -10,7 +10,7 @@ class NpConfig {
 			$config=array();
 			$config['domain']     = $_SERVER['SERVER_NAME'];
 			$config['path']       = '/';
-			$config['expire']     = 14 * 24 * 3600; // seconds
+			$config['timeout']     = 14 * 24 * 3600; // seconds
 			$_CONFIG['cookie']=$config;
 			// encryptor
 			$config=array();
