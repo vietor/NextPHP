@@ -39,7 +39,7 @@ class NpController
 				$result=$this->$action();
 				$this->afterProcess();
 			} catch(NpModelException $e) {
-				$this->onModelTerminate($e->getCode());
+				$this->handleProcessBreak($e->getCode());
 			}
 		} catch(Exception $e) {
 			$this->handleProcessCleanup();
