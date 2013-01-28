@@ -12,12 +12,12 @@ class NpConfig {
 			$config['path']       = '/';
 			$config['expire']     = 14 * 24 * 3600; // seconds
 			$_CONFIG['cookie']=$config;
-			// unique
+			// encryptor
 			$config=array();
 			$config['mode']       = 'aes'; // as: aes(32), 3des(16)
-			$config['secret']     = 'b5ee4d5b4f59451431081b0246c57c7b';
-			$config['expire']		= 0; // seconds
-			$_CONFIG['unique']=$config;
+			$config['password']   = 'b5ee4d5b4f59451431081b0246c57c7b';
+			$config['timeout']	  = 0; // seconds
+			$_CONFIG['encryptor']=$config;
 			// database
 			$config=array();
 			$config['type']       = 'mysql';

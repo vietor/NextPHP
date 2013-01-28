@@ -90,14 +90,14 @@ class NpFactory
 		return self::$_extra_database[$name];
 	}
 
-	private static $_uniqueKey;
-	public static function getUniqueKey()
+	private static $_encryptor;
+	public static function getEncryptor()
 	{
-		if(self::$_uniqueKey===null){
-			$config=NpConfig::get('unique');
-			self::$_uniqueKey=self::createObject('NpUniqueKey', array($config['mode'],$config['secret'],$config['expire']));
+		if(self::$_encryptor===null){
+			$config=NpConfig::get('encryptor');
+			self::$_encryptor=self::createObject('NpEncryptor', array($config['mode'],$config['password'],$config['timeout']));
 		}
-		return self::$_uniqueKey;
+		return self::$_encryptor;
 	}
 
 	public static function newWebRequest()
