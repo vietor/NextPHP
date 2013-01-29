@@ -38,8 +38,7 @@ class NpMemcache extends NpAbstractCache
 	
 	public function exists($key)
 	{
-		$result=$this->get($key);
-		return ($result!==false)&&(!is_array($result)||!empty($result));
+		return $this->get($key)!==false;
 	}
 
 	public function inc($key, $value=1)
