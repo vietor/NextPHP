@@ -10,7 +10,8 @@ abstract class NpAbstractCache
 		$this->prefix=$prefix;
 		$this->timeout=$timeout;
 	}
-
+	
+	public abstract function exists($key);
 	public abstract function inc($key, $value);
 	public abstract function dec($key, $value);
 	public abstract function get($key);
@@ -33,6 +34,12 @@ class NpMemcache extends NpAbstractCache
 	{
 		$this->cache=new Memcache();
 		return $this->cache->pconnect($host,$port);
+	}
+	
+	public function exists($key)
+	{
+		$result=$this->get($key);
+		return ($result!==false)&&(!is_array($result)||!empty($result));
 	}
 
 	public function inc($key, $value=1)
@@ -141,6 +148,11 @@ class NpRedis extends NpAbstractCache
 	{
 		$this->cache=new Redis();
 		return $this->cache->pconnect($host,$port);
+	}
+	
+	public function exists($key)
+	{
+		return $this->cache->exists($key);
 	}
 
 	public function inc($key, $value=1)
