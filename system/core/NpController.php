@@ -27,20 +27,20 @@ abstract class NpController
 	}
 
 	/*!
-	 * @brief Dispose before ACTION process
+	 * @brief Dispose before ACTION process, Overloadable
 	 * @param[in] action : ACTION name
 	 */
 	protected function beforeProcess($action)
 	{
 	}
 
-	//! Dispose after ACTION process
+	//! Dispose after ACTION process, Overloadable
 	protected function afterProcess()
 	{
 	}
 	
 	/*!
-	 * @brief Dispose when process break on MODEL terminate
+	 * @brief Dispose when ACTION break on MODEL terminate, Overloadable
 	 * @param[in] code : an integer status
 	 */
 	protected function handleProcessBreak($code)
@@ -48,7 +48,7 @@ abstract class NpController
 		$this->terminate('Not implement handleProcessBreak, code='.$code);
 	}
 	
-	//! Dispose when process cleanup
+	//! Dispose when ACTION cleanup, Overloadable
 	protected function handleProcessCleanup()
 	{
 	}
