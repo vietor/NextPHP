@@ -11,20 +11,44 @@ abstract class NpCache
 		$this->prefix=$prefix;
 		$this->timeout=$timeout;
 	}
+	
 	//! Determine if a key exists (not recommend)
 	public abstract function exists($key);
+	
 	//! Increment the value of a key
 	public abstract function inc($key, $value);
+	
 	//! Decrement the value of a key
 	public abstract function dec($key, $value);
+	
 	//! Get the value of a key
 	public abstract function get($key);
+	
 	//! Set the string value of a key
 	public abstract function set($key,$value,$timeout=0);
+	
 	//! Set the value of a key, only if the key does not exist
 	public abstract function setNoKey($key,$value,$timeout=0);
+	
 	//! Delete a key
 	public abstract function delete($key);
+	
+	public static function getInstance($type, $host, $port, $prefix, $timeout)
+	{
+		if($type=='redis')
+			$className='NpRedis';
+		else if($type=='memcache')
+			$className='NpMemcache';
+		else if($type=='memcached')
+			$className='NpMemcached';
+		else
+			throw new Exception('Unsupport cache type {'.$type.'}');
+	
+		$instance=new $className($prefix,$timeout);
+		if(!$instance->connect($host, $port))
+			throw new Exception($type.' cannot connect');
+		return $instance;
+	}
 }
 
 class NpMemcache extends NpCache
@@ -205,26 +229,6 @@ class NpRedis extends NpCache
 	{
 		$key=$this->prefix.$key;
 		return $this->cache->delete($key);
-	}
-}
-
-class NpCacheFactory
-{
-	public static function getInstance($type, $host, $port, $prefix, $timeout)
-	{
-		if($type=='redis')
-			$className='NpRedis';
-		else if($type=='memcache')
-			$className='NpMemcache';
-		else if($type=='memcached')
-			$className='NpMemcached';
-		else
-			throw new Exception('Unsupport cache type {'.$type.'}');
-
-		$instance=new $className($prefix,$timeout);
-		if(!$instance->connect($host, $port))
-			throw new Exception($type.' cannot connect');
-		return $instance;
 	}
 }
 ?>

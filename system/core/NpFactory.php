@@ -52,7 +52,7 @@ class NpFactory
 	{
 		if(self::$_cache===null){
 			$config=NpConfig::get('cache');
-			self::$_cache=self::createObject('NpCacheFactory', array($config['type'], $config['host'], $config['port'], $config['prefix'], $config['timeout']), true);
+			self::$_cache=self::createObject('NpCache', array($config['type'], $config['host'], $config['port'], $config['prefix'], $config['timeout']), true);
 		}
 		return self::$_cache;
 	}
@@ -67,7 +67,7 @@ class NpFactory
 		if(!isset(self::$_extra_cache[$name])){
 			$base=NpConfig::get('cache');
 			$config=NpConfig::get('cache-'.$name);
-			self::$_extra_cache[$name]=self::createObject('NpCacheFactory', array($config['type'], $config['host'], $config['port'],
+			self::$_extra_cache[$name]=self::createObject('NpCache', array($config['type'], $config['host'], $config['port'],
 					isset($config['prefix'])?$config['prefix']:$base['prefix'], isset($config['timeout'])?$config['timeout']:$base['timeout']), true);
 		}
 		return self::$_extra_cache[$name];
