@@ -5,11 +5,13 @@ class NpCrypto
 	private static $cryptoSupport=array(
 			'aes'=>array(
 					'cipher'=>MCRYPT_RIJNDAEL_256,
-					'mode'=>MCRYPT_MODE_ECB
+					'mode'=>MCRYPT_MODE_ECB,
+					'length'=>32,
 			),
 			'3des'=>array(
 					'cipher'=>MCRYPT_3DES,
-					'mode'=>MCRYPT_MODE_ECB
+					'mode'=>MCRYPT_MODE_ECB,
+					'length'=>16,
 			),
 	);
 
@@ -22,26 +24,38 @@ class NpCrypto
 		$this->cryptoObj=self::$cryptoSupport[$type];
 	}
 
+	private function fixSecret($secret)
+	{
+		$length=strlen($secret);
+		if($this->cryptoObj['length']<$length)
+			$password=substr($secret,0,$this->cryptoObj['length']);
+		else if($this->cryptoObj['length']>$length)
+			$password=substr($secret.md5($secret),0,$length);
+		else
+			$password=$secret;
+		return $password;
+	}
+
 	/*!
 	 * @brief Encrypt a text string
-	 * @param[in] secret : password
+	 * @param[in] secret : password string
 	 * @param[in] content : a text string
 	 * @return encrypted text string
 	 */
 	public function encrypt($secret,$content)
 	{
-		return self::do_encrypt($this->cryptoObj['cipher'], $this->cryptoObj['mode'], $secret, $content);
+		return self::do_encrypt($this->cryptoObj['cipher'], $this->cryptoObj['mode'], $this->fixSecret($secret), $content);
 	}
 	
 	/*!
 	 * @brief Decrypt an encrypted text string
-	 * @param[in] secret : password
+	 * @param[in] secret : password string
 	 * @param[in] content : a encrypted text string
 	 * @return origin text string
 	 */
 	public function decrypt($secret,$content)
 	{
-		return self::do_decrypt($this->cryptoObj['cipher'], $this->cryptoObj['mode'], $secret, $content);
+		return self::do_decrypt($this->cryptoObj['cipher'], $this->cryptoObj['mode'], $this->fixSecret($secret), $content);
 	}
 
 	private function do_encrypt($cipher,$mode,$secret,$value)
