@@ -2,8 +2,22 @@
 require_once 'NpModel.php';
 require_once 'NpView.php';
 
-class NpController
+//! The parent class for MVC's CONTROLLER
+/*! 
+ * @note CONTROLLER filename is same of it's class name and must store in path application/controller
+ * <pre>
+ * example:
+ *   CONTROLLER name: account
+ *   file       name: account.php
+ * </pre>
+ * ACTION is a public method with CONTROLLER, Returns a VIEW object or base data type
+ */
+abstract class NpController
 {
+	/*!
+	 * @brief Terminate CONTROLLER process
+	 * @param[in] message : a text description
+	 */
 	protected function terminate($message=null)
 	{
 		if(empty($message))
@@ -12,19 +26,29 @@ class NpController
 			throw new NpCoreException($message);
 	}
 
+	/*!
+	 * @brief Dispose before ACTION process
+	 * @param[in] action : ACTION name
+	 */
 	protected function beforeProcess($action)
 	{
 	}
 
+	//! Dispose after ACTION process
 	protected function afterProcess()
 	{
 	}
-
-	protected function handleProcessBreak($modelTerminateCode)
+	
+	/*!
+	 * @brief Dispose when process break on MODEL terminate
+	 * @param[in] code : an integer status
+	 */
+	protected function handleProcessBreak($code)
 	{
-		$this->terminate('Not implement handleProcessBreak, code='.$modelTerminateCode);
+		$this->terminate('Not implement handleProcessBreak, code='.$code);
 	}
 	
+	//! Dispose when process cleanup
 	protected function handleProcessCleanup()
 	{
 	}

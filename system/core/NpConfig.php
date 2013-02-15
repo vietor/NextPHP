@@ -1,4 +1,5 @@
 <?php
+//! The class for configs
 class NpConfig {
 	private static $configs;
 
@@ -49,6 +50,7 @@ class NpConfig {
 		}
 	}
 
+	//! Get a config item object
 	public static function get($key)
 	{
 		if(!isset(self::$configs[$key]))

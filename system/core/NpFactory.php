@@ -1,4 +1,5 @@
 <?php
+//! The class for tools creation
 class NpFactory
 {
 	private static function createObject($className, $args=null, $staticConstructor=false)
@@ -46,6 +47,7 @@ class NpFactory
 	}
 
 	private static $_cache;
+	//! Get a default NpCache object
 	public static function getCache()
 	{
 		if(self::$_cache===null){
@@ -56,6 +58,10 @@ class NpFactory
 	}
 
 	private static $_extra_cache;
+	/*!
+	 * @brief Get a extra NpCache object
+	 * @param[in] name : the extra cache's name
+	 */
 	public static function getExtraCache($name)
 	{
 		if(!isset(self::$_extra_cache[$name])){
@@ -68,6 +74,7 @@ class NpFactory
 	}
 
 	private static $_database;
+	//! Get a default NpDatabase object
 	public static function getDatabase()
 	{
 		if(self::$_database===null){
@@ -78,6 +85,10 @@ class NpFactory
 	}
 
 	private static $_extra_database;
+	/*!
+	 * @brief Get a extra NpDatabase object
+	 * @param[in] name : the extra database's name
+	 */
 	public static function getExtraDatabase($name)
 	{
 		if(!isset(self::$_extra_database[$name])){
@@ -91,6 +102,7 @@ class NpFactory
 	}
 
 	private static $_encryptor;
+	//! Get a NpEncryptor object
 	public static function getEncryptor()
 	{
 		if(self::$_encryptor===null){
@@ -100,11 +112,13 @@ class NpFactory
 		return self::$_encryptor;
 	}
 
+	//! Get a NpWebRequest object
 	public static function newWebRequest()
 	{
 		return self::createObject('NpWebRequest');
 	}
 
+	//! Get a NpCrypto object
 	public static function newCrypto($type)
 	{
 		return self::createObject('NpCrypto', array($type));

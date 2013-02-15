@@ -1,5 +1,5 @@
 <?php
-
+//! The class for remote HTTP request
 class NpWebRequest
 {
 	private $s;
@@ -35,6 +35,14 @@ class NpWebRequest
 		return curl_exec($this->s);
 	}
 	
+	/*!
+	 * @brief Send http GET request
+	 * @param[in] url : URL
+	 * @param[in] get_params : GET's parameters array
+	 * @param[in] user : username for HTTP authentication
+	 * @param[in] password : password for HTTP authentication
+	 * @return result on success or FALSE on failure
+	 */
 	public function get($url, $get_params = array(), $user="", $passwd="")
 	{
 		if(!empty($get_params))
@@ -44,7 +52,17 @@ class NpWebRequest
 		
 		return $this->exec();
 	}
-	
+
+	/*!
+	 * @brief Send http POST request
+	 * @param[in] url : URL
+	 * @param[in] get_params : GET's parameters array
+	 * @param[in] post_params : POST's parameter data
+	 * @param[in] content_type : the Content-Type header will be set to multipart/form-data
+	 * @param[in] user : username for HTTP authentication
+	 * @param[in] password : password for HTTP authentication
+	 * @return result on success or FALSE on failure
+	 */
 	public function post($url, $get_params = array(), $post_params = array(), $content_type="", $user="", $passwd="")
 	{
 		if(!empty($get_params))
@@ -77,7 +95,16 @@ class NpWebRequest
 		}		
 		return $this->exec();
 	}
-	
+
+	/*!
+	 * @brief Send http DELETE request
+	 * @param[in] url : URL
+	 * @param[in] get_params : GET's parameters array
+	 * @param[in] post_params : POST's parameter data
+	 * @param[in] user : username for HTTP authentication
+	 * @param[in] password : password for HTTP authentication
+	 * @return result on success or FALSE on failure
+	 */
 	public function delete($url, $get_params = array(), $post_params = array(), $user="", $passwd="")
 	{
 		if(!empty($get_params))
@@ -92,6 +119,7 @@ class NpWebRequest
 		return $this->exec();
 	}
 	
+	//! Gets information about the last transfer.
 	public function getInfo()
 	{
 		return curl_getinfo($this->s);

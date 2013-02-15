@@ -6,9 +6,23 @@ class NpModelException extends Exception
 		parent::__construct('',$code);
 	}
 }
-
-class NpModel
+ 
+//! The parent class for MVC's MODEL
+/*!
+ * @note MODEL is a NpModel derived class
+ * <pre>
+ * MODEL's filename is same of it's class name and must store in path application/model
+ * example:
+ *   MODEL name: UserModel
+ *   file  name: UserModel.php
+ * </pre>
+ */
+abstract class NpModel
 {
+	/*!
+	 * @breif Terminate MODEL process
+	 * @param[in] code : an integer status
+	 */
 	protected function terminate($code)
 	{
 		throw new NpModelException($code);
@@ -16,6 +30,10 @@ class NpModel
 
 	private static $_models=array();
 
+	/*!
+	 * @breif Get a MODEL object
+	 * @param[in] name : MODEL name
+	 */
 	public static function load($name)
 	{
 		if(!isset(self::$_models[$name])) {

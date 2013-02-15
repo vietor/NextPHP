@@ -1,6 +1,6 @@
 <?php
 require_once 'NpCrypto.php';
-
+//! The class for advanced data crypto
 class NpEncryptor
 {
 	private $crypto;
@@ -14,6 +14,12 @@ class NpEncryptor
 		$this->timeout=$timeout;
 	}
 	
+	/*!
+	 * @brief Encrypt a data
+	 * @param[in] data : data for encrypt
+	 * @param[in] timeout : encrypted text string effective seconds
+	 * @return encrypted text string
+	 */
 	public function encrypt($data, $timeout=0)
 	{
 		if($timeout==0)
@@ -24,7 +30,13 @@ class NpEncryptor
 		$obj['u'] = uniqid(mt_rand(0, 65535),true);
 		return $this->crypto->encrypt($this->password,json_encode($obj));
 	}
-	
+
+	/*!
+	 * @brief Decrypt an encrypted text string
+	 * @param[in] data : encrypted text string
+	 * @param[out] exprie : encrypted text string exprie UNITX TIME
+	 * @return origin data
+	 */
 	public function decrypt($data, &$exprie=null)
 	{
 		$json=$this->crypto->decrypt($this->password, $data);
@@ -36,7 +48,14 @@ class NpEncryptor
 			$exprie=$obj['e'];
 		return $obj['d'];
 	}
-
+	
+	/*!
+	 * @brief Generate an unique key
+	 * @param[in] data : data for encrypt
+	 * @param[in] bind : extra protected text string
+	 * @param[in] timeout : unique key effective seconds
+	 * @return a unique text string
+	 */
 	public function generateKey($data, $bind='', $timeout=0)
 	{
 		if($timeout==0)
@@ -48,7 +67,13 @@ class NpEncryptor
 		$obj['u'] = uniqid(mt_rand(0, 65535),true);
 		return $this->crypto->encrypt($this->password,json_encode($obj));
 	}
-
+	
+	/*!
+	 * @brief Validate an unique key
+	 * @param[in] key : a unique text string
+	 * @param[in] bind : extra protected text string
+	 * @return origin data
+	 */
 	public function validateKey($key, $bind='')
 	{
 		$json=$this->crypto->decrypt($this->password, $key);

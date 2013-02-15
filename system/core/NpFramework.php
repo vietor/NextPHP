@@ -35,6 +35,7 @@ function NpExceptionHandler(Exception $e)
 	exit();
 }
 
+//! The class for framework core process
 class NpFramework
 {
 	private function handleRequest()
@@ -79,7 +80,12 @@ class NpFramework
 	}
 
 	private static $instance;
-
+	/*!
+	 * @brief Execute an ACTION in a CONTROLLER object
+	 * @param[in] module : CONTROLLER name
+	 * @param[in] action : ACTION name
+	 * @note When module and action are NULL, then analyze from URL
+	 */
 	public static function execute($module=null,$action=null)
 	{
 		if(self::$instance!==null)

@@ -1,4 +1,5 @@
 <?php
+//! The class for simple text crypto
 class NpCrypto
 {
 	private static $cryptoSupport=array(
@@ -21,11 +22,23 @@ class NpCrypto
 		$this->cryptoObj=self::$cryptoSupport[$type];
 	}
 
+	/*!
+	 * @brief Encrypt a text string
+	 * @param[in] secret : password
+	 * @param[in] content : a text string
+	 * @return encrypted text string
+	 */
 	public function encrypt($secret,$content)
 	{
 		return self::do_encrypt($this->cryptoObj['cipher'], $this->cryptoObj['mode'], $secret, $content);
 	}
-
+	
+	/*!
+	 * @brief Decrypt an encrypted text string
+	 * @param[in] secret : password
+	 * @param[in] content : a encrypted text string
+	 * @return origin text string
+	 */
 	public function decrypt($secret,$content)
 	{
 		return self::do_decrypt($this->cryptoObj['cipher'], $this->cryptoObj['mode'], $secret, $content);

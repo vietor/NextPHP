@@ -1,6 +1,8 @@
 <?php
+//! The class for local HTTP Reponse
 class NpResponse 
 {
+	//! Set no cache HTTP header
 	public static function noCache()
 	{
 		header("Expires: Mon, 26 Jul 1990 05:00:00 GMT");
@@ -10,15 +12,28 @@ class NpResponse
 		header("Pragma: no-cache");
 	}
 
+	/*!
+	 * @brief Send a cookie
+	 * @param[in] name : cookie's name
+	 * @param[in] value : cookie's value
+	 * @param[in] timeout : cookie's effective seconds
+	 * @param[in] path : cookie's available path
+	 * @param[in] domain : cookie's available domain
+	 */
 	public static function setCookie ($name, $value, $timeout=null, $path=null, $domain=null)
 	{
 		$config = NpConfig::get('cookie');
 		$expire = $timeout===null ? (time()+$config['timeout']) : (time()+$timeout);
 		$path = $path===null ? $config['path'] : $path;
 		$domain = $domain===null ? $config['domain'] : $domain;
-		setcookie($name, $value, $expire, $path, $domain);
+		return setcookie($name, $value, $expire, $path, $domain);
 	}
 
+	/*!
+	 * @brief Output a text string
+	 * @param[in] content : a text string
+	 * @param[in] contentType : a HTTP HEADER content-type string
+	 */
 	public static function output($content, $contentType=null)
 	{
 		if($contentType!==null)
@@ -26,11 +41,13 @@ class NpResponse
 		echo $content;
 	}
 
+	//! Web Jump use HTTP HEADER
 	public static function location($url)
 	{
 		header('Location: '.$contentType);
 	}
 
+	//! Web Jump use html page
 	public static function htmlLocation($url)
 	{
 		echo '<!DOCTYPE html>

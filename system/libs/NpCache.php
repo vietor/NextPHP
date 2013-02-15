@@ -1,4 +1,5 @@
 <?php
+//! The interface for key-value store
 abstract class NpCache
 {
 	protected $cache;
@@ -10,13 +11,19 @@ abstract class NpCache
 		$this->prefix=$prefix;
 		$this->timeout=$timeout;
 	}
-	
+	//! Determine if a key exists (not recommend)
 	public abstract function exists($key);
+	//! Increment the value of a key
 	public abstract function inc($key, $value);
+	//! Decrement the value of a key
 	public abstract function dec($key, $value);
+	//! Get the value of a key
 	public abstract function get($key);
-	public abstract function set($key,$value,$timeout);
-	public abstract function setNoKey($key,$value,$timeout);
+	//! Set the string value of a key
+	public abstract function set($key,$value,$timeout=0);
+	//! Set the value of a key, only if the key does not exist
+	public abstract function setNoKey($key,$value,$timeout=0);
+	//! Delete a key
 	public abstract function delete($key);
 }
 
