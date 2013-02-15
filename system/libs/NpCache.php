@@ -1,5 +1,5 @@
 <?php
-abstract class NpAbstractCache
+abstract class NpCache
 {
 	protected $cache;
 	protected $prefix;
@@ -20,7 +20,7 @@ abstract class NpAbstractCache
 	public abstract function delete($key);
 }
 
-class NpMemcache extends NpAbstractCache
+class NpMemcache extends NpCache
 {
 	public function __destruct()
 	{
@@ -133,7 +133,7 @@ class NpMemcached extends NpMemcache
 	}
 }
 
-class NpRedis extends NpAbstractCache
+class NpRedis extends NpCache
 {
 	public function __destruct()
 	{
@@ -201,7 +201,7 @@ class NpRedis extends NpAbstractCache
 	}
 }
 
-class NpCache
+class NpCacheFactory
 {
 	public static function getInstance($type, $host, $port, $prefix, $timeout)
 	{
