@@ -18,7 +18,7 @@ function NpExceptionHandler(Exception $e)
 	if($e instanceof NpCoreException) {
 		$errorMessage=$e->getMessage();
 		if(!empty($errorMessage)) {
-			error_log($errorMessage);
+			error_log('NPE '.$errorMessage);
 			header("HTTP/1.1 403 Forbidden");
 			header("Status: ".$errorMessage);
 		}
@@ -28,7 +28,7 @@ function NpExceptionHandler(Exception $e)
 		}
 	}
 	else if(!($e instanceof NpExitException)) {
-		error_log($e->getMessage().' '.$e->getTraceAsString());
+		error_log('NPE ['.$e->getCode().'] '.$e->getMessage().' '.$e->getTraceAsString());
 		header('HTTP/1.1 503 Service Temporarily Unavailable');
 		header('Status: 503 Service Temporarily Unavailable');
 	}
