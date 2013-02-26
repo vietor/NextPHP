@@ -67,8 +67,8 @@ class NpRequest
 	
 	/*!
 	 * @brief Determine if a parameter exists and length minimum
-	 * @param[in] key : parameter's name
-	 * @param[in] minLen : parameter's value length minimum
+	 * @param[in] key    parameter's name
+	 * @param[in] minLen parameter's value length minimum
 	 * @return TRUE on success or FALSE on failure
 	 */
 	public static function hasParam($key,$minLen=1)
@@ -79,8 +79,8 @@ class NpRequest
 
 	/*!
 	 * @brief Get a parameter value
-	 * @param[in] key : parameter's name
-	 * @param[in] defaultValue : default value when parameter not exists
+	 * @param[in] key          parameter's name
+	 * @param[in] defaultValue default value when parameter not exists
 	 * @return the value of parameter
 	 */
 	public static function getParam($key,$defaultValue=null)
@@ -104,8 +104,8 @@ class NpRequest
 	
 	/*!
 	 * @brief Get a cookie value
-	 * @param[in] key : cookie's name
-	 * @param[in] defaultValue : default value when cookie not exists
+	 * @param[in] key          cookie's name
+	 * @param[in] defaultValue default value when cookie not exists
 	 * @return the value of cookie
 	 */	
 	public static function getCooke($key,$defaultValue=null)
@@ -117,8 +117,8 @@ class NpRequest
 	
 	/*
 	 * @brief Moves an uploaded file to a new location
-	 * @param[in] key : file's name in parameters
-	 * @param[in] filename : the destination of the moved file.
+	 * @param[in] key      file's name in parameters
+	 * @param[in] filename the destination of the moved file.
 	 * @return TRUE on success or FALSE on failure
 	 */
 	public static function moveUploadFile($key, $filename)
@@ -139,8 +139,8 @@ class NpRequest
 
 	/*!
 	 * @brief Get a session value
-	 * @param[in] key : session's key
-	 * @param[in] defaultValue : default value when session key not exists
+	 * @param[in] key          session's key
+	 * @param[in] defaultValue default value when session key not exists
 	 */
 	public static function getSession($key,$defaultValue=null)
 	{

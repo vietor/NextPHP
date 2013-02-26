@@ -82,8 +82,8 @@ class NpFramework
 	private static $instance;
 	/*!
 	 * @brief Execute an ACTION in a CONTROLLER object
-	 * @param[in] module : CONTROLLER name
-	 * @param[in] action : ACTION name
+	 * @param[in] module CONTROLLER name
+	 * @param[in] action ACTION name
 	 * @note When module and action are NULL, then analyze from URL
 	 */
 	public static function execute($module=null,$action=null)

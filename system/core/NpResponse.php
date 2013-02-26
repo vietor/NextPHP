@@ -14,11 +14,11 @@ class NpResponse
 
 	/*!
 	 * @brief Send a cookie
-	 * @param[in] name : cookie's name
-	 * @param[in] value : cookie's value
-	 * @param[in] timeout : cookie's effective seconds
-	 * @param[in] path : cookie's available path
-	 * @param[in] domain : cookie's available domain
+	 * @param[in] name    cookie's name
+	 * @param[in] value   cookie's value
+	 * @param[in] timeout cookie's effective seconds
+	 * @param[in] path    cookie's available path
+	 * @param[in] domain  cookie's available domain
 	 */
 	public static function setCookie ($name, $value, $timeout=null, $path=null, $domain=null)
 	{
@@ -31,8 +31,8 @@ class NpResponse
 
 	/*!
 	 * @brief Output a text string
-	 * @param[in] content : a text string
-	 * @param[in] contentType : a HTTP HEADER content-type string
+	 * @param[in] content     a text string
+	 * @param[in] contentType a HTTP HEADER content-type string
 	 */
 	public static function output($content, $contentType=null)
 	{

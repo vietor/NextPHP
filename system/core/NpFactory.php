@@ -60,7 +60,7 @@ class NpFactory
 	private static $_extra_cache;
 	/*!
 	 * @brief Get a extra NpCache object
-	 * @param[in] name : the extra cache's name
+	 * @param[in] name the extra cache's name
 	 */
 	public static function getExtraCache($name)
 	{
@@ -87,7 +87,7 @@ class NpFactory
 	private static $_extra_database;
 	/*!
 	 * @brief Get a extra NpDatabase object
-	 * @param[in] name : the extra database's name
+	 * @param[in] name the extra database's name
 	 */
 	public static function getExtraDatabase($name)
 	{

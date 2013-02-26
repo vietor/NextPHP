@@ -36,7 +36,7 @@ class NpDatabaseStatement
 
 	/*!
 	 * @brief Executes the SQL statement
-	 * @param[in] variables : the parameters array, indexed by number
+	 * @param[in] variables the parameters array, indexed by number
 	 * @return TRUE on success or FALSE on failure
 	 */
 	public function execute($variables=null)
@@ -59,7 +59,7 @@ class NpDatabaseStatement
 
 	/*!
 	 * @brief Executes the SQL statement
-	 * @param[in] variables : the parameters array, indexed by number
+	 * @param[in] variables the parameters array, indexed by number
 	 * @return current NpDatabaseStatement object
 	 */
 	public function query($variables=null)
@@ -89,7 +89,7 @@ class NpDatabaseStatement
 	
 	/*!
 	 * @brief Fetches the next row from a result set
-	 * @param[in] indexByName : array indexed by column name or number
+	 * @param[in] indexByName array indexed by column name or number
 	 */
 	public function fetch($indexByName=true)
 	{
@@ -98,7 +98,7 @@ class NpDatabaseStatement
 
 	/*!
 	 * @brief Fetches the next object from a result set
-	 * @param[in] className : requested class name
+	 * @param[in] className requested class name
 	 */
 	public function fetchObject($className='stdClass')
 	{
@@ -118,7 +118,7 @@ class NpDatabaseStatement
 
 	/*!
 	 * @brief Returns an array containing all of the result set rows
-	 * @param[in] indexByName : array indexed by column name or number
+	 * @param[in] indexByName array indexed by column name or number
 	 */
 	public function fetchAll($indexByName=true)
 	{
@@ -127,7 +127,7 @@ class NpDatabaseStatement
 
 	/*!
 	 * @brief Returns an object array containing all of the result set rows
-	 * @param[in] className : requested class name
+	 * @param[in] className requested class name
 	 */
 	public function fetchAllObject($className='stdClass')
 	{
@@ -185,7 +185,7 @@ class NpDatabase
 
 	/*!
 	 * @brief Returns a NpDatabaseStatement object for execute
-	 * @param[in] statement : the SQL statement
+	 * @param[in] statement the SQL statement
 	 */
 	public function prepare($statement)
 	{

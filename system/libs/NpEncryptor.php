@@ -16,8 +16,8 @@ class NpEncryptor
 	
 	/*!
 	 * @brief Encrypt a data
-	 * @param[in] data : data for encrypt
-	 * @param[in] timeout : encrypted text string effective seconds
+	 * @param[in] data    data for encrypt
+	 * @param[in] timeout encrypted text string effective seconds
 	 * @return encrypted text string
 	 */
 	public function encrypt($data, $timeout=0)
@@ -33,8 +33,8 @@ class NpEncryptor
 
 	/*!
 	 * @brief Decrypt an encrypted text string
-	 * @param[in] data : encrypted text string
-	 * @param[out] exprie : encrypted text string exprie UNITX TIME
+	 * @param[in] data    encrypted text string
+	 * @param[out] exprie encrypted text string exprie UNITX TIME
 	 * @return origin data
 	 */
 	public function decrypt($data, &$exprie=null)
@@ -51,9 +51,9 @@ class NpEncryptor
 	
 	/*!
 	 * @brief Generate an unique key
-	 * @param[in] data : data for encrypt
-	 * @param[in] bind : extra protected text string
-	 * @param[in] timeout : unique key effective seconds
+	 * @param[in] data    data for encrypt
+	 * @param[in] bind    extra protected text string
+	 * @param[in] timeout unique key effective seconds
 	 * @return a unique text string
 	 */
 	public function generateKey($data, $bind='', $timeout=0)
@@ -70,8 +70,8 @@ class NpEncryptor
 	
 	/*!
 	 * @brief Validate an unique key
-	 * @param[in] key : a unique text string
-	 * @param[in] bind : extra protected text string
+	 * @param[in] key  a unique text string
+	 * @param[in] bind extra protected text string
 	 * @return origin data
 	 */
 	public function validateKey($key, $bind='')

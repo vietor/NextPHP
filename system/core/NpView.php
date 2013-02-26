@@ -79,7 +79,7 @@ class NpView
 
 	/*!
 	 * @breif Get a VIEW object
-	 * @param[in] name : VIEW's name
+	 * @param[in] name VIEW's name
 	 */
 	public static function load($name=NpView::VARIABLE)
 	{

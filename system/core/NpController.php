@@ -16,7 +16,7 @@ abstract class NpController
 {
 	/*!
 	 * @brief Terminate CONTROLLER process
-	 * @param[in] message : a text description
+	 * @param[in] message a text description
 	 */
 	protected function terminate($message=null)
 	{
@@ -28,7 +28,7 @@ abstract class NpController
 
 	/*!
 	 * @brief Dispose before ACTION process, Overloadable
-	 * @param[in] action : ACTION name
+	 * @param[in] action ACTION name
 	 */
 	protected function beforeProcess($action)
 	{
@@ -41,7 +41,7 @@ abstract class NpController
 	
 	/*!
 	 * @brief Dispose when ACTION break on MODEL terminate, Overloadable
-	 * @param[in] code : an integer status
+	 * @param[in] code an integer status
 	 */
 	protected function handleProcessBreak($code)
 	{

@@ -21,7 +21,7 @@ abstract class NpModel
 {
 	/*!
 	 * @breif Terminate MODEL process
-	 * @param[in] code : an integer status
+	 * @param[in] code an integer status
 	 */
 	protected function terminate($code)
 	{
@@ -32,7 +32,7 @@ abstract class NpModel
 
 	/*!
 	 * @breif Get a MODEL object
-	 * @param[in] name : MODEL name
+	 * @param[in] name MODEL name
 	 */
 	public static function load($name)
 	{
