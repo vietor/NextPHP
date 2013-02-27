@@ -1,4 +1,6 @@
-doxygen
+html
+latex
 *~
 *.bak
+*.log
 .*
