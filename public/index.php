@@ -1,24 +1,10 @@
 <?php
 require_once 'np-env.php';
-NpFramework::execute('HelloWorld','Test3');
+NpFramework::execute('HelloWorld','internal');
 ?>
 <HTML>
 <BODY>
-	<center>
-		<?php echo $method?>
-	</center>
-	<p />
-	<p />
-	<center>
-		<?php echo $sessionId?>
-	</center>
-	<center>
-		<?php echo $sessionValue?>
-	</center>
-	<p />
-	<p />
-	<center>
-		<?php echo $uniqueKey?>
-	</center>
+<h1>I'm in PHP</h1>
+The value is <?php echo $value?>.
 </BODY>
 </HTML>

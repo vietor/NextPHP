@@ -1,71 +1,44 @@
 <?php
 class HelloWorld extends NpController
 {
-	const SESSION_KEY='test-session-key';
-
-	public function Test1()
-	{
-		NpRequest::setSession(self::SESSION_KEY,__METHOD__.' at '.time());
-		$hostUrl=NpRequest::getBaseUrl();
-		NpResponse::output('<HTML>
-				<BODY>
-				<center>'.__METHOD__.'</center><p><p>
-				<center><a href="Test2">To Test2</a></center><p><p>
-				<center><img src="'.$hostUrl.'php-power-black.gif"></center>
-				</BODY>
-				</HTML>');
-	}
-
-	public function Test2()
-	{
-		NpResponse::output('<HTML>
-				<BODY>
-				<center>'.__METHOD__.'</center><p><p>
-				<center>SessionId: '.NpRequest::getSessionId().'</center>
-				<center>SessionValue: '.NpRequest::getSession(self::SESSION_KEY).'</center>
-				</BODY>
-				</HTML>');
-	}
-
-	public function Test3()
-	{
-		$view=NpView::load();
-		$view->assign('method', __METHOD__);
-		$view->assign('sessionId', NpRequest::getSessionId());
-		$view->assign('sessionValue', NpRequest::getSession(self::SESSION_KEY));
-		$view->assign('uniqueKey', NpFactory::getEncryptor()->generateKey(NpRequest::getSessionId()));
-		return $view;
-	}
-	
-	public function Test4()
+	public function model()
 	{
 		$model=NpModel::load('HelloModel');
 		$model->test();
 	}
-	
-	public function Test5()
+
+	public function view()
 	{
 		$view=NpView::load('HelloView');
-		$view->assign('method', __METHOD__);
-		$view->assign('sessionId', NpRequest::getSessionId());
-		$view->assign('sessionValue', NpRequest::getSession(self::SESSION_KEY));
-		$view->assign('uniqueKey', NpFactory::getEncryptor()->generateKey(NpRequest::getSessionId()));
+		$view->assign('value', NpRequest::getSessionId());
+		return $view;
+	}
+	
+	public function internal()
+	{
+		$view=NpView::load(NpView::VARIABLE);
+		$view->assign('value', NpRequest::getSessionId());
 		return $view;
 	}
 
-	protected function beforeProcess()
+	protected function beforeProcess($action)
 	{
-		echo __METHOD__.'-1111111';
+		echo 'before process run action:'.$action.'<br/>';
 	}
 
 	protected function afterProcess()
 	{
-		echo __METHOD__.'-2222222';
+		echo 'after process<br/>';
 	}
 	
 	protected function handleProcessBreak($code)
-	{		
-		$this->Test5();
+	{
+		echo 'handle process break code is '.$code.'<br/>';
+	}
+
+	protected function handleProcessCleanup()
+	{
+		echo 'handle process cleanup<br/>';
 	}
 }
 ?>

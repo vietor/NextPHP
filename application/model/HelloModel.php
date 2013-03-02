@@ -3,7 +3,7 @@ class HelloModel extends NpModel
 {
 	public function test()
 	{
-		$this->terminate(0);
+		$this->terminate(9999999);
 	}
 }
 ?>

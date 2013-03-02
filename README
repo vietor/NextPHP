@@ -2,9 +2,9 @@ NextPHP - Lightweight & Fast PHP Framework
 
 1. install
 
-directory copy to target environment.
+Directory copy to target environment.
 
-export archive file example:
+Export archive file example:
 zip -r framework.zip system public/np-env.php public/np-services.php
 zip -r content.zip application public -x public/np-env.php public/np-services.php
 
@@ -69,4 +69,19 @@ server {
     }
 }
 
+3. code demo
 
+Set the demo environment is http://www.example.com
+
+3.1 for templete view
+http://www.example.com/services/HelloWorld/view
+
+3.2 for terminate model
+http://www.example.com/services/HelloWorld/model
+
+3.3 for internal type
+http://www.example.com/
+
+4. documention
+
+That's support doxygen generation document.
