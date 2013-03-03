@@ -71,7 +71,7 @@ server {
 
 4. code demo
 
-Set the demo environment is http://www.example.com
+Set the demo environment like: http://www.example.com
 
 4.1 for templete view
 http://www.example.com/services/HelloWorld/view
