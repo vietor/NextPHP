@@ -50,16 +50,7 @@ class NpResponse
 	//! Web Jump use html page
 	public static function htmlLocation($url)
 	{
-		echo '<!DOCTYPE html>
-		<html>
-		<head>
-		<title>Launching...</title>
-		</head>
-		<script type="text/javascript">
-		window.location.href = "'.$url.'";
-		</script>
-		<body style="text-align: center; font-family: Arial, sans-serif;">Launching...</body>
-		</html>';
+		echo '<!DOCTYPE html><html><head><title>Launching...</title></head><script type="text/javascript">window.location.href = "'.$url.'";</script><body style="text-align: center; font-family: Arial, sans-serif;">Launching...</body></html>';
 	}
 }
 ?>
