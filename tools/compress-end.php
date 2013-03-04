@@ -1,0 +1,3 @@
+<?php
+NpConfig::load();
+?>

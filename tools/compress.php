@@ -63,6 +63,8 @@ function compress_one($from, $to) {
 	$result['compressed_size']=0;
 	$dir_list = array($from);
 	file_put_contents($to, "<?php\n");
+	$compatible= file_get_contents(dirname(__FILE__).'/compress-begin.php');
+	file_put_contents($to, compress_to_string($compatible)."\n", FILE_APPEND);
 	while (count($dir_list) > 0) {
 		$files = glob(array_pop($dir_list) . '/*');
 		foreach ($files as $path) {
@@ -80,7 +82,8 @@ function compress_one($from, $to) {
 			}
 		}
 	}
-	file_put_contents($to, "?>", FILE_APPEND);
+	$compatible= file_get_contents(dirname(__FILE__).'/compress-end.php');
+	file_put_contents($to, compress_to_string($compatible)."\n?>", FILE_APPEND);
 	return $result;
 }
 
