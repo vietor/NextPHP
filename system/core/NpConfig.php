@@ -45,8 +45,8 @@
  * 
  * @subsection system Environment
  * For Framework environment, $_CONFIG['system']
+ * @param quiet error reporting level switch, true is 0, flase is E_ALL ^ E_NOTICE, default false
  * @param timeZone date's default time zone, default UTC
- * 
  */
 
 //! The class for configs
@@ -89,11 +89,16 @@ class NpConfig {
 			$_CONFIG['cache']=$config;
 			// system
 			$config=array();
+			$config['quiet']      = false;
 			$config['timeZone']   = 'UTC';
 			$_CONFIG['system']=$config;
 			// load application config
 			@include(NP_APP_PATH.'config.php');
 			// apply values to setting
+			if($_CONFIG['system']['quiet']===true)
+				error_reporting(0);
+			else
+				error_reporting(E_ALL ^ E_NOTICE);
 			date_default_timezone_set($_CONFIG['system']['timeZone']);
 
 			self::$configs=$_CONFIG;
