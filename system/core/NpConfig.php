@@ -42,6 +42,11 @@
  * @param timeout seconds for expire time, default 0 (forever)
  * 
  * For NpFactory::getExtraCache, $_CONFIG's key is 'cache-' append extra name.
+ * 
+ * @subsection system Environment
+ * For Framework environment, $_CONFIG['system']
+ * @param timeZone date's default time zone, default UTC
+ * 
  */
 
 //! The class for configs
