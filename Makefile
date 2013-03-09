@@ -2,14 +2,18 @@
 
 TARGET=NextPHP
 
-all: doc
+.PHONY: all bin doc clean
+
+all: bin doc
+
+bin:
+	php tools/compress.php ./system $(TARGET).php
 
 doc:
 	doxygen tools/Doxyfile
 	$(MAKE) -C latex
 	cp latex/refman.pdf $(TARGET).pdf
 	tar -czf $(TARGET)-html.tar.gz html
-	php tools/compress.php ./system $(TARGET).php
 
 clean:
 	rm -fr html latex
