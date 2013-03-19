@@ -79,7 +79,8 @@ class NpFactory
 	{
 		if(self::$_database===null){
 			$config=NpConfig::get('database');
-			self::$_database=self::createObject('NpDatabase', array($config['type'].':dbname='.$config['dbname'].';host='.$config['host'].';port='.$config['port'].';charset='.$config['charset'],$config['user'],$config['passwd']));
+			$dsn=$config['type'].':dbname='.$config['dbname'].';host='.$config['host'].';port='.$config['port'].';charset='.$config['charset'];
+			self::$_database=self::createObject('NpDatabase', array($dsn,$config['user'],$config['passwd'],$config['persistent']));
 		}
 		return self::$_database;
 	}
@@ -94,9 +95,8 @@ class NpFactory
 		if(!isset(self::$_extra_database[$name])){
 			$base=NpConfig::get('database');
 			$config=NpConfig::get('database-'.$name);
-			$charset=isset($config['charset'])?$config['charset']:$base['charset'];
-			self::$_extra_database[$name]=self::createObject('NpDatabase', array($config['type'].':dbname='.$config['dbname'].';host='.$config['host'].';port='.$config['port'].';charset='.$charset,
-					isset($config['user'])?$config['user']:$base['user'],isset($config['passwd'])?$config['passwd']:$base['passwd']));
+			$dsn=$config['type'].':dbname='.$config['dbname'].';host='.$config['host'].';port='.$config['port'].';charset='.(isset($config['charset'])?$config['charset']:$base['charset']);
+			self::$_extra_database[$name]=self::createObject('NpDatabase', array($dsn,isset($config['user'])?$config['user']:$base['user'],isset($config['passwd'])?$config['passwd']:$base['passwd'],isset($config['persistent'])?$config['persistent']:$base['persistent']));
 		}
 		return self::$_extra_database[$name];
 	}

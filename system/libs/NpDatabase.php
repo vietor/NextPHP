@@ -152,9 +152,9 @@ class NpDatabase
 {
 	private $pdo;
 
-	public function __construct($dsn,$username,$password)
+	public function __construct($dsn,$username,$password,$persistent)
 	{
-		$this->pdo=new PDO($dsn,$username,$password,array(PDO::ATTR_PERSISTENT=>true));
+		$this->pdo=new PDO($dsn,$username,$password,array(PDO::ATTR_PERSISTENT=>$persistent));
 	}
 
 	public function __destruct()

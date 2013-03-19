@@ -30,6 +30,7 @@
  * @param passwd  password for connect, default empty
  * @param dbname  database name for connect, default mysql
  * @param charset charset for connect, default utf8
+ * @param persistent persistent for connect, default true
  * 
  * For NpFactory::getExtraDatabase, $_CONFIG's key is 'database-' append extra name.
  * 
@@ -78,6 +79,7 @@ class NpConfig {
 			$config['passwd']     = '';
 			$config['dbname']     = 'mysql';
 			$config['charset']    = 'utf8';
+			$config['persistent'] = true;
 			$_CONFIG['database']=$config;
 			// cache
 			$config=array();
