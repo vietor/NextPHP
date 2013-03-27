@@ -1,6 +1,4 @@
 <?php
-require_once '../core/NpBasic.php';
-
 require_once 'NpRequest.php';
 require_once 'NpResponse.php';
 require_once 'NpController.php';

@@ -6,5 +6,6 @@ define('NP_SYS_PATH', dirname(dirname(__FILE__)).'/system/');
 define('NP_APP_PATH', dirname(dirname(__FILE__)).'/application/');
 
 /* Load framework environment */
-require_once NP_SYS_PATH.'core/NpFramework.php';
+require_once NP_SYS_PATH.'core/NpBasic.php';
+require_once NP_SYS_PATH.'mvc/NpFramework.php';
 ?>
