@@ -53,6 +53,8 @@ function compress_to_string($source) {
 			}
 		}
 	}
+	if($compressed === null)
+		return '';
 	return trim($compressed);
 }
 
@@ -61,7 +63,9 @@ function compress_one($from, $to) {
 	$result['file_size']=0;
 	$result['file_list']=array();
 	$result['compressed_size']=0;
-	$dir_list = array($from);
+	$dir_list=array();
+	foreach($from as $path)
+		$dir_list = array_merge($dir_list, array($path));
 	file_put_contents($to, "<?php\n");
 	$compatible= file_get_contents(dirname(__FILE__).'/compress-begin.php');
 	file_put_contents($to, compress_to_string($compatible)."\n", FILE_APPEND);
@@ -73,9 +77,15 @@ function compress_one($from, $to) {
 					$result['file_list'][]=$path;
 					$code = file_get_contents($path);
 					$result['file_size'] += strlen($code);
-					$code = compress_to_string($code)."\n";
-					$result['compressed_size'] += strlen($code);
-					file_put_contents($to, $code, FILE_APPEND);
+					if(strlen($code) > 0)
+					{
+						$code = compress_to_string($code)."\n";
+						if(strlen($code)>1)
+						{
+							$result['compressed_size'] += strlen($code);
+							file_put_contents($to, $code, FILE_APPEND);
+						}
+					}
 				}
 			} else {
 				$dir_list[] = $path;
@@ -87,7 +97,10 @@ function compress_one($from, $to) {
 	return $result;
 }
 
-$result=compress_one($argv[1],$argv[2]);
+$dirs=array();
+for($i=2; $i<count($argv); ++$i)
+	$dirs[]=$argv[$i];
+$result=compress_one($dirs,$argv[1]);
 echo 'source size:'.$result['file_size'].', compressed size:'.$result['compressed_size']."\n";
 echo 'compression ratio:'.round(($result['compressed_size']/$result['file_size'])*100, 2)."%, files:\n";
 foreach ($result['file_list'] as $path) {

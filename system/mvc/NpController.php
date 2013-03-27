@@ -21,9 +21,9 @@ abstract class NpController
 	protected function terminate($message=null)
 	{
 		if(empty($message))
-			throw new NpExitException();
+			throw new NpMvcExitException();
 		else
-			throw new NpCoreException($message);
+			throw new NpMvcException($message);
 	}
 
 	/*!
@@ -77,11 +77,11 @@ abstract class NpController
 	{
 		$moduleFile = NP_APP_PATH."controller/".$module.".php";
 		if(!file_exists($moduleFile))
-			throw new NpCoreException('No module: '.$module);
+			throw new NpMvcException('No module: '.$module);
 		require_once($moduleFile);
 		$controller=new $module();
 		if(!method_exists($controller,$action))
-			throw new NpCoreException('No action: '.$action.' in module: '.$module);
+			throw new NpMvcException('No action: '.$action.' in module: '.$module);
 		return $controller->invokeAction($action);
 	}
 

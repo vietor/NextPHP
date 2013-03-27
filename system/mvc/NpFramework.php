@@ -1,21 +1,21 @@
 <?php
-require_once 'NpConfig.php';
-require_once 'NpFactory.php';
+require_once '../core/NpBasic.php';
+
 require_once 'NpRequest.php';
 require_once 'NpResponse.php';
 require_once 'NpController.php';
 
-class NpCoreException extends Exception
+class NpMvcException extends Exception
 {
 }
 
-class NpExitException extends Exception
+class NpMvcExitException extends Exception
 {
 }
 
 function NpExceptionHandler(Exception $e)
 {
-	if($e instanceof NpCoreException) {
+	if($e instanceof NpMvcException) {
 		$errorMessage=$e->getMessage();
 		if(!empty($errorMessage)) {
 			error_log('NPE '.$errorMessage);
@@ -27,7 +27,7 @@ function NpExceptionHandler(Exception $e)
 			header("Status: 404 Not Found");
 		}
 	}
-	else if(!($e instanceof NpExitException)) {
+	else if(!($e instanceof NpMvcExitException)) {
 		error_log('NPE ['.$e->getCode().'] '.$e->getMessage().' '.$e->getTraceAsString());
 		header('HTTP/1.1 503 Service Temporarily Unavailable');
 		header('Status: 503 Service Temporarily Unavailable');
@@ -41,13 +41,13 @@ class NpFramework
 	private function handleRequest()
 	{
 		if(empty($_GET[NP_REDIRECT_KEY]))
-			throw new NpCoreException();
+			throw new NpMvcException();
 
 		$urlArray=array();
 		$urlArray=explode('/',$_GET[NP_REDIRECT_KEY]);
 		$urlArraySize=count($urlArray);
 		if($urlArraySize<2)
-			throw new NpCoreException();
+			throw new NpMvcException();
 		unset($_GET[NP_REDIRECT_KEY], $_REQUEST[NP_REDIRECT_KEY]);
 
 		$module=$urlArray[0];
@@ -89,7 +89,7 @@ class NpFramework
 	public static function execute($module=null,$action=null)
 	{
 		if(self::$instance!==null)
-			throw new NpCoreException('Framework multiple entry');
+			throw new NpMvcException('Framework multiple entry');
 
 		define('NP_REDIRECT_KEY','url');
 		set_exception_handler('NpExceptionHandler');
@@ -108,7 +108,6 @@ class NpFramework
 			unset ( $in );
 		}
 
-		NpConfig::load();
 		self::$instance=new NpFramework();
 		if($module===null || $action===null)
 			self::$instance->handleRequest();

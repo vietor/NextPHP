@@ -1,4 +1,6 @@
 <?php
+require_once 'NpFactory.php';
+
 //! The class for tools creation
 class NpFactory
 {

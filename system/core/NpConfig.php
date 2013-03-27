@@ -1,5 +1,4 @@
 <?php
-
 /*!
  * @mainpage Configuration
  *
@@ -57,6 +56,10 @@ class NpConfig {
 	public static function load()
 	{
 		if(self::$configs===null) {
+
+			if(!defined('NP_CONF_PATH'))
+				define('NP_CONF_PATH', NP_APP_PATH);
+
 			$_CONFIG=array();
 			// cookie
 			$config=array();
@@ -95,7 +98,7 @@ class NpConfig {
 			$config['timeZone']   = 'UTC';
 			$_CONFIG['system']=$config;
 			// load application config
-			@include(NP_APP_PATH.'config.php');
+			@include(NP_CONF_PATH.'config.php');
 			// apply values to setting
 			if($_CONFIG['system']['quiet']===true)
 				error_reporting(E_ERROR | E_PARSE);

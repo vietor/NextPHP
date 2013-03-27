@@ -6,8 +6,11 @@ TARGET=NextPHP
 
 all: bin doc
 
+bin-core:
+	php tools/compress.php $(TARGET).php ./system/core ./system/libs
+
 bin:
-	php tools/compress.php ./system $(TARGET).php
+	php tools/compress.php $(TARGET).php ./system
 
 doc:
 	doxygen tools/Doxyfile
