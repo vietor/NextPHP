@@ -38,10 +38,10 @@ class NpCrypto
 
 	/*!
 	 * @brief Encrypt a text string
-	* @param[in] secret  password string
-	* @param[in] content a text string
-	* @return encrypted text string
-	*/
+	 * @param[in] secret  password string
+	 * @param[in] content a text string
+	 * @return encrypted text string
+	 */
 	public function encrypt($secret,$content)
 	{
 		return self::do_encrypt($this->cryptoObj['cipher'], $this->cryptoObj['mode'], $this->fixSecret($secret), $content);
@@ -49,10 +49,10 @@ class NpCrypto
 
 	/*!
 	 * @brief Decrypt an encrypted text string
-	* @param[in] secret  password string
-	* @param[in] content a encrypted text string
-	* @return origin text string
-	*/
+	 * @param[in] secret  password string
+	 * @param[in] content a encrypted text string
+	 * @return origin text string
+	 */
 	public function decrypt($secret,$content)
 	{
 		return self::do_decrypt($this->cryptoObj['cipher'], $this->cryptoObj['mode'], $this->fixSecret($secret), $content);
