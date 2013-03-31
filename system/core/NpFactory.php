@@ -114,10 +114,10 @@ class NpFactory
 		return self::$_encryptor;
 	}
 
-	//! Get a NpWebRequest object
-	public static function getWebRequest()
+	//! Get a NpWebQuery object
+	public static function getWebQuery()
 	{
-		return self::createObject('NpWebRequest');
+		return self::createObject('NpWebQuery');
 	}
 
 	//! Get a NpCrypto object
