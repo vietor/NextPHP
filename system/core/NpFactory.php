@@ -115,13 +115,13 @@ class NpFactory
 	}
 
 	//! Get a NpWebRequest object
-	public static function newWebRequest()
+	public static function getWebRequest()
 	{
 		return self::createObject('NpWebRequest');
 	}
 
 	//! Get a NpCrypto object
-	public static function newCrypto($type)
+	public static function getCrypto($type)
 	{
 		return self::createObject('NpCrypto', array($type));
 	}
