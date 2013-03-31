@@ -1,6 +1,6 @@
 <?php
 //! The class for remote HTTP request
-class NpWebRequest
+class NpWebQuery
 {
 	private $s;
 	
