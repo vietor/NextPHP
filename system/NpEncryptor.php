@@ -1,5 +1,5 @@
 <?php
-require_once 'NpCrypto.php';
+require_once 'libs/NpCrypto.php';
 //! The class for advanced data crypto
 class NpEncryptor
 {
@@ -7,11 +7,11 @@ class NpEncryptor
 	private $password;
 	private $timeout;
 
-	public function __construct($mode,$password,$timeout)
+	public function __construct($config)
 	{
-		$this->crypto=new NpCrypto($mode);
-		$this->password=$password;
-		$this->timeout=$timeout;
+		$this->crypto=new NpCrypto($config['mode']);
+		$this->password=$config['password'];
+		$this->timeout=$config['timeout'];
 	}
 	
 	/*!

@@ -53,66 +53,64 @@
 class NpConfig {
 	private static $configs;
 
-	public static function load()
+	private static function load()
 	{
-		if(self::$configs===null) {
+		if(!defined('NP_CONF_PATH'))
+			define('NP_CONF_PATH', NP_APP_PATH);
+		$_CONFIG=array();
+		// cookie
+		$config=array();
+		$config['domain']     = $_SERVER['SERVER_NAME'];
+		$config['path']       = '/';
+		$config['timeout']     = 14 * 24 * 3600; // seconds
+		$_CONFIG['cookie']=$config;
+		// encryptor
+		$config=array();
+		$config['mode']       = 'aes'; // as: aes(32), 3des(16)
+		$config['password']   = 'b5ee4d5b4f59451431081b0246c57c7b';
+		$config['timeout']	  = 0; // seconds
+		$_CONFIG['encryptor']=$config;
+		// database
+		$config=array();
+		$config['type']       = 'mysql';
+		$config['host']       = 'localhost';
+		$config['port']       = 3306;
+		$config['user']       = 'root';
+		$config['passwd']     = '';
+		$config['dbname']     = 'mysql';
+		$config['charset']    = 'utf8';
+		$config['persistent'] = true;
+		$_CONFIG['database']=$config;
+		// cache
+		$config=array();
+		$config['type']       = 'memcache';
+		$config['host']       = 'localhost';
+		$config['port']       = 11211;
+		$config['prefix']     = '';
+		$config['timeout']	= 0; // seconds
+		$_CONFIG['cache']=$config;
+		// system
+		$config=array();
+		$config['quiet']      = false;
+		$config['timeZone']   = 'UTC';
+		$_CONFIG['system']=$config;
+		// load application config
+		@include(NP_CONF_PATH.'config.php');
+		// apply values to setting
+		if($_CONFIG['system']['quiet']===true)
+			error_reporting(E_ERROR | E_PARSE);
+		else
+			error_reporting(E_ALL ^ E_NOTICE);
+		date_default_timezone_set($_CONFIG['system']['timeZone']);
 
-			if(!defined('NP_CONF_PATH'))
-				define('NP_CONF_PATH', NP_APP_PATH);
-
-			$_CONFIG=array();
-			// cookie
-			$config=array();
-			$config['domain']     = $_SERVER['SERVER_NAME'];
-			$config['path']       = '/';
-			$config['timeout']     = 14 * 24 * 3600; // seconds
-			$_CONFIG['cookie']=$config;
-			// encryptor
-			$config=array();
-			$config['mode']       = 'aes'; // as: aes(32), 3des(16)
-			$config['password']   = 'b5ee4d5b4f59451431081b0246c57c7b';
-			$config['timeout']	  = 0; // seconds
-			$_CONFIG['encryptor']=$config;
-			// database
-			$config=array();
-			$config['type']       = 'mysql';
-			$config['host']       = 'localhost';
-			$config['port']       = 3306;
-			$config['user']       = 'root';
-			$config['passwd']     = '';
-			$config['dbname']     = 'mysql';
-			$config['charset']    = 'utf8';
-			$config['persistent'] = true;
-			$_CONFIG['database']=$config;
-			// cache
-			$config=array();
-			$config['type']       = 'memcache';
-			$config['host']       = 'localhost';
-			$config['port']       = 11211;
-			$config['prefix']     = '';
-			$config['timeout']	= 0; // seconds
-			$_CONFIG['cache']=$config;
-			// system
-			$config=array();
-			$config['quiet']      = false;
-			$config['timeZone']   = 'UTC';
-			$_CONFIG['system']=$config;
-			// load application config
-			@include(NP_CONF_PATH.'config.php');
-			// apply values to setting
-			if($_CONFIG['system']['quiet']===true)
-				error_reporting(E_ERROR | E_PARSE);
-			else
-				error_reporting(E_ALL ^ E_NOTICE);
-			date_default_timezone_set($_CONFIG['system']['timeZone']);
-
-			self::$configs=$_CONFIG;
-		}
+		self::$configs=$_CONFIG;
 	}
 
 	//! Get a config item object
 	public static function get($key)
 	{
+		if(self::$configs===null)
+			self::load();
 		if(!isset(self::$configs[$key]))
 			throw new Exception('Not found config item:'.$key);
 		return self::$configs[$key];

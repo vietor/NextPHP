@@ -17,6 +17,10 @@ class NpCrypto
 
 	private $cryptoObj;
 
+    /*!
+     * @brief Constructor
+     * @param[in] crypto type, support aes,3des
+     */
 	public function __construct($type)
 	{
 		if(!isset(self::$cryptoSupport[$type]))

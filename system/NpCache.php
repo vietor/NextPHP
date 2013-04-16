@@ -33,8 +33,9 @@ abstract class NpCache
 	//! Delete a key
 	public abstract function delete($key);
 	
-	public static function getInstance($type, $host, $port, $prefix, $timeout)
+	public static function getInstance($config)
 	{
+        $type=$config['type'];
 		if($type=='redis')
 			$className='NpRedis';
 		else if($type=='memcache')
@@ -44,8 +45,8 @@ abstract class NpCache
 		else
 			throw new Exception('Unsupport cache type {'.$type.'}');
 	
-		$instance=new $className($prefix,$timeout);
-		if(!$instance->connect($host, $port))
+		$instance=new $className($config['prefix'],$config['timeout']);
+		if(!$instance->connect($config['host'], $config['port']))
 			throw new Exception($type.' cannot connect');
 		return $instance;
 	}

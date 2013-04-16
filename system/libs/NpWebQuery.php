@@ -3,7 +3,10 @@
 class NpWebQuery
 {
 	private $s;
-	
+
+	/*!
+     * @brief Constructor
+     */
 	function __construct()
 	{
 	}
