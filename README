@@ -55,7 +55,7 @@ RewriteRule ^services/(.*)$ public/np-services.php?url=$1 [QSA,L]
 server {
     listen       80;
     server_name  someone;
-    
+
     root   /var/www/someone;
     index  index.html index.htm index.php;
 
@@ -69,18 +69,17 @@ server {
     }
 }
 
-4. code demo
+4. MVC code demo
 
-Set the demo environment like: http://www.example.com
+Set the demo environment like: http://www.example.com, The controller demo code is HelloWorld.php.
+In web browser input like: http://www.example.com/services/HelloWorld/view
 
-4.1 for templete view
-http://www.example.com/services/HelloWorld/view
-
-4.2 for terminate model
-http://www.example.com/services/HelloWorld/model
-
-4.3 for internal type
-http://www.example.com/
+HelloWorld/view      - template view
+HelloWorld/model     - be terminated model
+HelloWorld/internal  - for variable output with normal php
+HelloWorld/memcache  - test memcache, need memcached started
+HelloWorld/database  - test database, need mysqld start and can connected db 'mysql'.
+HelloWorld/encryptor - simple encrypt code
 
 5. documention
 
