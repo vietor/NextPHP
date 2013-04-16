@@ -8,12 +8,6 @@
  *
  * @section intro Configuration items
  *
- * @subsection cookie Cookie
- * For NpResponse::setCookie, $_CONFIG['cookie']
- * @param domain   cookie's domain, default $_SERVER['SERVER_NAME']
- * @param path     cookie's path, default /
- * @param timeout  seconds for cookie's expire time, default 2 week
- *
  * @subsection encryptor Encrypt
  * For NpFactory::getEncryptor, $_CONFIG['encryptor']
  * @param mode     encrypt mode, support aes, 3des; default aes
@@ -58,12 +52,6 @@ class NpConfig {
 		if(!defined('NP_CONF_PATH'))
 			define('NP_CONF_PATH', NP_APP_PATH);
 		$_CONFIG=array();
-		// cookie
-		$config=array();
-		$config['domain']     = $_SERVER['SERVER_NAME'];
-		$config['path']       = '/';
-		$config['timeout']     = 14 * 24 * 3600; // seconds
-		$_CONFIG['cookie']=$config;
 		// encryptor
 		$config=array();
 		$config['mode']       = 'aes'; // as: aes(32), 3des(16)

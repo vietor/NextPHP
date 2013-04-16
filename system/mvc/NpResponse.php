@@ -1,6 +1,6 @@
 <?php
 //! The class for local HTTP Reponse
-class NpResponse 
+class NpResponse
 {
 	//! Set no cache HTTP header
 	public static function noCache()
@@ -10,23 +10,6 @@ class NpResponse
 		header("Cache-Control: no-store, no-cache, must-revalidate");
 		header("Cache-Control: post-check=0, pre-check=0", false);
 		header("Pragma: no-cache");
-	}
-
-	/*!
-	 * @brief Send a cookie
-	 * @param[in] name    cookie's name
-	 * @param[in] value   cookie's value
-	 * @param[in] timeout cookie's effective seconds
-	 * @param[in] path    cookie's available path
-	 * @param[in] domain  cookie's available domain
-	 */
-	public static function setCookie ($name, $value, $timeout=null, $path=null, $domain=null)
-	{
-		$config = NpConfig::get('cookie');
-		$expire = $timeout===null ? (time()+$config['timeout']) : (time()+$timeout);
-		$path = $path===null ? $config['path'] : $path;
-		$domain = $domain===null ? $config['domain'] : $domain;
-		return setcookie($name, $value, $expire, $path, $domain);
 	}
 
 	/*!
