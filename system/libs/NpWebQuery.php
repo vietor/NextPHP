@@ -5,8 +5,8 @@ class NpWebQuery
 	private $s;
 
 	/*!
-     * @brief Constructor
-     */
+	 * @brief Constructor
+	 */
 	function __construct()
 	{
 	}
