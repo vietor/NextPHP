@@ -1,5 +1,5 @@
 <?php
-function compress_to_string($source) {
+function compress_to_string($source,&$depends=array()) {
 	$skip2Include=true;
 	$skip4Include=false;
 	$needCloseTag=false;
@@ -44,7 +44,9 @@ function compress_to_string($source) {
 					$compressed .= '<?php echo ';
 					break;
 				default:
-					if(!$skip4Include)
+					if($skip4Include)
+						$depends[]=trim($token[1],'\'\"');
+                    else
 					{
 						$skip2Include=false;
 						$compressed .= sprintf('%s', $token[1]);
@@ -58,49 +60,90 @@ function compress_to_string($source) {
 	return trim($compressed);
 }
 
-function compress_one($from, $to) {
+function compress_one($from, $to, $exclude=array()) {
 	$result = array();
 	$result['file_size']=0;
 	$result['file_list']=array();
 	$result['compressed_size']=0;
-	$dir_list=array();
-	foreach($from as $path)
-		$dir_list = array_merge($dir_list, array($path));
-	file_put_contents($to, "<?php\n");
-	$compatible= file_get_contents(dirname(__FILE__).'/compress-begin.php');
-	file_put_contents($to, compress_to_string($compatible)."\n", FILE_APPEND);
+	$dir_list=array($from);
+	$dir_prefix=strlen($from)+1;
+
+	$fileObjects=array();
 	while (count($dir_list) > 0) {
-		$files = glob(array_pop($dir_list) . '/*');
+		$dir=array_pop($dir_list);
+		$files=glob($dir . '/*');
+		$relativeDir=substr($dir,$dir_prefix);
+		if(strlen($relativeDir)>0)
+			$relativeDir.='/';
 		foreach ($files as $path) {
+			$relative=substr($path,$dir_prefix);
 			if (is_file($path)) {
-				if (strrpos($path, '.php', -4) > 0) {
-					$result['file_list'][]=$path;
+				if (strrpos($path, '.php', -4) > 0 && strpos($path,'#')===false) {
 					$code = file_get_contents($path);
 					$result['file_size'] += strlen($code);
 					if(strlen($code) > 0)
 					{
-						$code = compress_to_string($code)."\n";
+						$fileObject=new stdClass();
+						$fileObject->name=$relative;
+						$fileObject->depends=array();
+						$fileObject->content = compress_to_string($code,$fileObject->depends);
 						if(strlen($code)>1)
 						{
-							$result['compressed_size'] += strlen($code);
-							file_put_contents($to, $code, FILE_APPEND);
+							for($i=0; $i<count($fileObject->depends); ++$i)
+								$fileObject->depends[$i]=$relativeDir.$fileObject->depends[$i];
+							$fileObjects[]=$fileObject;
 						}
 					}
 				}
 			} else {
-				$dir_list[] = $path;
+			    if(!in_array($relative,$exclude))
+					$dir_list[] = $path;
 			}
 		}
 	}
-	$compatible= file_get_contents(dirname(__FILE__).'/compress-end.php');
-	file_put_contents($to, compress_to_string($compatible)."\n?>", FILE_APPEND);
+
+	$fileObjectOrder=function($a,$b) {
+		$pa=strpos($a->name,'/');
+		$pb=strpos($b->name,'/');
+		if($pa!==false && $pb===false)
+			return -1;
+		else if($pa===false && $pb!==false)
+			return 1;
+		else
+			return strcmp($a->name,$b->name);
+	};
+
+	$compatible=file_get_contents(dirname(__FILE__).'/compress-begin.php');
+	$result['compressed_size']+=file_put_contents($to, "<?php\n".compress_to_string($compatible)."\n");
+	$outNames=array();
+	while(count($fileObjects)>0) {
+		usort($fileObjects,$fileObjectOrder);
+		foreach($fileObjects as $key=>$fileObject) {
+			$output=true;
+			foreach($fileObject->depends as $name) {
+				if(!in_array($name,$outNames)) {
+					$output=false;
+					break;
+				}
+			}
+			if($output) {
+				unset($fileObjects[$key]);
+				$outNames[]=$fileObject->name;
+				$result['file_list'][]=$fileObject->name;
+				$result['compressed_size']+=file_put_contents($to, $fileObject->content."\n", FILE_APPEND);
+				break;
+			}
+		}
+	}
+	$compatible=file_get_contents(dirname(__FILE__).'/compress-end.php');
+	$result['compressed_size']+=file_put_contents($to, compress_to_string($compatible)."\n?>", FILE_APPEND);
 	return $result;
 }
 
-$dirs=array();
-for($i=2; $i<count($argv); ++$i)
-	$dirs[]=$argv[$i];
-$result=compress_one($dirs,$argv[1]);
+$exclude=array();
+for($i=3; $i<count($argv); ++$i)
+	$exclude[]=$argv[$i];
+$result=compress_one($argv[2],$argv[1],$exclude);
 echo 'source size:'.$result['file_size'].', compressed size:'.$result['compressed_size']."\n";
 echo 'compression ratio:'.round(($result['compressed_size']/$result['file_size'])*100, 2)."%, files:\n";
 foreach ($result['file_list'] as $path) {

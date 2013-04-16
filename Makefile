@@ -4,12 +4,12 @@ TARGET=NextPHP
 
 .PHONY: all bin doc clean
 
-all: bin doc
+all: mvc doc
 
-bin-core:
-	php tools/compress.php $(TARGET).php ./system/core ./system/libs
+core:
+	php tools/compress.php $(TARGET).php ./system mvc
 
-bin:
+mvc:
 	php tools/compress.php $(TARGET).php ./system
 
 doc:
