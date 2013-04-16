@@ -78,7 +78,7 @@ HelloWorld/view      - template view
 HelloWorld/model     - be terminated model
 HelloWorld/internal  - for variable output with normal php
 HelloWorld/memcache  - test memcache, need memcached started
-HelloWorld/database  - test database, need mysqld start and can connected db 'mysql'.
+HelloWorld/database  - test database, need mysqld started and writable database 'mysql'.
 HelloWorld/encryptor - simple encrypt code
 
 5. documention
