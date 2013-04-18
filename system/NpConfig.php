@@ -4,7 +4,7 @@
  *
  * @section intro Introduction
  *
- * You can create file <b>application/config.phpfile</b> for configuration.
+ * You can create file <b>application/config.php</b> for configuration.
  *
  * @section intro Configuration items
  *

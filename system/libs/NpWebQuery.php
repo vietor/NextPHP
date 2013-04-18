@@ -1,5 +1,8 @@
 <?php
 //! The class for remote HTTP request
+/*!
+ * @note create by NpFactory::getLibraryObject('WebQuery')
+ */
 class NpWebQuery
 {
 	private $s;

@@ -1,5 +1,8 @@
 <?php
 //! The class for simple text crypto
+/*!
+ * @note create by NpFactory::getLibraryObject('Crypto',array($type))
+ */
 class NpCrypto
 {
 	private static $cryptoSupport=array(

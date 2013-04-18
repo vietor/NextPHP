@@ -72,6 +72,7 @@ class NpFactory
     //! Get a library object
     public static function getLibraryObject($className,$args)
     {
+		$className='Np'.$className;
         class_exists($className) or require_once(NP_SYS_PATH.'libs/'.$className.'.php');
         if($args===null)
 			return new $className();
